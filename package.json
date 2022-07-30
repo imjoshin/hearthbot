@@ -25,6 +25,7 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
+    "clean": "rm -rf dist",
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
