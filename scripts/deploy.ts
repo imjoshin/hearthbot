@@ -18,11 +18,11 @@ const api = async (args: { [key: string]: any }) => {
     gcloud builds submit
       --tag gcr.io/${process.env.GOOGLE_PROJECT_ID}/${process.env.CLOUD_API_SERVICE}
       --project=${process.env.GOOGLE_PROJECT_ID}
-  `, {cwd: 'api'})
+  `, {cwd: `api`})
 
   // TODO use this
-  let deployEnv = env === 'production' ? "" : env
-  deployEnv = ""
+  let deployEnv = env === `production` ? `` : env
+  deployEnv = ``
 
   await exec(`
     gcloud run deploy ${deployEnv} ${process.env.CLOUD_API_SERVICE}
@@ -33,22 +33,22 @@ const api = async (args: { [key: string]: any }) => {
       --region us-central1
       --allow-unauthenticated
       --project=${process.env.GOOGLE_PROJECT_ID}
-  `, {cwd: 'api'})
+  `, {cwd: `api`})
 }
 
 yargs(process.argv.slice(2))
-  .scriptName('deploy')
+  .scriptName(`deploy`)
   .command(
-    'api', 
-    'api interface', 
+    `api`, 
+    `api interface`, 
     (yargs) => {
       return yargs
-        .option('env', 
+        .option(`env`, 
           {
-            alias: 'e',
-            demandOption: 'true',
-            describe: 'environment to deploy to',
-            choices: ['production', 'alpha'],
+            alias: `e`,
+            demandOption: `true`,
+            describe: `environment to deploy to`,
+            choices: [`production`, `alpha`],
           })
     },
     api
