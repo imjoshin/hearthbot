@@ -27,8 +27,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "cp ../.env .; node dist/app.js",
+    "dev": "cp ../.env .; nodemon src/app.ts",
     "lint": "eslint --fix",
     "db:connect": "gcloud sql connect hearthbot -u root"
   }
