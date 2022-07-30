@@ -1,0 +1,20 @@
+{
+  "name": "hearthbot",
+  "version": "1.0.0",
+  "description": "Parent directory for hearthbot",
+  "main": "index.js",
+  "repository": "git@github.com:j0sh77/hearthbot-api.git",
+  "author": "Josh <jcjohnson77@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "deploy": "tsc scripts/deploy.ts --outDir dist; node dist/deploy.js",
+    "api:build": "cd api; yarn build",
+    "api:start": "cd api; yarn start",
+    "api:dev": "cd api; yarn dev",
+    "db:connect": "gcloud sql connect hearthbot -u root"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
+  }
+}
