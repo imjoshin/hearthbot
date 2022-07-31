@@ -6,12 +6,17 @@
   "author": "Josh <jcjohnson77@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/sqlite3": "^3.1.8",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.5.0",
     "mysql": "^2.18.1",
     "simple-node-logger": "^21.8.12",
+    "sqlite3": "^5.0.10",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
