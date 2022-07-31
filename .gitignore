@@ -5,3 +5,4 @@ dist
 *.lock
 *.db
 ignored
+.cache

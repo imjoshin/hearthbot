@@ -10,7 +10,7 @@ const run = async() => {
 
   for (const language of constants.LANGUAGES) {
     // first make a request to see what version we get redirected to
-    const directory = `${constants.HEARTHSTONE_JSON_URL}/${language}`
+    const directory = `${constants.HEARTHSTONE_JSON_URL}/latest/${language}`
     const initialRequest = await fetch(directory)
     const redirectedUrl = initialRequest.url
     const versionRe = /v1\/(\d+)\//
@@ -24,7 +24,7 @@ const run = async() => {
     // if we don't see a new version, no need to sync again
     const version = versionMatch[1]
     if (version !== lastVersionSynced[language]) {
-      sync(language)
+      sync(version, language)
       lastVersionSynced[language] = version
     }
   }
