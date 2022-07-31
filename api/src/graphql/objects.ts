@@ -17,7 +17,7 @@ export const getObjects = () => {
       set: {
         type: GraphQLSet,
         resolve(card) {
-          return {id: 1, name: `Project: ${card.id}, Member: 1`}
+          return {id: 1, name: `Project: ${card.setId}, Member: 1`}
         }
       }
     })

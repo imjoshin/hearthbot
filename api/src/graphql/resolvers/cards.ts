@@ -8,8 +8,8 @@ const Cards: GraphqlResolverExport = {
     // resolve: (parent, args, context, resolveInfo) => {
     resolve: () => {
       return [
-        {name: `test`, id: `id`, set: `setid`},
-        {name: `test2`, id: `id2`, set: `setid2`}
+        {name: `test`, id: `id`, setId: `setid`},
+        {name: `test2`, id: `id2`, setId: `setid2`}
       ]
     }
   }),
