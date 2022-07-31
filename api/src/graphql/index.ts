@@ -1,4 +1,3 @@
-import { IDatabase } from "../db/IDatabase"
 import { GraphqlResolvers } from "./resolvers"
 import * as graphql from "graphql"
 import { GraphQLFieldConfig } from "graphql"

@@ -2,9 +2,6 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import { graphqlHTTP } from "express-graphql"
-import path from "path"
-import { LocalDatabase } from "./db/LocalDatabase"
-import { RemoteDatabase } from "./db/RemoteDatabase"
 import { runUpdates } from "./db/schema/util"
 import { createSchema } from "./graphql"
 import { getDependencies } from "./dependencies"
@@ -14,7 +11,7 @@ dotenv.config()
 
 const app = async () => {
   const port = process.env.PORT || 8080
-  
+
   const dependencies = getDependencies()
 
   const database = dependencies.get(Database)
