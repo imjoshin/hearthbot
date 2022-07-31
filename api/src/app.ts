@@ -13,24 +13,23 @@ import { Database } from "./db/IDatabase"
 dotenv.config()
 
 const app = async () => {
+  const port = process.env.PORT || 8080
+  
   const dependencies = getDependencies()
 
   const database = dependencies.get(Database)
   // TODO starting up with fresh db errors
   await runUpdates(database)
 
-  
   const app = express()
-  
   app.use(cors())
   app.use(express.json())
 
   app.use(`/`, graphqlHTTP({
-    schema: createSchema(database),
+    schema: createSchema(dependencies),
     graphiql: true,
   }))
   
-  const port = process.env.PORT || 8080
   app.listen(port, () => {
     console.log(`Listening on port ${port}`)
   })

@@ -1,17 +1,15 @@
 import * as graphql from "graphql"
-import { IDatabase } from "../../db/IDatabase"
 import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlResolverExport, GraphqlObjects } from "."
+import { DependencyTree } from "../../dependencies"
 
 const Cards: GraphqlResolverExport = {
   name: `cards`,
-  resolver: (objects: GraphqlObjects, db: IDatabase) => ({
+  resolver: (objects: GraphqlObjects, dependencies: DependencyTree) => ({
     type: new graphql.GraphQLList(objects.GraphQLCard),
     // resolve: (parent, args, context, resolveInfo) => {
     resolve: async () => {
-      // TODO inject
-      const cardRepository = new CardRepository(db)
-      const cards = await cardRepository.getCards()
+      const cards = await dependencies.get(CardRepository).getCards()
       return cards
     }
   }),

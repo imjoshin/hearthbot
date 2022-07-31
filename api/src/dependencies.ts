@@ -2,8 +2,9 @@ import path from "path"
 import { LocalDatabase } from "./db/LocalDatabase"
 import { RemoteDatabase } from "./db/RemoteDatabase"
 import { Database } from "./db/IDatabase"
+import { CardRepository } from "./repository/CardRepository"
 
-class DependencyTree {
+export class DependencyTree {
   private dependencyMap: {[key: string]: object}
   constructor() {
     this.dependencyMap = {}
@@ -19,8 +20,8 @@ class DependencyTree {
     return match[1]
   }
 
-  public register<T extends new(...args: any) => InstanceType<T>>(classInstance: any, classType?: T) {
-    const className = this.getClassName(classType || classInstance)
+  public register<T extends new(...args: any) => InstanceType<T>>(classType: T, classInstance: any) {
+    const className = this.getClassName(classType)
     this.dependencyMap[className] = classInstance
   }
 
@@ -41,7 +42,11 @@ export const getDependencies = () => {
     )
 
   const dependencies = new DependencyTree()
-  dependencies.register(database, Database)
+  dependencies.register(Database, database)
+
+  dependencies.register(CardRepository, new CardRepository(
+    dependencies.get(Database)
+  ))
 
   return dependencies
 }
