@@ -32,7 +32,7 @@ const app = async () => {
 
   
   app.use(`/`, graphqlHTTP({
-    schema: createSchema(db),
+    schema: createSchema(),
     graphiql: true,
   }))
   
