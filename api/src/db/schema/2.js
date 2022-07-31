@@ -1,6 +1,6 @@
 const run = async (db) => {
   await db.run(`
-    CREATE TABLE card (
+    CREATE TABLE IF NOT EXISTS card (
       id VARCHAR(32) PRIMARY KEY NOT NULL,
       artist VARCHAR(128),
       attack INT,
@@ -12,7 +12,8 @@ const run = async (db) => {
       name TEXT NOT NULL,
       rarity INT,
       text TEXT,
-      type INT
+      type INT,
+      image TEXT
     )
   `)
 }

@@ -12,8 +12,6 @@ const api = async (args: { [key: string]: any }) => {
 
   console.log(chalk.yellow(`Deploying api to ${env}\n`))
 
-  await exec(`cp .env api/.env`)
-
   await exec(`
     gcloud builds submit
       --tag gcr.io/${process.env.GOOGLE_PROJECT_ID}/${process.env.CLOUD_API_SERVICE}

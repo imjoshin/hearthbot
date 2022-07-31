@@ -31,7 +31,7 @@
     "clean": "rm -rf dist",
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "cp ../.env .; NODE_ENV='development' nodemon src/app.ts",
+    "dev": "NODE_ENV='development' nodemon src/app.ts",
     "db:connect": "gcloud sql connect hearthbot -u root"
   }
 }
