@@ -7,6 +7,7 @@ import path from "path"
 import { LocalDatabase } from "./db/LocalDatabase"
 import { RemoteDatabase } from "./db/RemoteDatabase"
 import { runUpdates } from "./db/schema/util"
+import joinMonster from "join-monster"
 
 dotenv.config()
 
@@ -28,29 +29,31 @@ const app = async () => {
   
   app.use(cors())
   app.use(express.json())
-  
-  // app.get(`/`, (req, res) => {
-  //   res.status(200).send(`hello world`)
-  // })
-  
-  // app.get(`/test/:id`, (req, res) => {
-  //   const query = `SELECT * FROM test WHERE id = ?`
-  //   pool.query(query, [ req.params.id ], (error, results) => {
-  //     console.log(error)
-  //     if (!results[0]) {
-  //       res.json({ status: `Not found!` })
-  //     } else {
-  //       res.json(results[0])
-  //     }
-  //   })
-  // })
+
+  const GraphQLCard = new graphql.GraphQLObjectType({
+    name: `Card`,
+    extensions: {
+      joinMonster: {
+        sqlTable: `card`,
+        uniqueKey: `id`,
+      }
+    },
+    fields: () => ({
+      id: { type: graphql.GraphQLString },
+      name: { type: graphql.GraphQLString },
+    })
+  })
   
   const QueryRoot = new graphql.GraphQLObjectType({
     name: `Query`,
     fields: () => ({
-      hello: {
-        type: graphql.GraphQLString,
-        resolve: () => db.run(``)
+      cards: {
+        type: new graphql.GraphQLList(GraphQLCard),
+        resolve: (parent, args, context, resolveInfo) => {
+          return joinMonster(resolveInfo, {}, (sql: string) => {
+            return db.run(sql)
+          })
+        }
       }
     })
   })

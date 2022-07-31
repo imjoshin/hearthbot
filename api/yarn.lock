@@ -63,6 +63,13 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@stem/nesthydrationjs@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@stem/nesthydrationjs/-/nesthydrationjs-0.4.0.tgz#5e797efd8b64ea33307ced2a6c4cde9c0227fcf4"
+  integrity sha512-hnoLv6W7CmhWXCEp6MBiZv4CdqI48aYmxM+Lo5T3qogP+x+MBR0DOyt7XdppI/X8McqHisCbSNvAOC4fgPhUiw==
+  dependencies:
+    lodash "4.13.1"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -468,6 +475,11 @@ depd@^1.1.2, depd@~1.1.2:
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==
 
+deprecate@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/deprecate/-/deprecate-1.1.1.tgz#4632e981fc815eeaf00be945a40359c0f8bf9913"
+  integrity sha512-ZGDXefq1xknT292LnorMY5s8UVU08/WKdzDZCUT6t9JzsiMSP4uzUhgpqugffNVcT5WC6wMBiSQ+LFjlv3v7iQ==
+
 destroy@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/destroy/-/destroy-1.2.0.tgz"
@@ -658,6 +670,11 @@ gauge@^4.0.3:
     strip-ansi "^6.0.1"
     wide-align "^1.1.5"
 
+generatorics@^1.0.8:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/generatorics/-/generatorics-1.1.0.tgz#695060bb8d88b909b30171a5cb3d424768661138"
+  integrity sha512-LuYDCS1DbKQsvChP1xHmAzHnGdd0z0K1XMebmbNbFzGZI62KODnV2CXA7zOqebiDzlK2sxXrPGfwlDzSm9aP4g==
+
 get-intrinsic@^1.0.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.1.2.tgz"
@@ -690,6 +707,13 @@ graceful-fs@^4.2.6:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
+
+graphql-relay@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-relay/-/graphql-relay-0.6.0.tgz#18ec36b772cfcb3dbb9bd369c3f8004cf42c7b93"
+  integrity sha512-OVDi6C9/qOT542Q3KxZdXja3NrDvqzbihn1B44PH8P/c5s0Q90RyQwT6guhGqXqbYEH6zbeLJWjQqiYvcg2vVw==
+  dependencies:
+    prettier "^1.16.0"
 
 graphql@*, graphql@^16.5.0:
   version "16.5.0"
@@ -870,7 +894,24 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-lodash@^4.17.12:
+join-monster@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/join-monster/-/join-monster-3.1.1.tgz#8f58811f73838076cb9c8af30e779ae7a8014f55"
+  integrity sha512-gflk8ETy/tdVjfkF7laZuhw4bbLp8G5o8gkUj1TPcGyBYonHBM8v3UpEFr8zpoYLjseg3n8Nvak2HhHBfIm8lw==
+  dependencies:
+    "@stem/nesthydrationjs" "0.4.0"
+    debug "^4.1.0"
+    deprecate "^1.0.0"
+    generatorics "^1.0.8"
+    graphql-relay "^0.6.0"
+    lodash "^4.17.15"
+
+lodash@4.13.1:
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.13.1.tgz#83e4b10913f48496d4d16fec4a560af2ee744b68"
+  integrity sha512-j/GRONYpkXt1aB1bQHzkq0Th7zhv/syoDVrzCDA3FDMntIin0b7TjXi62q9juDC+QfhRs9COr0LFW38vQSH9Tg==
+
+lodash@^4.17.12, lodash@^4.17.15:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -1182,6 +1223,11 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.3.1"
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+prettier@^1.16.0:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
