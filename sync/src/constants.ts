@@ -5,3 +5,4 @@ export const LANGUAGES = [
   `enUS`
 ] as const
 export const CACHE_DIR = path.join(__dirname, `..`, `.cache`)
+export const SLEEP_TIME = 1000 * 60 * 60

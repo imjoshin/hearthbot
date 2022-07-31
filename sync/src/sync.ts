@@ -2,6 +2,7 @@ import * as constants from "./constants"
 import { getCache, setCache } from "./util"
 
 export const sync = async (version: string, language: typeof constants.LANGUAGES[number]) => {
+  console.log(`Syncing ${language}: ${version}`)
   const cacheKey = `cards-${version}-${language}`
   let cardsJson = getCache(cacheKey)
 
