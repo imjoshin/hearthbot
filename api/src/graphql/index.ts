@@ -4,12 +4,12 @@ import * as graphql from "graphql"
 import { GraphQLFieldConfig } from "graphql"
 import { getObjects } from "./objects"
 
-export const createSchema = () => {
+export const createSchema = (db: IDatabase) => {
   const types = getObjects()
 
   const fields: {[key: string]: GraphQLFieldConfig<any, any>} = {}
   for (const field of Object.values(GraphqlResolvers)) {
-    fields[field.name] = field.resolver(types)
+    fields[field.name] = field.resolver(types, db)
   }
 
   const QueryRoot = new graphql.GraphQLObjectType({
