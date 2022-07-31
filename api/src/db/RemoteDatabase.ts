@@ -1,7 +1,7 @@
-import { IDatabase } from "./IDatabase"
+import { Database } from "./IDatabase"
 import mysql from "mysql"
 
-export class RemoteDatabase implements IDatabase {
+export class RemoteDatabase extends Database {
   private db
 
   constructor(
@@ -10,6 +10,7 @@ export class RemoteDatabase implements IDatabase {
     database: string,
     socketPath: string,
   ) {
+    super()
     this.db = mysql.createPool({
       user,
       password,

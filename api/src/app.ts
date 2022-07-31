@@ -7,21 +7,17 @@ import { LocalDatabase } from "./db/LocalDatabase"
 import { RemoteDatabase } from "./db/RemoteDatabase"
 import { runUpdates } from "./db/schema/util"
 import { createSchema } from "./graphql"
+import { getDependencies } from "./dependencies"
+import { Database } from "./db/IDatabase"
 
 dotenv.config()
 
 const app = async () => {
-  const db = process.env.NODE_ENV === `development`
-    ? new LocalDatabase(path.join(__dirname, `..`, `..`, `local.db`))
-    : new RemoteDatabase(
-      process.env.DB_USER,
-      process.env.DB_PASS,
-      process.env.DB_NAME,
-      `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`,
-    )
+  const dependencies = getDependencies()
 
+  const database = dependencies.get(Database)
   // TODO starting up with fresh db errors
-  await runUpdates(db)
+  await runUpdates(database)
 
   
   const app = express()
@@ -29,10 +25,8 @@ const app = async () => {
   app.use(cors())
   app.use(express.json())
 
-
-  
   app.use(`/`, graphqlHTTP({
-    schema: createSchema(db),
+    schema: createSchema(database),
     graphiql: true,
   }))
   

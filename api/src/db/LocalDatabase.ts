@@ -1,10 +1,11 @@
-import { IDatabase } from "./IDatabase"
+import { Database } from "./IDatabase"
 import sqlite3 from "sqlite3"
 
-export class LocalDatabase implements IDatabase {
+export class LocalDatabase extends Database {
   private db
 
   constructor(path: string) {
+    super()
     this.db = new sqlite3.Database(path)
   }
 
