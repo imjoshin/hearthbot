@@ -5,7 +5,7 @@ import { getObjects } from "./objects"
 import { DependencyTree } from "../dependencies"
 
 export const createSchema = (dependencies: DependencyTree) => {
-  const types = getObjects()
+  const types = getObjects(dependencies)
 
   const fields: {[key: string]: GraphQLFieldConfig<any, any>} = {}
   for (const field of Object.values(GraphqlResolvers)) {

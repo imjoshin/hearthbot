@@ -1,11 +1,15 @@
 import * as graphql from "graphql"
+import { SetRepository } from "../repository/SetRepository"
+import { DependencyTree } from "../dependencies"
 
-export const getObjects = () => {
+export const getObjects = (dependencies: DependencyTree) => {
   const GraphQLSet = new graphql.GraphQLObjectType({
     name: `Set`,
     fields: () => ({
       id: { type: graphql.GraphQLString },
-      name: { type: graphql.GraphQLString },
+      fullName: { type: graphql.GraphQLString },
+      shortName: { type: graphql.GraphQLString },
+      releaseDate: { type: graphql.GraphQLString },
     })
   })
   
@@ -16,8 +20,8 @@ export const getObjects = () => {
       name: { type: graphql.GraphQLString },
       set: {
         type: GraphQLSet,
-        resolve(card) {
-          return {id: 1, name: `Project: ${card.setId}, Member: 1`}
+        async resolve(card) {
+          return dependencies.get(SetRepository).getSet(card.setId)
         }
       }
     })

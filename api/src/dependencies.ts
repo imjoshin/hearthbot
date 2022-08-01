@@ -3,6 +3,7 @@ import { LocalDatabase } from "./db/LocalDatabase"
 import { RemoteDatabase } from "./db/RemoteDatabase"
 import { Database } from "./db/IDatabase"
 import { CardRepository } from "./repository/CardRepository"
+import { SetRepository } from "./repository/SetRepository"
 
 export class DependencyTree {
   private dependencyMap: {[key: string]: object}
@@ -45,6 +46,10 @@ export const getDependencies = () => {
   dependencies.register(Database, database)
 
   dependencies.register(CardRepository, new CardRepository(
+    dependencies.get(Database)
+  ))
+
+  dependencies.register(SetRepository, new SetRepository(
     dependencies.get(Database)
   ))
 
