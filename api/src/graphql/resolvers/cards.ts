@@ -1,7 +1,7 @@
 import * as graphql from "graphql"
 import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlResolverExport, GraphqlObjects } from "."
-import { DependencyTree } from "../../dependencies"
+import { DependencyTree } from "../../util/DependencyTree"
 
 const Cards: GraphqlResolverExport = {
   name: `cards`,

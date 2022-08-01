@@ -1,6 +1,6 @@
 import * as graphql from "graphql"
 import { SetRepository } from "../repository/SetRepository"
-import { DependencyTree } from "../dependencies"
+import { DependencyTree } from "../util/DependencyTree"
 
 export const getObjects = (dependencies: DependencyTree) => {
   const GraphQLSet = new graphql.GraphQLObjectType({

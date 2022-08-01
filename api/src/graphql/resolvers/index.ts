@@ -1,5 +1,5 @@
 import { GraphQLFieldConfig } from "graphql"
-import { DependencyTree } from "../../dependencies"
+import { DependencyTree } from "../../util/DependencyTree"
 import { getObjects } from "../objects"
 import { default as cards } from "./cards"
 
