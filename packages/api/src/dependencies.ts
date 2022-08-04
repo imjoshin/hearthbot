@@ -10,7 +10,7 @@ export const getDependencies = () => {
   const dependencies = new DependencyTree()
 
   const database = process.env.NODE_ENV === `development`
-    ? new LocalDatabase(path.join(__dirname, `..`, `..`, `local.db`))
+    ? new LocalDatabase(path.join(__dirname, `..`, `..`, `..`, `local.db`))
     : new RemoteDatabase(
       process.env.DB_USER,
       process.env.DB_PASS,
