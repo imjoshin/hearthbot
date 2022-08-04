@@ -18,6 +18,8 @@ export const runUpdates = async (db: IDatabase) => {
     .map(f => parseInt(f.slice(0, -3)))
     .filter(f => f > currentSchema)
     .sort()
+
+  console.log(`Current schema: ${currentSchema}, latest schema: ${updatesToRun.length ? updatesToRun[updatesToRun.length - 1] : currentSchema}`)
   
   for (const update of updatesToRun) {
     console.log(`Running schema update ${update}`)
