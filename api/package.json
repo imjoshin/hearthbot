@@ -29,7 +29,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc",
+    "build": "tsc; cp src/db/schema/*.js dist/db/schema/",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "db:connect": "gcloud sql connect hearthbot -u root",
