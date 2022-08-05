@@ -29,14 +29,15 @@ export const runUpdates = async (db: Database) => {
     const sql = require(sqlFile)
 
     try {
+      await db.run(`START TRANSACTION`)
       await sql.run(db)
       currentSchema = update
+      await db.run(`UPDATE config SET value = ? WHERE name = "schema"`, [currentSchema])
+      await db.run(`COMMIT`)
     } catch (e) {
       console.log(`TODO: ERRORED`)
       console.log(e)
       break
     }
   }
-
-  await db.run<{value: string}>(`UPDATE config SET value = ? WHERE name = "schema"`, [currentSchema])
 }
