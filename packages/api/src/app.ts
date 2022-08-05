@@ -5,7 +5,7 @@ import { graphqlHTTP } from "express-graphql"
 import { runUpdates } from "./db/schema/util"
 import { createSchema } from "./graphql"
 import { getDependencies } from "./dependencies"
-import { Database } from "./db/IDatabase"
+import { Database } from "./db/Database"
 
 dotenv.config()
 

@@ -1,8 +1,8 @@
 import path from "path"
 import fs from "fs"
-import { IDatabase } from "../IDatabase"
+import { Database } from "../Database"
 
-export const runUpdates = async (db: IDatabase) => {
+export const runUpdates = async (db: Database) => {
   let currentSchema = 0
   try {
     // TODO since errors can't be caught from db, this breaks on new dbs

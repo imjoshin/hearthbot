@@ -1,5 +1,14 @@
 const run = async (db) => {
   await db.run(`
+    CREATE TABLE IF NOT EXISTS cardSet (
+      id VARCHAR(64) PRIMARY KEY NOT NULL,
+      fullName VARCHAR(128) NOT NULL,
+      shortName VARCHAR(8) NOT NULL,
+      releaseDate datetime
+    )
+  `)
+
+  await db.run(`
     CREATE TABLE IF NOT EXISTS card (
       id VARCHAR(32) PRIMARY KEY NOT NULL,
       artist VARCHAR(128),
@@ -16,16 +25,7 @@ const run = async (db) => {
       image TEXT,
       tile TEXT,
       setId VARCHAR(64),
-      CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES 'set'(id)
-    )
-  `)
-
-  await db.run(`
-    CREATE TABLE IF NOT EXISTS 'set' (
-      id VARCHAR(64) PRIMARY KEY NOT NULL,
-      fullName VARCHAR(128) NOT NULL,
-      shortName VARCHAR(8) NOT NULL,
-      releaseDate datetime
+      CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES cardSet(id)
     )
   `)
 

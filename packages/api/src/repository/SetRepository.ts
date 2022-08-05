@@ -1,8 +1,8 @@
 import { Set } from "../model/Set"
-import { IDatabase } from "../db/IDatabase"
+import { Database } from "../db/Database"
 
 export class SetRepository {
-  constructor(private db: IDatabase) {}
+  constructor(private db: Database) {}
 
   public getSets = async (): Promise<Set[]> => {
     const dbResult = await this.db.run<{[key: string]: any}>(`SELECT * FROM 'set'`)

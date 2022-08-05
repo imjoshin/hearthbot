@@ -1,8 +1,8 @@
 import { Card } from "../model/Card"
-import { IDatabase } from "../db/IDatabase"
+import { Database } from "../db/Database"
 
 export class CardRepository {
-  constructor(private db: IDatabase) {}
+  constructor(private db: Database) {}
 
   public getCards = async (): Promise<Card[]> => {
     const dbResult = await this.db.run<{[key: string]: any}>(`SELECT * FROM card`)

@@ -1,21 +1,19 @@
-import { Database } from "./IDatabase"
-import mysql from "mysql"
+import mysql from "mysql2"
 
-export class RemoteDatabase extends Database {
+export class Database {
   private db
 
   constructor(
     user: string,
     password: string,
     database: string,
-    socketPath: string,
+    host: string,
   ) {
-    super()
-    this.db = mysql.createPool({
+    this.db = mysql.createConnection({
       user,
       password,
       database,
-      socketPath,
+      host,
     })
   }
 
@@ -25,7 +23,8 @@ export class RemoteDatabase extends Database {
         if (error) {
           rej(error)
         } else {
-          res(result)
+          // TODO hacky types gross
+          res(result as unknown as T[])
         }
       })
     })

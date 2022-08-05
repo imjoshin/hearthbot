@@ -15,9 +15,8 @@
     "express": "^4.18.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.3.0",
-    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "simple-node-logger": "^21.8.12",
-    "sqlite3": "5.0.2",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
