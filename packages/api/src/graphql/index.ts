@@ -6,12 +6,12 @@ import { getObjects } from "./objects"
 import { DependencyTree } from "../util/DependencyTree"
 
 export const createSchema = (dependencies: DependencyTree) => {
-  const types = getObjects(dependencies)
+  const objects = getObjects(dependencies)
 
   // create resolvers
   const resolvers: {[key: string]: GraphQLFieldConfig<any, any>} = {}
   for (const resolver of Object.values(GraphqlResolvers)) {
-    resolvers[resolver.name] = resolver.resolver(types, dependencies)
+    resolvers[resolver.name] = resolver.resolver(objects, dependencies)
   }
 
   const QueryRoot = new graphql.GraphQLObjectType({
@@ -22,7 +22,7 @@ export const createSchema = (dependencies: DependencyTree) => {
   // create mutations
   const mutations: {[key: string]: GraphQLFieldConfig<any, any>} = {}
   for (const mutation of Object.values(GraphqlMutations)) {
-    mutations[mutation.name] = mutation.mutation(types, dependencies)
+    mutations[mutation.name] = mutation.mutation(objects, dependencies)
   }
 
   const MutationRoot = new graphql.GraphQLObjectType({
@@ -32,7 +32,6 @@ export const createSchema = (dependencies: DependencyTree) => {
       
   // create schema
   const executableSchema = new graphql.GraphQLSchema({ query: QueryRoot, mutation: MutationRoot })
-  console.log(JSON.stringify(executableSchema, null, 2))
       
   return executableSchema
 }

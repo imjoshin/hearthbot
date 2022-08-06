@@ -17,7 +17,18 @@ export const getObjects = (dependencies: DependencyTree) => {
     name: `Card`,
     fields: () => ({
       id: { type: graphql.GraphQLString },
+      artist: { type: graphql.GraphQLString },
+      attack: { type: graphql.GraphQLInt },
+      collectible: { type: graphql.GraphQLBoolean },
+      cost: { type: graphql.GraphQLInt },
+      dbfId: { type: graphql.GraphQLString },
+      flavor: { type: graphql.GraphQLString },
+      health: { type: graphql.GraphQLInt },
       name: { type: graphql.GraphQLString },
+      rarity: { type: graphql.GraphQLString },
+      setId: { type: graphql.GraphQLString },
+      text: { type: graphql.GraphQLString },
+      type: { type: graphql.GraphQLString },
       set: {
         type: GraphQLSet,
         async resolve(card) {

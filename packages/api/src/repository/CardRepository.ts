@@ -7,21 +7,49 @@ export class CardRepository {
   public getCards = async (): Promise<Card[]> => {
     const dbResult = await this.db.run<{[key: string]: any}>(`SELECT * FROM card`)
 
-    return dbResult.map(row => new Card(
-      row.id,
-      row.artist,
-      row.attack,
-      row.collectible,
-      row.cost,
-      row.dbfId,
-      row.flavor,
-      row.health,
-      row.name,
-      row.rarity,
-      row.setId,
-      row.text,
-      row.type,
-      row.tribes,
-    ))
+    return dbResult.map(row => {
+      const {
+        id,
+        artist,
+        attack,
+        collectible,
+        cost,
+        dbfId,
+        flavor,
+        health,
+        name,
+        rarity,
+        setId,
+        text,
+        type,
+        tribes,
+      } = row
+
+      return new Card({
+        id,
+        artist,
+        attack,
+        collectible,
+        cost,
+        dbfId,
+        flavor,
+        health,
+        name,
+        rarity,
+        setId,
+        text,
+        type,
+        tribes,
+      })
+    })
+  }
+
+  public createCard = async (card: Card) => {
+    card.validate()
+
+    const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, flavor, health, name, rarity, setId, text, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    await this.db.run(query, [
+      card.id, card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.flavor, card.health, card.name, card.rarity, card.setId, card.text, card.type
+    ])
   }
 }

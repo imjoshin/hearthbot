@@ -15,7 +15,7 @@ const run = async (db) => {
       attack INT,
       collectible BOOLEAN NOT NULL,
       cost INT,
-      dbfId INT NOT NULL,
+      dbfId VARCHAR(64) NOT NULL,
       flavor TEXT,
       health INT,
       name TEXT NOT NULL,

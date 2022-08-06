@@ -17,7 +17,7 @@ export class Database {
     })
   }
 
-  run<T>(sql: string, params?: (string | number | null)[]): Promise<T[]> {
+  run<T>(sql: string, params?: (string | number | boolean | null)[]): Promise<T[]> {
     return new Promise((res, rej) => {
       this.db.query(sql, params, (error, result) => {
         if (error) {
