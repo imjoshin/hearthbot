@@ -5,7 +5,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { Card } from "../../model/Card"
 
-const Cards: GraphqlMutationExport = {
+const CreateCard: GraphqlMutationExport = {
   name: `createCard`,
   mutation: (objects: GraphqlObjects, dependencies: DependencyTree) => ({
     type: objects.GraphQLCard,
@@ -35,4 +35,4 @@ const Cards: GraphqlMutationExport = {
 }
 
 
-export default Cards
+export default CreateCard
