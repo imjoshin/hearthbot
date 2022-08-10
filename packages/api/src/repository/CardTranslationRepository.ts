@@ -5,13 +5,13 @@ export class CardTranslationRepository {
   constructor(private db: Database) {}
 
   public getCardTranslations = async (cardId: string): Promise<CardTranslation[]> => {
-    const dbResult = await this.db.run<CardTranslationConstructor>(`SELECT * FROM 'cardTranslations' WHERE cardId = ?`, [cardId])
+    const dbResult = await this.db.run<CardTranslationConstructor>(`SELECT * FROM cardTranslation WHERE cardId = ?`, [cardId])
 
     return dbResult.map(row => new CardTranslation(row))
   }
 
-  public addCardTranslation = async (cardId: string, locale: string, name: string, flavor?: string, text?: string) => {
-    const query = `INSERT INTO cardTranslation (cardId, locale, name, flavor, 'text') VALUES (?, ?, ?, ?)`
-    await this.db.run(query, [cardId, locale, name, flavor, text])
+  public addCardTranslation = async (cardTranslation: CardTranslation) => {
+    const query = `INSERT INTO cardTranslation (cardId, locale, name, flavor, \`text\`) VALUES (?, ?, ?, ?, ?)`
+    await this.db.run(query, [cardTranslation.cardId, cardTranslation.locale, cardTranslation.name, cardTranslation.flavor, cardTranslation.text])
   }
 }

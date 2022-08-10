@@ -27,13 +27,15 @@ const run = async (db) => {
 
   await db.run(`
     CREATE TABLE IF NOT EXISTS cardTranslation (
-      id AUTOINCREMENT PRIMARY KEY NOT NULL,
+      id INT NOT NULL AUTO_INCREMENT,
       cardId VARCHAR(32) NOT NULL,
       locale VARCHAR(4) NOT NULL,
       name TEXT,
       flavor TEXT,
-      'text' TEXT,
-      CONSTRAINT FK_cardId FOREIGN KEY (cardId) REFERENCES card(id)
+      \`text\` TEXT,
+      CONSTRAINT FK_cardId FOREIGN KEY (cardId) REFERENCES card(id),
+      UNIQUE KEY UK_cardId_locale (cardId, locale),
+      PRIMARY KEY (id)
     )
   `)
 
