@@ -1,5 +1,5 @@
 import * as constants from "./constants"
-import { getCache, setCache } from "./util"
+import { getCache, setCache, api } from "./util"
 
 export const sync = async (version: string, language: typeof constants.LANGUAGES[number]) => {
   console.log(`Syncing ${language}: ${version}`)
@@ -19,26 +19,54 @@ export const sync = async (version: string, language: typeof constants.LANGUAGES
     }
   }
 
+  // TODO chunk this up and use createCards
   for (const card of cardsJson) {
     const attributes = {
       attack: card.attack,
       artist: card.artist,
-      class: card.cardClass,
+      // class: card.cardClass,
       collectible: !!card.collectible,
       cost: card.cost,
-      bdfId: card.bdfId,
+      dbfId: card.dbfId,
       flavor: card.flavor,
       id: card.id,
       health: card.health,
       name: card.name,
       rarity: card.rarity,
-      set: card.set,
+      // set: card.set,
       text: card.text,
-      type: card.type,
-      image: `https://art.hearthstonejson.com/v1/render/latest/${language}/512x/${card.id}.png`,
-      tile: `https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`
+      // type: card.type,
+      // image: `https://art.hearthstonejson.com/v1/render/latest/${language}/512x/${card.id}.png`,
+      // tile: `https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`
     }
 
-    // TODO ship attributes off to API to process
+    const graphqlFields: string[] = []
+    
+    for (const key of Object.keys(attributes)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const value = attributes[key]
+
+      if (value !== undefined && value !== null) {
+        const stringifyValue = key === `dbfId` ? value.toString() : value
+        graphqlFields.push(`${key}: ${JSON.stringify(stringifyValue)}`)
+      }
+    }
+
+    try {
+      const response = await api(`
+      mutation {
+        createCard(
+          card: {
+            ${graphqlFields.join(`\n${` `.repeat(12)}`)}
+          }
+        ) { id }
+      }
+    `)
+
+      const json = await response.json()
+    } catch (e) {
+      console.log(e)
+    }
   }
 }

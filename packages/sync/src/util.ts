@@ -18,3 +18,14 @@ export const getCache = (key: string) => {
 
   return JSON.parse(fs.readFileSync(filePath).toString())
 }
+
+export const api = (query: string, variables?: {[key: string]: any}) => {
+  const url: string = process.env.API_HOST
+  return fetch(url, {
+    method: `POST`, 
+    headers: {
+      'Content-Type': `application/json`
+    },
+    body: JSON.stringify({query, variables})
+  })
+}
