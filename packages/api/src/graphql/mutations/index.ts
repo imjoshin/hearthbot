@@ -2,6 +2,7 @@ import { GraphQLFieldConfig } from "graphql"
 import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { default as createCard } from "./createCard"
+import { default as createCards } from "./createCards"
 
 export type GraphqlMutationExport = {
   name: string,
@@ -10,4 +11,5 @@ export type GraphqlMutationExport = {
 
 export const GraphqlMutations = {
   createCard,
+  createCards,
 }

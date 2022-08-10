@@ -38,9 +38,30 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
+  const GraphQLCardInput = new graphql.GraphQLInputObjectType({
+    name: `CardInput`,
+    fields: () => ({
+      id: { type: graphql.GraphQLString },
+      artist: { type: graphql.GraphQLString },
+      attack: { type: graphql.GraphQLInt },
+      collectible: { type: graphql.GraphQLBoolean },
+      cost: { type: graphql.GraphQLInt },
+      dbfId: { type: graphql.GraphQLString },
+      flavor: { type: graphql.GraphQLString },
+      health: { type: graphql.GraphQLInt },
+      name: { type: graphql.GraphQLString },
+      rarity: { type: graphql.GraphQLString },
+      setId: { type: graphql.GraphQLString },
+      text: { type: graphql.GraphQLString },
+      type: { type: graphql.GraphQLString },
+      tribes: { type: graphql.GraphQLString },
+    })
+  })
+
   return {
     GraphQLCard,
-    GraphQLSet
+    GraphQLSet,
+    GraphQLCardInput,
   }
 }
 
