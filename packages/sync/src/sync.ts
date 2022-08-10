@@ -1,7 +1,7 @@
 import * as constants from "./constants"
 import { getCache, setCache, api, objectToGraphqlArgs } from "./util"
 
-export const sync = async (version: string, locale: typeof constants.LANGUAGES[number]) => {
+export const sync = async (version: string, locale: typeof constants.LOCALES[number]) => {
   console.log(`Syncing ${locale}: ${version}`)
   const cacheKey = `cards-${version}-${locale}`
   let cardsJson = getCache(cacheKey)

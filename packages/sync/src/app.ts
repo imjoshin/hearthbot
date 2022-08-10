@@ -6,11 +6,11 @@ dotenv.config()
 
 const run = async() => {
   // keep this in memory - if we restart might as well run a sync
-  const lastVersionSynced: {[K in typeof constants.LANGUAGES[number]]?: string} = {}
+  const lastVersionSynced: {[K in typeof constants.LOCALES[number]]?: string} = {}
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    for (const language of constants.LANGUAGES) {
+    for (const language of constants.LOCALES) {
       // first make a request to see what version we get redirected to
       const directory = `${constants.HEARTHSTONE_JSON_URL}/latest/${language}`
       const initialRequest = await fetch(directory)
