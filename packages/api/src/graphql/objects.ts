@@ -21,14 +21,16 @@ export const getObjects = (dependencies: DependencyTree) => {
       attack: { type: graphql.GraphQLInt },
       collectible: { type: graphql.GraphQLBoolean },
       cost: { type: graphql.GraphQLInt },
-      dbfId: { type: graphql.GraphQLString },
+      dbfId: { type: graphql.GraphQLInt },
       flavor: { type: graphql.GraphQLString },
       health: { type: graphql.GraphQLInt },
+      mechanics: { type: graphql.GraphQLString },
       name: { type: graphql.GraphQLString },
       rarity: { type: graphql.GraphQLString },
       setId: { type: graphql.GraphQLString },
       text: { type: graphql.GraphQLString },
       type: { type: graphql.GraphQLString },
+      tribe: { type: graphql.GraphQLString },
       set: {
         type: GraphQLSet,
         async resolve(card) {
@@ -46,15 +48,17 @@ export const getObjects = (dependencies: DependencyTree) => {
       attack: { type: graphql.GraphQLInt },
       collectible: { type: graphql.GraphQLBoolean },
       cost: { type: graphql.GraphQLInt },
-      dbfId: { type: graphql.GraphQLString },
+      dbfId: { type: graphql.GraphQLInt },
+      durability: { type: graphql.GraphQLInt },
       flavor: { type: graphql.GraphQLString },
       health: { type: graphql.GraphQLInt },
+      mechanics: { type: graphql.GraphQLString },
       name: { type: graphql.GraphQLString },
       rarity: { type: graphql.GraphQLString },
       setId: { type: graphql.GraphQLString },
       text: { type: graphql.GraphQLString },
       type: { type: graphql.GraphQLString },
-      tribes: { type: graphql.GraphQLString },
+      tribe: { type: graphql.GraphQLString },
     })
   })
 

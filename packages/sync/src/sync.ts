@@ -20,7 +20,13 @@ export const sync = async (version: string, language: typeof constants.LANGUAGES
   }
 
   // TODO chunk this up and use createCards
-  for (const card of cardsJson) {
+  for (const card of cardsJson.slice(10000, 11000)) {
+    await syncCards(language, [card])
+  }
+}
+
+const syncCards = async (language: string, cards: {[key: string]: any}[]) => {
+  for (const card of cards) {
     const attributes = {
       attack: card.attack,
       artist: card.artist,
@@ -31,42 +37,53 @@ export const sync = async (version: string, language: typeof constants.LANGUAGES
       flavor: card.flavor,
       id: card.id,
       health: card.health,
+      durability: card.durability,
+      mechanics: card.mechanics ? card.mechanics.join(`,`) : ``,
       name: card.name,
       rarity: card.rarity,
-      // set: card.set,
+      tribe: card.race,
+      setId: card.set,
       text: card.text,
-      // type: card.type,
-      // image: `https://art.hearthstonejson.com/v1/render/latest/${language}/512x/${card.id}.png`,
-      // tile: `https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`
+      type: card.type,
     }
-
+  
     const graphqlFields: string[] = []
     
     for (const key of Object.keys(attributes)) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const value = attributes[key]
-
+  
       if (value !== undefined && value !== null) {
-        const stringifyValue = key === `dbfId` ? value.toString() : value
-        graphqlFields.push(`${key}: ${JSON.stringify(stringifyValue)}`)
+        graphqlFields.push(`${key}: ${JSON.stringify(value)}`)
       }
     }
-
+  
     try {
-      const response = await api(`
+      console.log(`
       mutation {
-        createCard(
-          card: {
+        createCards(
+          cards: {
             ${graphqlFields.join(`\n${` `.repeat(12)}`)}
           }
         ) { id }
       }
     `)
-
+      const response = await api(`
+        mutation {
+          createCards(
+            cards: {
+              ${graphqlFields.join(`\n${` `.repeat(12)}`)}
+            }
+          ) { errors }
+        }
+      `)
+  
       const json = await response.json()
+      console.log(JSON.stringify(json, null, 2))
     } catch (e) {
       console.log(e)
     }
   }
+
 }

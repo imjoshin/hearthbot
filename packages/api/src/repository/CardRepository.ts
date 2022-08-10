@@ -31,7 +31,9 @@ export class CardRepository {
         setId,
         text,
         type,
-        tribes,
+        tribe,
+        durability, 
+        mechanics, 
       } = row
 
       return new Card({
@@ -48,7 +50,9 @@ export class CardRepository {
         setId,
         text,
         type,
-        tribes,
+        tribe,
+        durability, 
+        mechanics,
       })
     })
   }
@@ -56,9 +60,9 @@ export class CardRepository {
   public createCard = async (card: Card) => {
     this.validateCard(card)
 
-    const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, flavor, health, name, rarity, setId, text, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, flavor, health, name, rarity, setId, text, type, durability, mechanics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     await this.db.run(query, [
-      card.id, card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.flavor, card.health, card.name, card.rarity, card.setId, card.text, card.type
+      card.id, card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.flavor, card.health, card.name, card.rarity, card.setId, card.text, card.type, card.durability, card.mechanics
     ])
   }
 }

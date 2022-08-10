@@ -6,13 +6,15 @@ type CardConstructor = {
   cost: number,
   dbfId: number,
   flavor: string,
+  durability: number,
   health: number,
+  mechanics: string,
   name: string,
   rarity: number,
   setId: string,
   text: string,
   type: number,
-  tribes: string,
+  tribe: string,
 }
 
 export class Card {
@@ -22,44 +24,33 @@ export class Card {
   public collectible: boolean
   public cost: number
   public dbfId: number
+  public durability: number
   public flavor: string
   public health: number
+  public mechanics: string
   public name: string
   public rarity: number
   public setId: string
+  public tribe: string
   public text: string
   public type: number
-  public tribes: string
 
-  constructor({
-    id,
-    artist,
-    attack,
-    collectible,
-    cost,
-    dbfId,
-    flavor,
-    health,
-    name,
-    rarity,
-    setId,
-    text,
-    type,
-    tribes,
-  }: CardConstructor) {
-    this.id = id
-    this.artist = artist
-    this.attack = attack
-    this.collectible = collectible
-    this.cost = cost
-    this.dbfId = dbfId
-    this.flavor = flavor
-    this.health = health
-    this.name = name
-    this.rarity = rarity
-    this.setId = setId
-    this.text = text
-    this.type = type
-    this.tribes = tribes
+  constructor(card: CardConstructor) {
+    this.id = card.id
+    this.artist = card.artist
+    this.attack = card.attack
+    this.collectible = card.collectible
+    this.cost = card.cost
+    this.dbfId = card.dbfId
+    this.durability = card.durability
+    this.flavor = card.flavor
+    this.health = card.health
+    this.mechanics = card.mechanics
+    this.name = card.name
+    this.rarity = card.rarity
+    this.setId = card.setId
+    this.text = card.text
+    this.type = card.type
+    this.tribe = card.tribe
   }
 }
