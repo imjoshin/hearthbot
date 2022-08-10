@@ -1,8 +1,17 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
+import { getMissingObjectProperties } from "../util/validation"
+import { ValidationError } from "../util/Errors"
 
 export class CardRepository {
   constructor(private db: Database) {}
+
+  private validateCard = (card: Card) => {
+    const missing = getMissingObjectProperties(card, [`id`, `dbfId`, `collectible`, `name`])
+    if (missing) {
+      throw new ValidationError(`Card is missing required properties: ${missing.join(`, `)}\n${JSON.stringify(card, null, 2)}`)
+    }
+  }
 
   public getCards = async (): Promise<Card[]> => {
     const dbResult = await this.db.run<{[key: string]: any}>(`SELECT * FROM card`)
@@ -45,7 +54,7 @@ export class CardRepository {
   }
 
   public createCard = async (card: Card) => {
-    card.validate()
+    this.validateCard(card)
 
     const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, flavor, health, name, rarity, setId, text, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     await this.db.run(query, [

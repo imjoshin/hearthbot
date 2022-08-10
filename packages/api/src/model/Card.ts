@@ -1,7 +1,3 @@
-// import { Class } from "../enum/Class"
-
-import { BaseModel } from "./BaseModel"
-
 type CardConstructor = {
   id: string,
   artist: string,
@@ -19,7 +15,7 @@ type CardConstructor = {
   tribes: string,
 }
 
-export class Card extends BaseModel {
+export class Card {
   public id: string
   public artist: string
   public attack: number
@@ -51,7 +47,6 @@ export class Card extends BaseModel {
     type,
     tribes,
   }: CardConstructor) {
-    super([`id`, `collectible`, `dbfId`, `name`])
     this.id = id
     this.artist = artist
     this.attack = attack
