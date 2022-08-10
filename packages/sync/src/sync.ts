@@ -20,12 +20,17 @@ export const sync = async (version: string, language: typeof constants.LANGUAGES
   }
 
   // TODO chunk this up and use createCards
-  for (const card of cardsJson.slice(10000, 11000)) {
-    await syncCards(language, [card])
+  let remainingCards = cardsJson.slice(10000, 10950)
+  while (remainingCards.length) {
+    const chunk = remainingCards.slice(0, 100)
+    console.log(`Syncing ${chunk.length}`)
+    await syncCards(chunk)
+    remainingCards = remainingCards.slice(100)
   }
 }
 
-const syncCards = async (language: string, cards: {[key: string]: any}[]) => {
+const syncCards = async (cards: {[key: string]: any}[]) => {
+  const cardAttributes = []
   for (const card of cards) {
     const attributes = {
       attack: card.attack,
@@ -58,32 +63,28 @@ const syncCards = async (language: string, cards: {[key: string]: any}[]) => {
         graphqlFields.push(`${key}: ${JSON.stringify(value)}`)
       }
     }
+
+    cardAttributes.push(`{${graphqlFields.join(`, `)}}`)
+  }
   
-    try {
-      console.log(`
+  try {
+    const response = await api(`
       mutation {
         createCards(
-          cards: {
-            ${graphqlFields.join(`\n${` `.repeat(12)}`)}
-          }
-        ) { id }
+          cards: [
+            ${cardAttributes.join(`\n`)}
+          ]
+        ) { errors }
       }
     `)
-      const response = await api(`
-        mutation {
-          createCards(
-            cards: {
-              ${graphqlFields.join(`\n${` `.repeat(12)}`)}
-            }
-          ) { errors }
-        }
-      `)
-  
-      const json = await response.json()
-      console.log(JSON.stringify(json, null, 2))
-    } catch (e) {
-      console.log(e)
+
+    const json = await response.json()
+    const {errors} = json.data.createCards
+    if (errors) {
+      console.log(errors)
     }
+  } catch (e) {
+    console.log(e)
   }
 
 }
