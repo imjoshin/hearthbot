@@ -7,7 +7,7 @@ export class CardRepository {
   constructor(private db: Database) {}
 
   private validateCard = (card: Card) => {
-    const missing = getMissingObjectProperties(card, [`id`, `dbfId`, `collectible`, `name`])
+    const missing = getMissingObjectProperties(card, [`id`, `dbfId`, `collectible`])
     if (missing.length) {
       throw new ValidationError(`Card is missing required properties: ${missing.join(`, `)}\n${JSON.stringify(card, null, 2)}`)
     }
@@ -24,12 +24,9 @@ export class CardRepository {
         collectible,
         cost,
         dbfId,
-        flavor,
         health,
-        name,
         rarity,
         setId,
-        text,
         type,
         tribe,
         durability, 
@@ -43,12 +40,9 @@ export class CardRepository {
         collectible,
         cost,
         dbfId,
-        flavor,
         health,
-        name,
         rarity,
         setId,
-        text,
         type,
         tribe,
         durability, 
@@ -60,9 +54,9 @@ export class CardRepository {
   public createCard = async (card: Card) => {
     this.validateCard(card)
 
-    const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, flavor, health, name, rarity, setId, text, type, durability, mechanics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    const query = `INSERT INTO card (id, artist, attack, collectible, cost, dbfId, health, rarity, setId, type, durability, mechanics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     await this.db.run(query, [
-      card.id, card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.flavor, card.health, card.name, card.rarity, card.setId, card.text, card.type, card.durability, card.mechanics
+      card.id, card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.durability, card.mechanics
     ])
   }
 }

@@ -16,15 +16,24 @@ const run = async (db) => {
       collectible BOOLEAN NOT NULL,
       cost INT,
       dbfId INT NOT NULL,
-      flavor TEXT,
       durability INT,
       health INT,
       mechanics VARCHAR(256),
-      name TEXT NOT NULL,
       rarity INT,
-      text TEXT,
       type VARCHAR(64),
       setId VARCHAR(64)
+    )
+  `)
+
+  await db.run(`
+    CREATE TABLE IF NOT EXISTS cardTranslation (
+      id AUTOINCREMENT PRIMARY KEY NOT NULL,
+      cardId VARCHAR(32) NOT NULL,
+      locale VARCHAR(4) NOT NULL,
+      name TEXT,
+      flavor TEXT,
+      'text' TEXT,
+      CONSTRAINT FK_cardId FOREIGN KEY (cardId) REFERENCES card(id)
     )
   `)
 
