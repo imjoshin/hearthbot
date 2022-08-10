@@ -8,7 +8,7 @@ export class CardRepository {
 
   private validateCard = (card: Card) => {
     const missing = getMissingObjectProperties(card, [`id`, `dbfId`, `collectible`, `name`])
-    if (missing) {
+    if (missing.length) {
       throw new ValidationError(`Card is missing required properties: ${missing.join(`, `)}\n${JSON.stringify(card, null, 2)}`)
     }
   }

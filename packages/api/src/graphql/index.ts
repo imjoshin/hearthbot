@@ -21,8 +21,8 @@ export const createSchema = (dependencies: DependencyTree) => {
 
   // create mutations
   const mutations: {[key: string]: GraphQLFieldConfig<any, any>} = {}
-  for (const mutation of Object.values(GraphqlMutations)) {
-    mutations[mutation.name] = mutation.mutation(objects, dependencies)
+  for (const [name, mutation] of Object.entries(GraphqlMutations)) {
+    mutations[name] = mutation(objects, dependencies)
   }
 
   const MutationRoot = new graphql.GraphQLObjectType({
