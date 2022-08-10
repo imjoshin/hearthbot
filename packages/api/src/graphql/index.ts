@@ -10,8 +10,8 @@ export const createSchema = (dependencies: DependencyTree) => {
 
   // create resolvers
   const resolvers: {[key: string]: GraphQLFieldConfig<any, any>} = {}
-  for (const resolver of Object.values(GraphqlResolvers)) {
-    resolvers[resolver.name] = resolver.resolver(objects, dependencies)
+  for (const [name, resolver] of Object.entries(GraphqlResolvers)) {
+    resolvers[name] = resolver(objects, dependencies)
   }
 
   const QueryRoot = new graphql.GraphQLObjectType({
