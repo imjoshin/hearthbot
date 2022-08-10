@@ -1,37 +1,37 @@
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
 import * as constants from "../constants"
-import * as graphql from "graphql"
 import { CardTranslationRepository } from "../repository/CardTranslationRepository"
 import { SetRepository } from "../repository/SetRepository"
 import { DependencyTree } from "../util/DependencyTree"
 
 export const getObjects = (dependencies: DependencyTree) => {
-  const GraphQLSet = new graphql.GraphQLObjectType({
+  const GraphQLSet = new GraphQLObjectType({
     name: `Set`,
     fields: () => ({
-      id: { type: graphql.GraphQLString },
-      fullName: { type: graphql.GraphQLString },
-      shortName: { type: graphql.GraphQLString },
-      releaseDate: { type: graphql.GraphQLString },
+      id: { type: GraphQLString },
+      fullName: { type: GraphQLString },
+      shortName: { type: GraphQLString },
+      releaseDate: { type: GraphQLString },
     })
   })
 
-  const GraphQLCardTranslation = new graphql.GraphQLObjectType({
+  const GraphQLCardTranslation = new GraphQLObjectType({
     name: `CardTranslation`,
     fields: () => ({
-      text: { type: graphql.GraphQLString },
-      flavor: { type: graphql.GraphQLString },
-      name: { type: graphql.GraphQLString },
+      text: { type: GraphQLString },
+      flavor: { type: GraphQLString },
+      name: { type: new GraphQLNonNull(GraphQLString) },
     })
   })
 
-  const GraphQLCardTranslationInput = new graphql.GraphQLInputObjectType({
+  const GraphQLCardTranslationInput = new GraphQLInputObjectType({
     name: `CardTranslationInput`,
     fields: () => ({
-      cardId: { type: graphql.GraphQLString },
-      locale: { type: graphql.GraphQLString },
-      text: { type: graphql.GraphQLString },
-      flavor: { type: graphql.GraphQLString },
-      name: { type: graphql.GraphQLString },
+      cardId: { type: new GraphQLNonNull(GraphQLString) },
+      locale: { type: new GraphQLNonNull(GraphQLString) },
+      text: { type: GraphQLString },
+      flavor: { type: GraphQLString },
+      name: { type: new GraphQLNonNull(GraphQLString) },
     })
   })
 
@@ -40,21 +40,21 @@ export const getObjects = (dependencies: DependencyTree) => {
     CardTranslationFields[locale] = { type: GraphQLCardTranslation }
   }
 
-  const GraphQLCard = new graphql.GraphQLObjectType({
+  const GraphQLCard = new GraphQLObjectType({
     name: `Card`,
     fields: () => ({
-      id: { type: graphql.GraphQLString },
-      artist: { type: graphql.GraphQLString },
-      attack: { type: graphql.GraphQLInt },
-      collectible: { type: graphql.GraphQLBoolean },
-      cost: { type: graphql.GraphQLInt },
-      dbfId: { type: graphql.GraphQLInt },
-      health: { type: graphql.GraphQLInt },
-      mechanics: { type: graphql.GraphQLString },
-      rarity: { type: graphql.GraphQLString },
-      setId: { type: graphql.GraphQLString },
-      type: { type: graphql.GraphQLString },
-      tribe: { type: graphql.GraphQLString },
+      id: { type: new GraphQLNonNull(GraphQLString) },
+      artist: { type: GraphQLString },
+      attack: { type: GraphQLInt },
+      collectible: { type: new GraphQLNonNull(GraphQLBoolean) },
+      cost: { type: GraphQLInt },
+      dbfId: { type: new GraphQLNonNull(GraphQLString) },
+      health: { type: GraphQLInt },
+      mechanics: { type: GraphQLString },
+      rarity: { type: GraphQLString },
+      setId: { type: GraphQLString },
+      type: { type: GraphQLString },
+      tribe: { type: GraphQLString },
       set: {
         type: GraphQLSet,
         async resolve(card) {
@@ -62,7 +62,7 @@ export const getObjects = (dependencies: DependencyTree) => {
         }
       },
       strings: {
-        type: new graphql.GraphQLObjectType({
+        type: new GraphQLObjectType({
           name: `CardTranslations`,
           fields: () => CardTranslationFields
         }),
@@ -84,25 +84,25 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
-  const GraphQLCardInput = new graphql.GraphQLInputObjectType({
+  const GraphQLCardInput = new GraphQLInputObjectType({
     name: `CardInput`,
     fields: () => ({
-      id: { type: graphql.GraphQLString },
-      artist: { type: graphql.GraphQLString },
-      attack: { type: graphql.GraphQLInt },
-      collectible: { type: graphql.GraphQLBoolean },
-      cost: { type: graphql.GraphQLInt },
-      dbfId: { type: graphql.GraphQLInt },
-      durability: { type: graphql.GraphQLInt },
-      flavor: { type: graphql.GraphQLString },
-      health: { type: graphql.GraphQLInt },
-      mechanics: { type: graphql.GraphQLString },
-      name: { type: graphql.GraphQLString },
-      rarity: { type: graphql.GraphQLString },
-      setId: { type: graphql.GraphQLString },
-      text: { type: graphql.GraphQLString },
-      type: { type: graphql.GraphQLString },
-      tribe: { type: graphql.GraphQLString },
+      id: { type: GraphQLString },
+      artist: { type: GraphQLString },
+      attack: { type: GraphQLInt },
+      collectible: { type: GraphQLBoolean },
+      cost: { type: GraphQLInt },
+      dbfId: { type: GraphQLInt },
+      durability: { type: GraphQLInt },
+      flavor: { type: GraphQLString },
+      health: { type: GraphQLInt },
+      mechanics: { type: GraphQLString },
+      name: { type: GraphQLString },
+      rarity: { type: GraphQLString },
+      setId: { type: GraphQLString },
+      text: { type: GraphQLString },
+      type: { type: GraphQLString },
+      tribe: { type: GraphQLString },
     })
   })
 
