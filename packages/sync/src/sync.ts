@@ -23,7 +23,6 @@ export const sync = async (version: string, language: typeof constants.LANGUAGES
   let remainingCards = cardsJson.slice(10000, 10950)
   while (remainingCards.length) {
     const chunk = remainingCards.slice(0, 100)
-    console.log(`Syncing ${chunk.length}`)
     await syncCards(chunk)
     remainingCards = remainingCards.slice(100)
   }
