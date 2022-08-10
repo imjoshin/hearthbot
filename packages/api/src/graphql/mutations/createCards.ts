@@ -10,8 +10,7 @@ export const createCards: GraphqlMutationExport = (objects: GraphqlObjects, depe
   type: new graphql.GraphQLObjectType({
     name: `CreateCardBulkResults`,
     fields: () => ({
-      cards: { type: objects.GraphQLCard },
-      errors: { type: graphql.GraphQLList(graphql.GraphQLString) },
+      success: { type: graphql.GraphQLInt },
     })
   }),
   args: {
@@ -19,6 +18,8 @@ export const createCards: GraphqlMutationExport = (objects: GraphqlObjects, depe
   },
   resolve: async (parent: any, args: any) => {
     const cards = []
+
+    // TODO error handle
     const errors = []
 
     for (const c of args.cards) {
@@ -31,6 +32,6 @@ export const createCards: GraphqlMutationExport = (objects: GraphqlObjects, depe
       }
     }
 
-    return {cards, errors}
+    return {success: cards.length}
   }
 })
