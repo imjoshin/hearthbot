@@ -1,7 +1,7 @@
 import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlResolverExport, GraphqlObjects } from "."
 import { DependencyTree } from "../../util/DependencyTree"
-import { GraphQLBoolean, GraphQLList, GraphQLString } from "graphql"
+import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLString } from "graphql"
 
 export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: new GraphQLList(objects.GraphQLCard),
@@ -10,6 +10,7 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
     locale: { type: GraphQLString }, 
     collectible: { type: GraphQLBoolean }, 
     cost: { type: objects.GraphQLRangeInput }, 
+    dbfIds: { type: GraphQLList(GraphQLInt) }, 
   },
   resolve: async (_, args) => {
     const filter = {
@@ -17,6 +18,7 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
       locale: args.locale,
       collectible: args.collectible,
       cost: args.cost,
+      dbfIds: args.dbfIds,
     }
     const cards = await dependencies.get(CardRepository).getCards(filter)
     return cards
