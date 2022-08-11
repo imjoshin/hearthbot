@@ -12,6 +12,7 @@ type CardFilter = {
   name?: string,
   locale?: string
   collectible?: boolean,
+  dbfIds?: number[],
   cost?: RangeInput
 }
 
@@ -25,11 +26,14 @@ export class CardRepository {
 
   public getCards = async (cardFilter?: CardFilter): Promise<Card[]> => {
     const filter: CardFilter = Object.assign({}, cardFilterDefault)
-    for (const [key, value] of Object.entries(cardFilter)) {
-      if (value !== undefined && value !== null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        filter[key] = value
+
+    if (cardFilter) {
+      for (const [key, value] of Object.entries(cardFilter)) {
+        if (value !== undefined && value !== null) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          filter[key] = value
+        }
       }
     }
 
@@ -54,6 +58,11 @@ export class CardRepository {
       const ids = nameDbResult.map(row => row.cardId)
       wheres.push(`id IN (${ids.map(_ => `?`).join(`, `)})`)
       ids.forEach(id => params.push(id))
+    }
+
+    if (filter.dbfIds) {
+      wheres.push(`dbfId IN (${filter.dbfIds.map(_ => `?`).join(`, `)})`)
+      filter.dbfIds.forEach(dbfId => params.push(dbfId))
     }
 
     // Collectible filter

@@ -1,8 +1,10 @@
-import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
 import * as constants from "../constants"
 import { CardTranslationRepository } from "../repository/CardTranslationRepository"
 import { CardSetRepository } from "../repository/CardSetRepository"
 import { DependencyTree } from "../util/DependencyTree"
+import { CardRepository } from "../repository/CardRepository"
+import { Card } from "../model/Card"
 
 export const getObjects = (dependencies: DependencyTree) => {
   const GraphQLSet = new GraphQLObjectType({
@@ -50,48 +52,50 @@ export const getObjects = (dependencies: DependencyTree) => {
     CardTranslationFields[locale] = { type: GraphQLCardTranslation }
   }
 
+  const GraphQLCardFields = {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    artist: { type: GraphQLString },
+    attack: { type: GraphQLInt },
+    collectible: { type: new GraphQLNonNull(GraphQLBoolean) },
+    cost: { type: GraphQLInt },
+    dbfId: { type: new GraphQLNonNull(GraphQLString) },
+    health: { type: GraphQLInt },
+    mechanics: { type: GraphQLString },
+    rarity: { type: GraphQLString },
+    setId: { type: GraphQLString },
+    type: { type: GraphQLString },
+    tribe: { type: GraphQLString },
+    set: {
+      type: GraphQLSet,
+      async resolve(card: Card) {
+        return dependencies.get(CardSetRepository).getCardSet(card.setId)
+      }
+    },
+    strings: {
+      type: new GraphQLObjectType({
+        name: `CardTranslations`,
+        fields: () => CardTranslationFields
+      }),
+      async resolve(card: Card) {
+        const translations = await dependencies.get(CardTranslationRepository).getCardTranslations(card.id)
+        const returnedTranslations: {[key: string]: any} = {}
+
+        for (const translation of translations) {
+          returnedTranslations[translation.locale] = {
+            name: translation.name,
+            flavor: translation.flavor,
+            text: translation.text,
+          }
+        }
+
+        return returnedTranslations
+      }
+    }
+  }
+
   const GraphQLCard = new GraphQLObjectType({
     name: `Card`,
-    fields: () => ({
-      id: { type: new GraphQLNonNull(GraphQLString) },
-      artist: { type: GraphQLString },
-      attack: { type: GraphQLInt },
-      collectible: { type: new GraphQLNonNull(GraphQLBoolean) },
-      cost: { type: GraphQLInt },
-      dbfId: { type: new GraphQLNonNull(GraphQLString) },
-      health: { type: GraphQLInt },
-      mechanics: { type: GraphQLString },
-      rarity: { type: GraphQLString },
-      setId: { type: GraphQLString },
-      type: { type: GraphQLString },
-      tribe: { type: GraphQLString },
-      set: {
-        type: GraphQLSet,
-        async resolve(card) {
-          return dependencies.get(CardSetRepository).getCardSet(card.setId)
-        }
-      },
-      strings: {
-        type: new GraphQLObjectType({
-          name: `CardTranslations`,
-          fields: () => CardTranslationFields
-        }),
-        async resolve(card) {
-          const translations = await dependencies.get(CardTranslationRepository).getCardTranslations(card.id)
-          const returnedTranslations: {[key: string]: any} = {}
-
-          for (const translation of translations) {
-            returnedTranslations[translation.locale] = {
-              name: translation.name,
-              flavor: translation.flavor,
-              text: translation.text,
-            }
-          }
-
-          return returnedTranslations
-        }
-      }
-    })
+    fields: () => GraphQLCardFields
   })
 
   const GraphQLCardInput = new GraphQLInputObjectType({
@@ -116,6 +120,42 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
+  const GraphQLDeckCard = new GraphQLObjectType({
+    extensions: [GraphQLCard],
+    name: `DeckCard`,
+    fields: () => ({
+      count: { type: GraphQLInt },
+      ...GraphQLCardFields
+    })
+  })
+
+  const GraphQLDeck = new GraphQLObjectType({
+    name: `Deck`,
+    fields: () => ({
+      code: { type: GraphQLString },
+      hero: { type: GraphQLInt },
+      format: { type: GraphQLInt },
+      cards: {
+        type: new GraphQLList(GraphQLDeckCard),
+        async resolve(deck) {
+          const cardsWithoutCounts = await dependencies.get(CardRepository).getCards({
+            dbfIds: deck.cardDbfIds
+          })
+          const cards = []
+          for (const card of cardsWithoutCounts) {
+            cards.push({
+              count: deck.cardCounts[card.dbfId],
+              ...card,
+            })
+          }
+
+
+          return cards
+        }
+      }
+    })
+  })
+
   const GraphQLRangeInput = new GraphQLInputObjectType({
     name: `RangeInput`,
     fields: () => ({
@@ -133,6 +173,7 @@ export const getObjects = (dependencies: DependencyTree) => {
     GraphQLCardTranslation,
     GraphQLCardTranslationInput,
     GraphQLRangeInput,
+    GraphQLDeck,
   }
 }
 
