@@ -33,13 +33,13 @@ export class CardSetRepository {
     )
   }
 
-  public getSets = async (): Promise<CardSet[]> => {
+  public getCardSets = async (): Promise<CardSet[]> => {
     const dbResult = await this.db.run<CardSetConstructor>(`SELECT * FROM cardSet`)
 
     return dbResult.map(row => new CardSet(row))
   }
 
-  public getSet = async (id: string): Promise<CardSet> => {
+  public getCardSet = async (id: string): Promise<CardSet> => {
     const dbResult = await this.db.run<CardSetConstructor>(`SELECT * FROM cardSet WHERE id = ?`, [id])
 
     if (!dbResult) {

@@ -68,7 +68,7 @@ export const getObjects = (dependencies: DependencyTree) => {
       set: {
         type: GraphQLSet,
         async resolve(card) {
-          return dependencies.get(CardSetRepository).getSet(card.setId)
+          return dependencies.get(CardSetRepository).getCardSet(card.setId)
         }
       },
       strings: {
