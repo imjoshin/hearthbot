@@ -26,7 +26,7 @@ const run = async() => {
       // if we don't see a new version, no need to sync again
       const version = versionMatch[1]
       if (version !== lastVersionSynced[language]) {
-        sync(version, language)
+        await sync(version, language)
         lastVersionSynced[language] = version
       }
     }
