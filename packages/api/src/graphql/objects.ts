@@ -60,6 +60,7 @@ export const getObjects = (dependencies: DependencyTree) => {
     cost: { type: GraphQLInt },
     dbfId: { type: new GraphQLNonNull(GraphQLString) },
     health: { type: GraphQLInt },
+    durability: { type: GraphQLInt },
     mechanics: { type: GraphQLString },
     rarity: { type: GraphQLString },
     setId: { type: GraphQLString },

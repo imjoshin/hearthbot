@@ -8,7 +8,10 @@ type CardFilter = {
   locale?: string
   collectible?: boolean,
   dbfIds?: number[],
-  cost?: RangeInput
+  cost?: RangeInput,
+  health?: RangeInput,
+  attack?: RangeInput,
+  durability?: RangeInput,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -69,6 +72,27 @@ export class CardRepository {
     // Cost filter
     if (filter.cost) {
       const range = rangeQuery(`cost`, filter.cost)
+      wheres.push(...range.wheres)
+      params.push(...range.params)
+    }
+
+    // Health filter
+    if (filter.health) {
+      const range = rangeQuery(`health`, filter.health)
+      wheres.push(...range.wheres)
+      params.push(...range.params)
+    }
+
+    // Attack filter
+    if (filter.attack) {
+      const range = rangeQuery(`attack`, filter.attack)
+      wheres.push(...range.wheres)
+      params.push(...range.params)
+    }
+
+    // Durability filter
+    if (filter.durability) {
+      const range = rangeQuery(`durability`, filter.durability)
       wheres.push(...range.wheres)
       params.push(...range.params)
     }

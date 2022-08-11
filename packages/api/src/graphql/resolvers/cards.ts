@@ -10,6 +10,9 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
     locale: { type: GraphQLString }, 
     collectible: { type: GraphQLBoolean }, 
     cost: { type: objects.GraphQLRangeInput }, 
+    health: { type: objects.GraphQLRangeInput }, 
+    attack: { type: objects.GraphQLRangeInput }, 
+    durability: { type: objects.GraphQLRangeInput }, 
     dbfIds: { type: GraphQLList(GraphQLInt) }, 
   },
   resolve: async (_, args) => {
@@ -19,6 +22,9 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
       collectible: args.collectible,
       cost: args.cost,
       dbfIds: args.dbfIds,
+      health: args.health,
+      attack: args.attack,
+      durability: args.durability,
     }
     const cards = await dependencies.get(CardRepository).getCards(filter)
     return cards
