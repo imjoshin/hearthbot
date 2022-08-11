@@ -2,8 +2,8 @@ const run = async (db) => {
   await db.run(`
     CREATE TABLE IF NOT EXISTS cardSet (
       id VARCHAR(64) PRIMARY KEY NOT NULL,
-      fullName VARCHAR(128) NOT NULL,
-      shortName VARCHAR(8) NOT NULL,
+      fullName VARCHAR(128),
+      shortName VARCHAR(16),
       releaseDate datetime
     )
   `)

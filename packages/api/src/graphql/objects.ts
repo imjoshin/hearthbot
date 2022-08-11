@@ -15,6 +15,16 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
+  const GraphQLSetInput = new GraphQLInputObjectType({
+    name: `SetInput`,
+    fields: () => ({
+      id: { type: new GraphQLNonNull(GraphQLString) },
+      fullName: { type: GraphQLString },
+      shortName: { type: GraphQLString },
+      releaseDate: { type: GraphQLString },
+    })
+  })
+
   const GraphQLCardTranslation = new GraphQLObjectType({
     name: `CardTranslation`,
     fields: () => ({
@@ -107,8 +117,9 @@ export const getObjects = (dependencies: DependencyTree) => {
   })
 
   return {
-    GraphQLCard,
     GraphQLSet,
+    GraphQLSetInput,
+    GraphQLCard,
     GraphQLCardInput,
     GraphQLCardTranslation,
     GraphQLCardTranslationInput,

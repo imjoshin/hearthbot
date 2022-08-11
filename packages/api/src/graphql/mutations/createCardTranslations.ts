@@ -3,7 +3,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { CardTranslation } from "../../model/CardTranslation"
 import { CardTranslationRepository } from "../../repository/CardTranslationRepository"
-import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from "graphql"
+import { GraphQLInt, GraphQLList, GraphQLObjectType } from "graphql"
 
 
 export const createCardTranslations: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
