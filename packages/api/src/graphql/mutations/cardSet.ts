@@ -12,7 +12,7 @@ export const cardSet: GraphqlMutationExport = (objects: GraphqlObjects, dependen
   // resolve: (parent, args, context, resolveInfo) => {
   resolve: async (parent: any, args: any) => {
     const set = new CardSet(args.set)
-    await dependencies.get(CardSetRepository).createSet(set)
+    await dependencies.get(CardSetRepository).upsertCardSet(set)
     return set
   }
 })

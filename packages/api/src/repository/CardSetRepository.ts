@@ -4,10 +4,32 @@ import { Database } from "../db/Database"
 export class CardSetRepository {
   constructor(private db: Database) {}
 
-  public createSet = async (set: CardSet) => {
+  public upsertCardSet = async (set: CardSet) => {
+    const updateKeys = []
+    const updateValues = []
+    if (set.fullName) {
+      updateKeys.push(`fullName`)
+      updateValues.push(set.fullName)
+    }
+    if (set.shortName) {
+      updateKeys.push(`shortName`)
+      updateValues.push(set.shortName)
+    }
+    if (set.releaseDate) {
+      updateKeys.push(`releaseDate`)
+      updateValues.push(set.releaseDate)
+    }
+
+    let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?)`
+
+    if (updateKeys.length) {
+      query += ` ON DUPLICATE KEY UPDATE `
+      query += updateKeys.map(key => `${key} = ?`).join(`,`)
+    }
+
     await this.db.run<{[key: string]: any}>(
-      `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?)`,
-      [set.id, set.fullName, set.shortName, set.releaseDate]
+      query,
+      [set.id, set.fullName, set.shortName, set.releaseDate, ...updateValues]
     )
   }
 

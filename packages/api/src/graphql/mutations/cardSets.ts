@@ -26,7 +26,7 @@ export const cardSets: GraphqlMutationExport = (objects: GraphqlObjects, depende
     for (const s of args.sets) {
       const set = new CardSet(s)
       try {
-        await dependencies.get(CardSetRepository).createSet(set)
+        await dependencies.get(CardSetRepository).upsertCardSet(set)
         sets.push(set)
       } catch (e) {
         errors.push(e)
