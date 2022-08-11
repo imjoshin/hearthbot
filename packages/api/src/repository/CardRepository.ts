@@ -5,6 +5,7 @@ type CardFilter = {
   limit?: number,
   name?: string,
   locale?: string
+  collectible?: boolean
 }
 
 const cardFilterDefault: CardFilter = {
@@ -25,7 +26,7 @@ export class CardRepository {
       }
     }
 
-    const params: string[] = []
+    const params: (string | boolean | number)[] = []
     const wheres: string[] = []
 
     if (filter.name) {
@@ -44,6 +45,11 @@ export class CardRepository {
       const ids = nameDbResult.map(row => row.cardId)
       wheres.push(`id IN (${ids.map(_ => `?`).join(`, `)})`)
       ids.forEach(id => params.push(id))
+    }
+
+    if (filter.collectible === true || filter.collectible === false) {
+      wheres.push(`collectible = ?`)
+      params.push(filter.collectible)
     }
 
     const query = `
