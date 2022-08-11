@@ -10,7 +10,7 @@ const run = async (db) => {
 
   await db.run(`
     CREATE TABLE IF NOT EXISTS card (
-      id VARCHAR(32) PRIMARY KEY NOT NULL,
+      id VARCHAR(128) PRIMARY KEY NOT NULL,
       artist VARCHAR(128),
       attack INT,
       collectible BOOLEAN NOT NULL,
