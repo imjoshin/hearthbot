@@ -19,9 +19,10 @@ const run = async (db) => {
       durability INT,
       health INT,
       mechanics VARCHAR(256),
-      rarity INT,
+      rarity VARCHAR(32),
       type VARCHAR(64),
-      setId VARCHAR(64)
+      setId VARCHAR(64),
+      CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES cardSet(id)
     )
   `)
 
@@ -38,10 +39,6 @@ const run = async (db) => {
       PRIMARY KEY (id)
     )
   `)
-
-  // TODO add this constraint in once we get sets working
-  // CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES cardSet(id)
-
 }
 
 exports.run = run

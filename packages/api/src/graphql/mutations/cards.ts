@@ -1,20 +1,21 @@
-import * as graphql from "graphql"
 import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlMutationExport } from "."
 import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { Card } from "../../model/Card"
+import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from "graphql"
 
 
 export const cards: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
-  type: new graphql.GraphQLObjectType({
+  type: new GraphQLObjectType({
     name: `CardBulkResults`,
     fields: () => ({
-      success: { type: graphql.GraphQLInt },
+      success: { type: GraphQLInt },
+      errors: { type: GraphQLList(GraphQLString) },
     })
   }),
   args: {
-    cards: { type: graphql.GraphQLList(objects.GraphQLCardInput) }, 
+    cards: { type: GraphQLList(objects.GraphQLCardInput) }, 
   },
   resolve: async (parent: any, args: any) => {
     const cards = []
@@ -32,6 +33,6 @@ export const cards: GraphqlMutationExport = (objects: GraphqlObjects, dependenci
       }
     }
 
-    return {success: cards.length}
+    return {success: cards.length, errors}
   }
 })

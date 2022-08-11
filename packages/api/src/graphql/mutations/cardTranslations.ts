@@ -3,7 +3,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { CardTranslation } from "../../model/CardTranslation"
 import { CardTranslationRepository } from "../../repository/CardTranslationRepository"
-import { GraphQLInt, GraphQLList, GraphQLObjectType } from "graphql"
+import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from "graphql"
 
 
 export const cardTranslations: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
@@ -11,6 +11,7 @@ export const cardTranslations: GraphqlMutationExport = (objects: GraphqlObjects,
     name: `CardTranslationBulkResults`,
     fields: () => ({
       success: { type: GraphQLInt },
+      errors: { type: GraphQLList(GraphQLString) },
     })
   }),
   args: {
@@ -33,6 +34,6 @@ export const cardTranslations: GraphqlMutationExport = (objects: GraphqlObjects,
       }
     }
 
-    return {success: translations.length}
+    return {success: translations.length, errors}
   }
 })

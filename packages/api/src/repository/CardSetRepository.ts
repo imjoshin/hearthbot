@@ -20,11 +20,12 @@ export class CardSetRepository {
       updateValues.push(set.releaseDate)
     }
 
-    let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?)`
+    let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `
 
     if (updateKeys.length) {
-      query += ` ON DUPLICATE KEY UPDATE `
       query += updateKeys.map(key => `${key} = ?`).join(`,`)
+    } else {
+      query += `fullName = fullName`
     }
 
     await this.db.run<{[key: string]: any}>(
