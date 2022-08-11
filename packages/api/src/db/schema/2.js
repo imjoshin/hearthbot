@@ -32,6 +32,7 @@ const run = async (db) => {
       cardId VARCHAR(128) NOT NULL,
       locale VARCHAR(4) NOT NULL,
       name TEXT,
+      search TEXT,
       flavor TEXT,
       \`text\` TEXT,
       CONSTRAINT FK_cardId FOREIGN KEY (cardId) REFERENCES card(id),

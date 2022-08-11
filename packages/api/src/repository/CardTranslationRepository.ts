@@ -11,15 +11,18 @@ export class CardTranslationRepository {
   }
 
   public upsertCardTranslation = async (cardTranslation: CardTranslation) => {
+    const search = cardTranslation.name.replace(/[^\w]/g, ``).toLowerCase()
+
     const query = `
     INSERT INTO cardTranslation 
-    (cardId, locale, name, flavor, \`text\`) 
-    VALUES (?, ?, ?, ?, ?)
+    (cardId, locale, name, search, flavor, \`text\`) 
+    VALUES (?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
     name = ?,
+    search = ?,
     flavor = ?,
     text = ?
     `
-    await this.db.run(query, [cardTranslation.cardId, cardTranslation.locale, cardTranslation.name, cardTranslation.flavor, cardTranslation.text, cardTranslation.name, cardTranslation.flavor, cardTranslation.text])
+    await this.db.run(query, [cardTranslation.cardId, cardTranslation.locale, cardTranslation.name, search, cardTranslation.flavor, cardTranslation.text, cardTranslation.name, search, cardTranslation.flavor, cardTranslation.text])
   }
 }

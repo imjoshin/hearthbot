@@ -39,11 +39,12 @@ export class CardRepository {
     // Name filter
     if (filter.name) {
       // Short circuit for name to avoid a join
+      const search = filter.name.replace(/[^\w]/g, ``).toLowerCase()
 
-      // TODO add search field to cardTranslation
+      // TODO use a levenshtein-type search
       const nameDbResult = await this.db.run<{[key: string]: any}>(
-        `SELECT * from cardTranslation WHERE locale = ? AND name = ?`,
-        [filter.locale, filter.name]
+        `SELECT * from cardTranslation WHERE locale = ? AND search LIKE CONCAT('%', ?, '%')`,
+        [filter.locale, search]
       )
 
       if (!nameDbResult.length) {
