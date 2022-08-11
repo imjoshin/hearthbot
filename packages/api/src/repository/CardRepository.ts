@@ -1,11 +1,58 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
 
+type CardFilter = {
+  limit?: number,
+  name?: string,
+  locale?: string
+}
+
+const cardFilterDefault: CardFilter = {
+  limit: 100,
+  locale: `enUS`,
+}
+
 export class CardRepository {
   constructor(private db: Database) {}
 
-  public getCards = async (): Promise<Card[]> => {
-    const dbResult = await this.db.run<{[key: string]: any}>(`SELECT * FROM card`)
+  public getCards = async (cardFilter?: CardFilter): Promise<Card[]> => {
+    const filter: CardFilter = Object.assign({}, cardFilterDefault)
+    for (const [key, value] of Object.entries(cardFilter)) {
+      if (value !== undefined && value !== null) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        filter[key] = value
+      }
+    }
+
+    const params: string[] = []
+    const wheres: string[] = []
+
+    if (filter.name) {
+      // Short circuit for name to avoid a join
+
+      // TODO add search field to cardTranslation
+      const nameDbResult = await this.db.run<{[key: string]: any}>(
+        `SELECT * from cardTranslation WHERE locale = ? AND name = ?`,
+        [filter.locale, filter.name]
+      )
+
+      if (!nameDbResult.length) {
+        return []
+      }
+
+      const ids = nameDbResult.map(row => row.cardId)
+      wheres.push(`id IN (${ids.map(_ => `?`).join(`, `)})`)
+      ids.forEach(id => params.push(id))
+    }
+
+    const query = `
+    SELECT * FROM card 
+    ${wheres.length ? ` WHERE ` : ``}${wheres.join(` AND `)} 
+    LIMIT ${filter.limit}
+    `
+
+    const dbResult = await this.db.run<{[key: string]: any}>(query, params)
 
     return dbResult.map(row => {
       const {
