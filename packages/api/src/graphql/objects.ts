@@ -1,7 +1,7 @@
 import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
 import * as constants from "../constants"
 import { CardTranslationRepository } from "../repository/CardTranslationRepository"
-import { SetRepository } from "../repository/SetRepository"
+import { CardSetRepository } from "../repository/CardSetRepository"
 import { DependencyTree } from "../util/DependencyTree"
 
 export const getObjects = (dependencies: DependencyTree) => {
@@ -68,7 +68,7 @@ export const getObjects = (dependencies: DependencyTree) => {
       set: {
         type: GraphQLSet,
         async resolve(card) {
-          return dependencies.get(SetRepository).getSet(card.setId)
+          return dependencies.get(CardSetRepository).getSet(card.setId)
         }
       },
       strings: {

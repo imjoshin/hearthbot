@@ -5,8 +5,8 @@ import { card } from "./card"
 import { cards } from "./cards"
 import { cardTranslation } from "./cardTranslation"
 import { cardTranslations } from "./cardTranslations"
-import { createSet } from "./createSet"
-import { createSets } from "./createSets"
+import { cardSet } from "./cardSet"
+import { cardSets } from "./cardSets"
 
 export type GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => GraphQLFieldConfig<any, any>
 
@@ -15,6 +15,6 @@ export const GraphqlMutations = {
   cards,
   cardTranslation,
   cardTranslations,
-  createSet,
-  createSets,
+  cardSet,
+  cardSets,
 }

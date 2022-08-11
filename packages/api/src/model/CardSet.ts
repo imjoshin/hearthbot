@@ -1,19 +1,19 @@
 // import { Class } from "../enum/Class"
 
-export type SetConstructor = {
+export type CardSetConstructor = {
   id: string,
   fullName?: string,
   shortName?: string,
   releaseDate?: string,
 }
 
-export class Set {
+export class CardSet {
   id: string
   fullName?: string
   shortName?: string
   releaseDate?: string
 
-  constructor(args: SetConstructor ) {
+  constructor(args: CardSetConstructor ) {
     this.id = args.id
     this.fullName = args.fullName
     this.shortName = args.shortName

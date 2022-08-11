@@ -1,14 +1,14 @@
 import { GraphqlMutationExport } from "."
 import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
-import { Set } from "../../model/Set"
-import { SetRepository } from "../../repository/SetRepository"
+import { CardSet } from "../../model/CardSet"
+import { CardSetRepository } from "../../repository/CardSetRepository"
 import { GraphQLInt, GraphQLList, GraphQLObjectType } from "graphql"
 
 
-export const createSets: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+export const cardSets: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: new GraphQLObjectType({
-    name: `CreateSetBulkResults`,
+    name: `CardSetBulkResults`,
     fields: () => ({
       success: { type: GraphQLInt },
     })
@@ -24,9 +24,9 @@ export const createSets: GraphqlMutationExport = (objects: GraphqlObjects, depen
     const errors = []
 
     for (const s of args.sets) {
-      const set = new Set(s)
+      const set = new CardSet(s)
       try {
-        await dependencies.get(SetRepository).createSet(set)
+        await dependencies.get(CardSetRepository).createSet(set)
         sets.push(set)
       } catch (e) {
         errors.push(e)
