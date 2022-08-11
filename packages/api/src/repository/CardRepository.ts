@@ -1,11 +1,18 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
 
+type RangeInput = {
+  eq?: number,
+  lt?: number,
+  gt?: number,
+}
+
 type CardFilter = {
   limit?: number,
   name?: string,
   locale?: string
-  collectible?: boolean
+  collectible?: boolean,
+  cost?: RangeInput
 }
 
 const cardFilterDefault: CardFilter = {
@@ -29,6 +36,7 @@ export class CardRepository {
     const params: (string | boolean | number)[] = []
     const wheres: string[] = []
 
+    // Name filter
     if (filter.name) {
       // Short circuit for name to avoid a join
 
@@ -47,9 +55,28 @@ export class CardRepository {
       ids.forEach(id => params.push(id))
     }
 
+    // Collectible filter
     if (filter.collectible === true || filter.collectible === false) {
       wheres.push(`collectible = ?`)
       params.push(filter.collectible)
+    }
+
+    // Cost filter
+    if (filter.cost) {
+      if (filter.cost.eq) {
+        wheres.push(`cost = ?`)
+        params.push(filter.cost.eq)
+      }
+
+      if (filter.cost.gt) {
+        wheres.push(`cost > ?`)
+        params.push(filter.cost.gt)
+      }
+
+      if (filter.cost.lt) {
+        wheres.push(`cost < ?`)
+        params.push(filter.cost.lt)
+      }
     }
 
     const query = `

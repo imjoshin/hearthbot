@@ -9,13 +9,14 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
     name: { type: GraphQLString }, 
     locale: { type: GraphQLString }, 
     collectible: { type: GraphQLBoolean }, 
+    cost: { type: objects.GraphQLRangeInput }, 
   },
-  resolve: async (parent, args, context, resolveInfo) => {
-  // resolve: async () => {
+  resolve: async (_, args) => {
     const filter = {
       name: args.name,
       locale: args.locale,
-      collectible: args.collectible
+      collectible: args.collectible,
+      cost: args.cost,
     }
     const cards = await dependencies.get(CardRepository).getCards(filter)
     return cards

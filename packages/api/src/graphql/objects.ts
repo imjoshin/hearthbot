@@ -116,6 +116,15 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
+  const GraphQLRangeInput = new GraphQLInputObjectType({
+    name: `RangeInput`,
+    fields: () => ({
+      gt: { type: GraphQLInt },
+      lt: { type: GraphQLInt },
+      eq: { type: GraphQLInt },
+    })
+  })
+
   return {
     GraphQLSet,
     GraphQLSetInput,
@@ -123,6 +132,7 @@ export const getObjects = (dependencies: DependencyTree) => {
     GraphQLCardInput,
     GraphQLCardTranslation,
     GraphQLCardTranslationInput,
+    GraphQLRangeInput,
   }
 }
 
