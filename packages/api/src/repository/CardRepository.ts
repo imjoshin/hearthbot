@@ -1,11 +1,6 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
-
-type RangeInput = {
-  eq?: number,
-  lt?: number,
-  gt?: number,
-}
+import { RangeInput, rangeQuery } from "../util/query"
 
 type CardFilter = {
   limit?: number,
@@ -73,20 +68,9 @@ export class CardRepository {
 
     // Cost filter
     if (filter.cost) {
-      if (filter.cost.eq) {
-        wheres.push(`cost = ?`)
-        params.push(filter.cost.eq)
-      }
-
-      if (filter.cost.gt) {
-        wheres.push(`cost > ?`)
-        params.push(filter.cost.gt)
-      }
-
-      if (filter.cost.lt) {
-        wheres.push(`cost < ?`)
-        params.push(filter.cost.lt)
-      }
+      const range = rangeQuery(`cost`, filter.cost)
+      wheres.push(...range.wheres)
+      params.push(...range.params)
     }
 
     const query = `
