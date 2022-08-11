@@ -161,6 +161,8 @@ export const getObjects = (dependencies: DependencyTree) => {
     fields: () => ({
       gt: { type: GraphQLInt },
       lt: { type: GraphQLInt },
+      gte: { type: GraphQLInt },
+      lte: { type: GraphQLInt },
       eq: { type: GraphQLInt },
     })
   })
