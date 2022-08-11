@@ -20,7 +20,7 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
   }
 
   // chunk cards for batch updating
-  let remainingCards = cardsJson
+  let remainingCards = cardsJson.slice(5200, 5400)
   while (remainingCards.length) {
     const chunk = remainingCards.slice(0, 100)
     await syncCards(locale, chunk)
@@ -30,7 +30,9 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
 
 const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
   const shouldCreateCards = locale === `enUS`
+  const seenSets = []
   const cardAttributes = []
+  const setAttributes = []
   const cardTranslations = []
 
   for (const card of cards) {
@@ -65,7 +67,16 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
         type: card.type,
       }
 
+      const set = {
+        id: card.set,
+      }
+
       cardAttributes.push(objectToGraphqlArgs(attributes))
+
+      if (seenSets.indexOf(set.id) < 0) {
+        setAttributes.push(objectToGraphqlArgs(set))
+        seenSets.push(set.id)
+      }
     }
   }
   
@@ -74,6 +85,14 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
       createCards(
         cards: [
           ${cardAttributes.join(`,\n`)}
+        ]
+      ) { success }
+    `
+
+    const createSets = `
+      createSets(
+        sets: [
+          ${setAttributes.join(`,\n`)}
         ]
       ) { success }
     `
@@ -88,6 +107,7 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
 
     const response = await api(`
       mutation {
+        ${shouldCreateCards ? createSets : ``}
         ${shouldCreateCards ? createCards : ``}
         ${createCardTranslations}
       }
