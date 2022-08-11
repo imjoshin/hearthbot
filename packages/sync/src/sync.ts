@@ -20,7 +20,7 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
   }
 
   // chunk cards for batch updating
-  let remainingCards = cardsJson.slice(5200, 5400)
+  let remainingCards = cardsJson
   while (remainingCards.length) {
     const chunk = remainingCards.slice(0, 100)
     await syncCards(locale, chunk)
@@ -82,27 +82,27 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
   
   try {
     const createCards = `
-      createCards(
+      cards(
         cards: [
           ${cardAttributes.join(`,\n`)}
         ]
-      ) { success }
+      ) { errors }
     `
 
     const createSets = `
-      createSets(
+      cardSets(
         sets: [
           ${setAttributes.join(`,\n`)}
         ]
-      ) { success }
+      ) { errors }
     `
 
     const createCardTranslations = `
-      createCardTranslations(
+      cardTranslations(
         translations: [
           ${cardTranslations.join(`,\n`)}
         ]
-      ) { success }
+      ) { errors }
     `
 
     const response = await api(`
@@ -113,8 +113,10 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
       }
     `)
 
-    // const json = await response.json()
-    // console.log(JSON.stringify(json, null, 2))
+    const json = await response.json()
+    if (json.errors?.length) {
+      console.log(JSON.stringify(json.errors, null, 2))
+    }
   } catch (e) {
     console.log(e)
   }

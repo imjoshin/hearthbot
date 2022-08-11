@@ -2,8 +2,8 @@ import path from "path"
 
 export const HEARTHSTONE_JSON_URL = `https://api.hearthstonejson.com/v1`
 export const LOCALES = [
-  `deDE`,
   `enUS`,
+  `deDE`,
   `esES`,
   `esMX`,
   `frFR`,
