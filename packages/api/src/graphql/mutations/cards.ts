@@ -6,7 +6,7 @@ import { GraphqlObjects } from "../resolvers"
 import { Card } from "../../model/Card"
 
 
-export const createCards: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+export const cards: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: new graphql.GraphQLObjectType({
     name: `CreateCardBulkResults`,
     fields: () => ({
@@ -25,7 +25,7 @@ export const createCards: GraphqlMutationExport = (objects: GraphqlObjects, depe
     for (const c of args.cards) {
       const card = new Card(c)
       try {
-        await dependencies.get(CardRepository).createCard(card)
+        await dependencies.get(CardRepository).upsertCard(card)
         cards.push(card)
       } catch (e) {
         errors.push(e)
