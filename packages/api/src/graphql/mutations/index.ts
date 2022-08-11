@@ -3,8 +3,8 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { card } from "./card"
 import { cards } from "./cards"
-import { createCardTranslation } from "./createCardTranslation"
-import { createCardTranslations } from "./createCardTranslations"
+import { cardTranslation } from "./cardTranslation"
+import { cardTranslations } from "./cardTranslations"
 import { createSet } from "./createSet"
 import { createSets } from "./createSets"
 
@@ -13,8 +13,8 @@ export type GraphqlMutationExport = (objects: GraphqlObjects, dependencies: Depe
 export const GraphqlMutations = {
   card,
   cards,
-  createCardTranslation,
-  createCardTranslations,
+  cardTranslation,
+  cardTranslations,
   createSet,
   createSets,
 }

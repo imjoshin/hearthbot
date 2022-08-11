@@ -5,7 +5,7 @@ import { CardTranslation } from "../../model/CardTranslation"
 import { CardTranslationRepository } from "../../repository/CardTranslationRepository"
 
 
-export const createCardTranslation: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+export const cardTranslation: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: objects.GraphQLCardTranslation,
   args: {
     translation: { type: objects.GraphQLCardTranslationInput }, 
@@ -13,7 +13,7 @@ export const createCardTranslation: GraphqlMutationExport = (objects: GraphqlObj
   // resolve: (parent, args, context, resolveInfo) => {
   resolve: async (parent: any, args: any) => {
     const cardTranslation = new CardTranslation(args.translation)
-    await dependencies.get(CardTranslationRepository).addCardTranslation(cardTranslation)
+    await dependencies.get(CardTranslationRepository).upsertCardTranslation(cardTranslation)
     return cardTranslation
   }
 })

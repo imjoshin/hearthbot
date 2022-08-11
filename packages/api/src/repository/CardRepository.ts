@@ -1,7 +1,5 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
-import { getMissingObjectProperties } from "../util/validation"
-import { ValidationError } from "../util/Errors"
 
 export class CardRepository {
   constructor(private db: Database) {}

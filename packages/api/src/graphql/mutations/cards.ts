@@ -8,7 +8,7 @@ import { Card } from "../../model/Card"
 
 export const cards: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: new graphql.GraphQLObjectType({
-    name: `CreateCardBulkResults`,
+    name: `CardBulkResults`,
     fields: () => ({
       success: { type: graphql.GraphQLInt },
     })

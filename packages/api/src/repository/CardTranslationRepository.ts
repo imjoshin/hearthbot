@@ -10,8 +10,16 @@ export class CardTranslationRepository {
     return dbResult.map(row => new CardTranslation(row))
   }
 
-  public addCardTranslation = async (cardTranslation: CardTranslation) => {
-    const query = `INSERT INTO cardTranslation (cardId, locale, name, flavor, \`text\`) VALUES (?, ?, ?, ?, ?)`
-    await this.db.run(query, [cardTranslation.cardId, cardTranslation.locale, cardTranslation.name, cardTranslation.flavor, cardTranslation.text])
+  public upsertCardTranslation = async (cardTranslation: CardTranslation) => {
+    const query = `
+    INSERT INTO cardTranslation 
+    (cardId, locale, name, flavor, \`text\`) 
+    VALUES (?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+    name = ?,
+    flavor = ?,
+    text = ?
+    `
+    await this.db.run(query, [cardTranslation.cardId, cardTranslation.locale, cardTranslation.name, cardTranslation.flavor, cardTranslation.text, cardTranslation.name, cardTranslation.flavor, cardTranslation.text])
   }
 }

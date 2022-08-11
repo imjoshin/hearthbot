@@ -6,9 +6,9 @@ import { CardTranslationRepository } from "../../repository/CardTranslationRepos
 import { GraphQLInt, GraphQLList, GraphQLObjectType } from "graphql"
 
 
-export const createCardTranslations: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+export const cardTranslations: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   type: new GraphQLObjectType({
-    name: `CreateCardTranslationBulkResults`,
+    name: `CardTranslationBulkResults`,
     fields: () => ({
       success: { type: GraphQLInt },
     })
@@ -26,7 +26,7 @@ export const createCardTranslations: GraphqlMutationExport = (objects: GraphqlOb
     for (const t of args.translations) {
       const cardTranslation = new CardTranslation(t)
       try {
-        await dependencies.get(CardTranslationRepository).addCardTranslation(cardTranslation)
+        await dependencies.get(CardTranslationRepository).upsertCardTranslation(cardTranslation)
         translations.push(cardTranslation)
       } catch (e) {
         errors.push(e)
