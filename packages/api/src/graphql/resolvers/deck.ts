@@ -1,10 +1,8 @@
-import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlResolverExport, GraphqlObjects } from "."
-import { DependencyTree } from "../../util/DependencyTree"
 import { GraphQLNonNull, GraphQLString } from "graphql"
 import { decode } from "deckstrings"
 
-export const deck: GraphqlResolverExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+export const deck: GraphqlResolverExport = (objects: GraphqlObjects) => ({
   type: objects.GraphQLDeck,
   args: {
     code: { type: new GraphQLNonNull(GraphQLString) }, 

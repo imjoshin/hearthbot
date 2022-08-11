@@ -1,4 +1,3 @@
-import * as graphql from "graphql"
 import { CardRepository } from "../../repository/CardRepository"
 import { GraphqlMutationExport } from "."
 import { DependencyTree } from "../../util/DependencyTree"
