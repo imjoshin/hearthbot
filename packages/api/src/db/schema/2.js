@@ -29,7 +29,7 @@ const run = async (db) => {
   await db.run(`
     CREATE TABLE IF NOT EXISTS cardTranslation (
       id INT NOT NULL AUTO_INCREMENT,
-      cardId VARCHAR(32) NOT NULL,
+      cardId VARCHAR(128) NOT NULL,
       locale VARCHAR(4) NOT NULL,
       name TEXT,
       flavor TEXT,
