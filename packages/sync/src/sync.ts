@@ -47,11 +47,18 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
 
     cardTranslations.push(objectToGraphqlArgs(translations))
 
+    let classes: string[] | null = null
+    if (card.classes) {
+      classes = card.classes
+    } else if (card.cardClass) {
+      classes = [card.cardClass]
+    }
+
     if (shouldCreateCards) {
       const attributes = {
         attack: card.attack,
         artist: card.artist,
-        // class: card.cardClass,
+        classes,
         collectible: !!card.collectible,
         cost: card.cost,
         dbfId: card.dbfId,
