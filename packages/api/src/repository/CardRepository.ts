@@ -17,6 +17,7 @@ type CardFilter = {
   set?: string,
   tribe?: string,
   type?: string,
+  class?: string,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -122,6 +123,12 @@ export class CardRepository {
       params.push((map[filter.rarity.toLowerCase()] || filter.rarity).toUpperCase())
     }
 
+    // Class filter
+    if (filter.class) {
+      wheres.push(`classes LIKE CONCAT('%', ?, '%')`)
+      params.push(filter.class.toUpperCase())
+    }
+
     // Mechanics filter
     if (filter.mechanics) {
       for (const mechanic of filter.mechanics) {
@@ -188,7 +195,7 @@ export class CardRepository {
         id,
         artist,
         attack,
-        classes: classes.split(`,`),
+        classes: classes ? classes.split(`,`) : null,
         collectible,
         cost,
         dbfId,
@@ -198,7 +205,7 @@ export class CardRepository {
         type,
         tribe,
         durability, 
-        mechanics: mechanics.split(`,`),
+        mechanics: mechanics ? mechanics.split(`,`) : null,
       })
     })
   }
