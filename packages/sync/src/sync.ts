@@ -66,7 +66,7 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[]) => {
         id: card.id,
         health: card.health,
         durability: card.durability,
-        mechanics: card.mechanics ? card.mechanics.join(`,`) : ``,
+        mechanics: card.mechanics,
         name: card.name,
         rarity: card.rarity,
         tribe: card.race,
