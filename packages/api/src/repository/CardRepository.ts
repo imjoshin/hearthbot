@@ -13,6 +13,7 @@ type CardFilter = {
   attack?: RangeInput,
   durability?: RangeInput,
   rarity?: string,
+  mechanics?: string[],
 }
 
 const cardFilterDefault: CardFilter = {
@@ -80,6 +81,14 @@ export class CardRepository {
       }
       wheres.push(`rarity = ?`)
       params.push((map[filter.rarity.toLowerCase()] || filter.rarity).toUpperCase())
+    }
+
+    // Mechanics filter
+    if (filter.mechanics) {
+      for (const mechanic of filter.mechanics) {
+        wheres.push(`mechanics LIKE CONCAT('%', ?, '%')`)
+        params.push(mechanic.toUpperCase())
+      }
     }
 
     // Cost filter
