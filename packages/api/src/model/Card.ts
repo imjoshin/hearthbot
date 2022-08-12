@@ -8,7 +8,7 @@ type CardConstructor = {
   dbfId: number,
   durability: number,
   health: number,
-  mechanics: string,
+  mechanics: string[],
   rarity: number,
   setId: string,
   type: number,
@@ -25,7 +25,7 @@ export class Card {
   public dbfId: number
   public durability: number
   public health: number
-  public mechanics: string
+  public mechanics: string[]
   public rarity: number
   public setId: string
   public tribe: string

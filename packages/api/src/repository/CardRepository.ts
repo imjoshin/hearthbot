@@ -198,13 +198,27 @@ export class CardRepository {
         type,
         tribe,
         durability, 
-        mechanics,
+        mechanics: mechanics.split(`,`),
       })
     })
   }
 
   public upsertCard = async (card: Card) => {
-    const params = [card.artist, card.attack, card.classes ? card.classes.join(`,`) : null, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.tribe, card.durability, card.mechanics]
+    const params = [
+      card.artist, 
+      card.attack, 
+      card.classes ? card.classes.join(`,`) : null, 
+      card.collectible, 
+      card.cost, 
+      card.dbfId, 
+      card.health, 
+      card.rarity, 
+      card.setId, 
+      card.type, 
+      card.tribe, 
+      card.durability, 
+      card.mechanics ? card.mechanics.join(`,`) : null, 
+    ]
     const query = `
     INSERT INTO card (
       id, 
