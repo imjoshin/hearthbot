@@ -12,6 +12,7 @@ type CardFilter = {
   health?: RangeInput,
   attack?: RangeInput,
   durability?: RangeInput,
+  rarity?: string,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -67,6 +68,18 @@ export class CardRepository {
     if (filter.collectible === true || filter.collectible === false) {
       wheres.push(`collectible = ?`)
       params.push(filter.collectible)
+    }
+
+    // Rarity filter
+    if (filter.rarity) {
+      const map: {[key: string]: string} = {
+        'c': `common`,
+        'r': `rare`,
+        'e': `epic`,
+        'l': `legendary`,
+      }
+      wheres.push(`rarity = ?`)
+      params.push((map[filter.rarity.toLowerCase()] || filter.rarity).toUpperCase())
     }
 
     // Cost filter
