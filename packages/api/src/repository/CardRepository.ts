@@ -171,6 +171,7 @@ export class CardRepository {
         id,
         artist,
         attack,
+        classes,
         collectible,
         cost,
         dbfId,
@@ -187,6 +188,7 @@ export class CardRepository {
         id,
         artist,
         attack,
+        classes: classes.split(`,`),
         collectible,
         cost,
         dbfId,
@@ -202,12 +204,13 @@ export class CardRepository {
   }
 
   public upsertCard = async (card: Card) => {
-    const params = [card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.tribe, card.durability, card.mechanics]
+    const params = [card.artist, card.attack, card.classes ? card.classes.join(`,`) : null, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.tribe, card.durability, card.mechanics]
     const query = `
     INSERT INTO card (
       id, 
       artist, 
       attack, 
+      classes,
       collectible, 
       cost, 
       dbfId, 
@@ -219,10 +222,11 @@ export class CardRepository {
       durability, 
       mechanics
     ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
     artist = ?,
     attack = ?,
+    classes = ?,
     collectible = ?,
     cost = ?,
     dbfId = ?,

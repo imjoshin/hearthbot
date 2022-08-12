@@ -3,6 +3,7 @@ type CardConstructor = {
   artist: string,
   attack: number,
   collectible: boolean,
+  classes: string[],
   cost: number,
   dbfId: number,
   durability: number,
@@ -19,6 +20,7 @@ export class Card {
   public artist: string
   public attack: number
   public collectible: boolean
+  public classes: string[]
   public cost: number
   public dbfId: number
   public durability: number
@@ -33,6 +35,7 @@ export class Card {
     this.id = card.id
     this.artist = card.artist
     this.attack = card.attack
+    this.classes = card.classes
     this.collectible = card.collectible
     this.cost = card.cost
     this.dbfId = card.dbfId

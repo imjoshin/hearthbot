@@ -13,6 +13,7 @@ const run = async (db) => {
       id VARCHAR(128) PRIMARY KEY NOT NULL,
       artist VARCHAR(128),
       attack INT,
+      classes VARCHAR(512),
       collectible BOOLEAN NOT NULL,
       cost INT,
       dbfId INT NOT NULL,
