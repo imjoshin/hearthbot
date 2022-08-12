@@ -15,6 +15,8 @@ type CardFilter = {
   rarity?: string,
   mechanics?: string[],
   set?: string,
+  tribe?: string,
+  type?: string,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -94,6 +96,18 @@ export class CardRepository {
     if (filter.collectible === true || filter.collectible === false) {
       wheres.push(`collectible = ?`)
       params.push(filter.collectible)
+    }
+
+    // Tribe filter
+    if (filter.tribe) {
+      wheres.push(`tribe = ?`)
+      params.push(filter.tribe.toUpperCase())
+    }
+
+    // Type filter
+    if (filter.type) {
+      wheres.push(`type = ?`)
+      params.push(filter.type.toUpperCase())
     }
 
     // Rarity filter
