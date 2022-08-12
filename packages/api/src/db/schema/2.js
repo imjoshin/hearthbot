@@ -21,6 +21,7 @@ const run = async (db) => {
       mechanics VARCHAR(256),
       rarity VARCHAR(32),
       type VARCHAR(64),
+      tribe VARCHAR(64),
       setId VARCHAR(64),
       CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES cardSet(id)
     )

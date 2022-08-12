@@ -163,7 +163,7 @@ export class CardRepository {
   }
 
   public upsertCard = async (card: Card) => {
-    const params = [card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.durability, card.mechanics]
+    const params = [card.artist, card.attack, card.collectible, card.cost, card.dbfId, card.health, card.rarity, card.setId, card.type, card.tribe, card.durability, card.mechanics]
     const query = `
     INSERT INTO card (
       id, 
@@ -176,6 +176,7 @@ export class CardRepository {
       rarity, 
       setId, 
       type, 
+      tribe,
       durability, 
       mechanics
     ) 
@@ -190,6 +191,7 @@ export class CardRepository {
     rarity = ?,
     setId = ?,
     type = ?,
+    tribe = ?,
     durability = ?,
     mechanics = ?
     `
