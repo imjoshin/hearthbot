@@ -16,6 +16,7 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
     dbfIds: { type: GraphQLList(GraphQLInt) }, 
     rarity: { type: GraphQLString }, 
     mechanics: { type: GraphQLList(GraphQLString) }, 
+    set: { type: GraphQLString },
   },
   resolve: async (_, args) => {
     const filter = {
@@ -29,6 +30,7 @@ export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
       durability: args.durability,
       rarity: args.rarity,
       mechanics: args.mechanics,
+      set: args.set,
     }
     const cards = await dependencies.get(CardRepository).getCards(filter)
     return cards

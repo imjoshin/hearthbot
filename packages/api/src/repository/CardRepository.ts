@@ -14,6 +14,7 @@ type CardFilter = {
   durability?: RangeInput,
   rarity?: string,
   mechanics?: string[],
+  set?: string,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -60,6 +61,30 @@ export class CardRepository {
       ids.forEach(id => params.push(id))
     }
 
+    // Set filter
+    if (filter.set) {
+      const set = filter.set.toUpperCase()
+      const setDbResult = await this.db.run<{[key: string]: any}>(
+        `
+        SELECT * from cardSet 
+        WHERE UPPER(id) LIKE CONCAT('%', ?, '%')
+        OR UPPER(fullName) LIKE CONCAT('%', ?, '%')
+        OR UPPER(shortName) LIKE CONCAT('%', ?, '%')
+        `,
+        [set, set, set]
+      )
+
+      if (!setDbResult.length) {
+        return []
+      }
+
+      const setRow = setDbResult[0]
+
+      wheres.push(`setId = ?`)
+      params.push(setRow.id)
+    }
+
+    // DBFID filter
     if (filter.dbfIds) {
       wheres.push(`dbfId IN (${filter.dbfIds.map(_ => `?`).join(`, `)})`)
       filter.dbfIds.forEach(dbfId => params.push(dbfId))
