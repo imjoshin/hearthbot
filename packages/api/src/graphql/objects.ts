@@ -23,6 +23,7 @@ export const getObjects = (dependencies: DependencyTree) => {
       id: { type: new GraphQLNonNull(GraphQLString) },
       fullName: { type: GraphQLString },
       shortName: { type: GraphQLString },
+      scrapeUrl: { type: GraphQLString },
       releaseDate: { type: GraphQLString },
     })
   })

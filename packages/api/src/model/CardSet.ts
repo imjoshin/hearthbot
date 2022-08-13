@@ -5,6 +5,7 @@ export type CardSetConstructor = {
   fullName?: string,
   shortName?: string,
   releaseDate?: string,
+  scrapeUrl?: string,
 }
 
 export class CardSet {
@@ -12,11 +13,13 @@ export class CardSet {
   fullName?: string
   shortName?: string
   releaseDate?: string
+  scrapeUrl?: string
 
   constructor(args: CardSetConstructor ) {
     this.id = args.id
     this.fullName = args.fullName
     this.shortName = args.shortName
     this.releaseDate = args.releaseDate
+    this.scrapeUrl = args.scrapeUrl
   }
 }

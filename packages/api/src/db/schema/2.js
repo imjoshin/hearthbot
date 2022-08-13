@@ -4,6 +4,7 @@ const run = async (db) => {
       id VARCHAR(64) PRIMARY KEY NOT NULL,
       fullName VARCHAR(128),
       shortName VARCHAR(16),
+      scrapeUrl TEXT,
       releaseDate datetime
     )
   `)

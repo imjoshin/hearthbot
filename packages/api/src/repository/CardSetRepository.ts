@@ -19,6 +19,10 @@ export class CardSetRepository {
       updateKeys.push(`releaseDate`)
       updateValues.push(set.releaseDate)
     }
+    if (set.releaseDate) {
+      updateKeys.push(`scrapeUrl`)
+      updateValues.push(set.scrapeUrl)
+    }
 
     let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `
 
