@@ -1,6 +1,11 @@
 import { CardSet, CardSetConstructor } from "../model/CardSet"
 import { Database } from "../db/Database"
 
+type CardSetFilter = {
+  released?: boolean,
+  hasScrapeUrl?: boolean,
+}
+
 export class CardSetRepository {
   constructor(private db: Database) {}
 
@@ -38,8 +43,24 @@ export class CardSetRepository {
     )
   }
 
-  public getCardSets = async (): Promise<CardSet[]> => {
-    const dbResult = await this.db.run<CardSetConstructor>(`SELECT * FROM cardSet`)
+  public getCardSets = async (filter: CardSetFilter): Promise<CardSet[]> => {
+    const wheres = []
+    const params: (string | boolean | number)[] = []
+
+    if (filter.hasScrapeUrl) {
+      wheres.push(`scrapeUrl IS NOT NULL`)
+    }
+
+    if (filter.released === false) {
+      wheres.push(`releaseDate > CURDATE()`)
+    }
+
+    const query = `
+    SELECT * FROM cardSet 
+    ${wheres.length ? ` WHERE ` : ``}${wheres.join(` AND `)}
+    `
+
+    const dbResult = await this.db.run<CardSetConstructor>(query, params)
 
     return dbResult.map(row => new CardSet(row))
   }
