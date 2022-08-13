@@ -20,6 +20,10 @@ const run = async() => {
     const json = await response.json()
     if (json.data?.cardSets?.length) {
       for (const cardSet of json.data.cardSets) {
+        if (!cardSet.id?.startsWith(`PRE-`)) {
+          continue
+        }
+        
         await scrape(cardSet.id, cardSet.scrapeUrl)
         await new Promise(res => setTimeout(res, constants.REQUEST_SLEEP_TIME))
       }
