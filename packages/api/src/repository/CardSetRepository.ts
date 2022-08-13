@@ -29,7 +29,7 @@ export class CardSetRepository {
       updateValues.push(set.scrapeUrl)
     }
 
-    let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `
+    let query = `INSERT INTO cardSet (id, fullName, shortName, releaseDate, scrapeUrl) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `
 
     if (updateKeys.length) {
       query += updateKeys.map(key => `${key} = ?`).join(`,`)
@@ -39,7 +39,7 @@ export class CardSetRepository {
 
     await this.db.run<{[key: string]: any}>(
       query,
-      [set.id, set.fullName, set.shortName, set.releaseDate, ...updateValues]
+      [set.id, set.fullName, set.shortName, set.releaseDate, set.scrapeUrl, ...updateValues]
     )
   }
 
