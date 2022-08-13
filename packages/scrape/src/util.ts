@@ -25,3 +25,16 @@ export const objectToGraphqlArgs = (object: {[key: string]: any}): string => {
 
   return `{ ${graphqlFields.join(`, `)} }`
 }
+
+export const cleanText = (str: string | null | undefined, {enumize, number}: {enumize?: boolean, number?: boolean} = {}) => {
+  if (str?.length) {
+    let text = str.split(/\s+/).join(` `)
+    if (enumize) {
+      text = text.toUpperCase().replace(/\s+/g, `_`)
+    }
+
+    return number ? parseInt(text) : text
+  } else {
+    return null
+  }
+}
