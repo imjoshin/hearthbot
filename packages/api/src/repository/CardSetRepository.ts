@@ -1,9 +1,11 @@
 import { CardSet, CardSetConstructor } from "../model/CardSet"
 import { Database } from "../db/Database"
+import { PRE_RELEASE_SET_PREFIX } from "../constants"
 
 type CardSetFilter = {
   released?: boolean,
   hasScrapeUrl?: boolean,
+  prerelease?: boolean,
 }
 
 export class CardSetRepository {
@@ -53,6 +55,14 @@ export class CardSetRepository {
 
     if (filter.released === false) {
       wheres.push(`releaseDate >= CURDATE()`)
+    }
+
+    if (filter.prerelease === false) {
+      wheres.push(`id NOT LIKE "${PRE_RELEASE_SET_PREFIX}%"`)
+    }
+    
+    if (filter.prerelease === true) {
+      wheres.push(`id LIKE "${PRE_RELEASE_SET_PREFIX}%"`)
     }
 
     const query = `

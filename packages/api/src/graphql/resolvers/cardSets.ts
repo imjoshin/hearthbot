@@ -8,11 +8,13 @@ export const cardSets: GraphqlResolverExport = (objects: GraphqlObjects, depende
   args: {
     released: { type: GraphQLBoolean }, 
     hasScrapeUrl: { type: GraphQLBoolean },
+    prerelease: { type: GraphQLBoolean },
   },
   resolve: async (_, args) => {
     const filter = {
       released: args.released,
       hasScrapeUrl: args.hasScrapeUrl,
+      prerelease: args.prerelease,
     }
     const cards = await dependencies.get(CardSetRepository).getCardSets(filter)
     return cards
