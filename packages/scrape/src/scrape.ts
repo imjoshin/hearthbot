@@ -1,9 +1,9 @@
 import { JSDOM } from "jsdom"
 import * as constants from "./constants"
-import { cleanText } from "./util"
+import { cleanText, generateCardIds } from "./util"
 
-export const scrape = async (id: string, scrapeUrl: string) => {
-  console.log(`scraping ${id} from ${scrapeUrl}`)
+export const scrape = async (setId: string, scrapeUrl: string) => {
+  console.log(`scraping ${setId} from ${scrapeUrl}`)
 
   let page = 1
 
@@ -64,6 +64,9 @@ export const scrape = async (id: string, scrapeUrl: string) => {
         attack,
         health,
         durability,
+        setId,
+        collectible: true,
+        ...generateCardIds(cardName, setId)
       }
       
       console.log(attributes)

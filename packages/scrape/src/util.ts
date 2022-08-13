@@ -38,3 +38,15 @@ export const cleanText = (str: string | null | undefined, {enumize, number}: {en
     return null
   }
 }
+
+export const generateCardIds = (name: string, setId: string) => {
+  const id = `${setId}_${name.toUpperCase().replace(/[^A-Za-z0-9]+/g, `_`)}`
+  const dbfId = Math.abs(id.split(``).reduce(
+    (prevHash, currVal) => (
+      ((prevHash << 5) - prevHash) + currVal.charCodeAt(0)
+    )| 0, 
+    0
+  )) % 1000000 + 1000000
+
+  return { id, dbfId }
+}
