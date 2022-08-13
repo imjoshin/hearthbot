@@ -165,6 +165,21 @@ export class CardRepository {
       params.push(...range.params)
     }
 
+    // Filter out any pre-release sets that have released
+    const preSetDbResult = await this.db.run<{[key: string]: any}>(
+      `
+      SELECT * from cardSet 
+      WHERE id LIKE "PRE-%"
+      AND releaseDate < CURDATE()
+      `,
+    )
+
+    for (const preSetRow of preSetDbResult) {
+      wheres.push(`setId != ?`)
+      params.push(preSetRow.id)
+    }
+
+    // Run query 
     const query = `
     SELECT * FROM card 
     ${wheres.length ? ` WHERE ` : ``}${wheres.join(` AND `)} 

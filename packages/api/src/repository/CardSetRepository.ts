@@ -52,7 +52,7 @@ export class CardSetRepository {
     }
 
     if (filter.released === false) {
-      wheres.push(`releaseDate > CURDATE()`)
+      wheres.push(`releaseDate >= CURDATE()`)
     }
 
     const query = `
