@@ -21,12 +21,12 @@ const run = async() => {
     if (json.data?.cardSets?.length) {
       for (const cardSet of json.data.cardSets) {
         await scrape(cardSet.id, cardSet.scrapeUrl)
-        await new Promise(res => setTimeout(res, 1000 * 5))
+        await new Promise(res => setTimeout(res, constants.REQUEST_SLEEP_TIME))
       }
     }
 
     // sleep until we're ready to try again
-    await new Promise(res => setTimeout(res, constants.SLEEP_TIME))
+    await new Promise(res => setTimeout(res, constants.ITERATION_SLEEP_TIME))
   }
 }
 
