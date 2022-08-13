@@ -1,6 +1,6 @@
 import { JSDOM } from "jsdom"
 import * as constants from "./constants"
-import { cleanText, generateCardIds } from "./util"
+import { api, cleanText, generateCardIds, objectToGraphqlArgs } from "./util"
 
 export const scrape = async (setId: string, scrapeUrl: string) => {
   console.log(`scraping ${setId} from ${scrapeUrl}`)
@@ -20,6 +20,9 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
     const dom = new JSDOM(html)
     const root = dom.window.document
   
+    const cardAttributes: string[] = []
+    const cardTranslations: string[] = []
+
     const cardRows = root.querySelectorAll(`tr`)
     for (const row of cardRows) {
       const nameLink = row.querySelector(`a`)
@@ -54,9 +57,9 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
         classes = classesText?.split(/\s*,\s*/).map((c: string) => cleanText(c, {enumize: true}) as string) || []
       }
 
+      const { id, dbfId } = generateCardIds(cardName, setId)
+
       const attributes = {
-        name: cardName,
-        text,
         classes,
         rarity,
         type,
@@ -66,12 +69,44 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
         durability,
         setId,
         collectible: true,
-        ...generateCardIds(cardName, setId)
+        id,
+        dbfId,
       }
       
-      console.log(attributes)
+      cardAttributes.push(objectToGraphqlArgs(attributes))
+
+      const translations = {
+        cardId: id,
+        name: cardName,
+        text,
+        locale: `enUS`,
+      }
+
+      cardTranslations.push(objectToGraphqlArgs(translations))
     }
 
+    const createCards = `
+      cards(
+        cards: [
+          ${cardAttributes.join(`,\n`)}
+        ]
+      ) { errors }
+    `
+
+    const createCardTranslations = `
+      cardTranslations(
+        translations: [
+          ${cardTranslations.join(`,\n`)}
+        ]
+      ) { errors }
+    `
+
+    await api(`
+      mutation {
+        ${createCards}
+        ${createCardTranslations}
+      }
+    `)
     
     page += 1
     await new Promise(res => setTimeout(res, constants.REQUEST_SLEEP_TIME))
