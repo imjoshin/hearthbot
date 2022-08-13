@@ -14,3 +14,4 @@ export const SUPPORTED_LOCALES = [
   `zhCN`,
   `zhTW`,
 ]
+export const PRE_RELEASE_SET_PREFIX = `PRE-`

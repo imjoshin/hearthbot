@@ -1,3 +1,5 @@
+import { PRE_RELEASE_SET_PREFIX } from "../constants"
+
 type CardConstructor = {
   id: string,
   artist: string,
@@ -13,6 +15,7 @@ type CardConstructor = {
   setId: string,
   type: number,
   tribe: string,
+  image: string,
 }
 
 export class Card {
@@ -30,6 +33,7 @@ export class Card {
   public setId: string
   public tribe: string
   public type: number
+  public image: string
 
   constructor(card: CardConstructor) {
     this.id = card.id
@@ -46,5 +50,10 @@ export class Card {
     this.setId = card.setId
     this.type = card.type
     this.tribe = card.tribe
+    this.image = card.image 
+
+    if (!card.image && !this.setId.startsWith(PRE_RELEASE_SET_PREFIX)) {
+      this.image = `https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`
+    }
   }
 }

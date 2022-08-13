@@ -1,6 +1,7 @@
 import { Card } from "../model/Card"
 import { Database } from "../db/Database"
 import { RangeInput, rangeQuery } from "../util/query"
+import { PRE_RELEASE_SET_PREFIX } from "../constants"
 
 type CardFilter = {
   limit?: number,
@@ -169,7 +170,7 @@ export class CardRepository {
     const preSetDbResult = await this.db.run<{[key: string]: any}>(
       `
       SELECT * from cardSet 
-      WHERE id LIKE "PRE-%"
+      WHERE id LIKE "${PRE_RELEASE_SET_PREFIX}-%"
       AND releaseDate < CURDATE()
       `,
     )
@@ -203,7 +204,8 @@ export class CardRepository {
         type,
         tribe,
         durability, 
-        mechanics, 
+        mechanics,
+        image,
       } = row
 
       return new Card({
@@ -221,6 +223,7 @@ export class CardRepository {
         tribe,
         durability, 
         mechanics: mechanics ? mechanics.split(`,`) : null,
+        image,
       })
     })
   }
@@ -240,6 +243,7 @@ export class CardRepository {
       card.tribe, 
       card.durability, 
       card.mechanics ? card.mechanics.join(`,`) : null, 
+      card.image,
     ]
     const query = `
     INSERT INTO card (
@@ -256,7 +260,8 @@ export class CardRepository {
       type, 
       tribe,
       durability, 
-      mechanics
+      mechanics,
+      image
     ) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
@@ -272,7 +277,8 @@ export class CardRepository {
     type = ?,
     tribe = ?,
     durability = ?,
-    mechanics = ?
+    mechanics = ?,
+    image = ?
     `
     await this.db.run(query, [
       card.id, ...params, ...params

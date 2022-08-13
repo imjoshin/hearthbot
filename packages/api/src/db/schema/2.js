@@ -25,6 +25,7 @@ const run = async (db) => {
       type VARCHAR(64),
       tribe VARCHAR(64),
       setId VARCHAR(64),
+      image TEXT,
       CONSTRAINT FK_setId FOREIGN KEY (setId) REFERENCES cardSet(id)
     )
   `)
