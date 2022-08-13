@@ -51,6 +51,9 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
       const health = cleanText(healthCol?.textContent, {number: true})
       const durability = cleanText(durabilityCol?.textContent, {number: true})
 
+      const imageAttribute = nameLink?.attributes?.getNamedItem(`data-tooltip-img`)
+      const image = imageAttribute ? imageAttribute.value : null
+
       let classes: string[] = []
       const classesText = cleanText(classCol?.textContent)
       if (classesText && typeof classesText === `string`) {
@@ -71,6 +74,7 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
         collectible: true,
         id,
         dbfId,
+        image,
       }
       
       cardAttributes.push(objectToGraphqlArgs(attributes))
