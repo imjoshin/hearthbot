@@ -19,7 +19,7 @@ export class CardSetRepository {
       updateKeys.push(`releaseDate`)
       updateValues.push(set.releaseDate)
     }
-    if (set.releaseDate) {
+    if (set.scrapeUrl) {
       updateKeys.push(`scrapeUrl`)
       updateValues.push(set.scrapeUrl)
     }

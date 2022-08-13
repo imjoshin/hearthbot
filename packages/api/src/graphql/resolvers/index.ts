@@ -3,6 +3,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { getObjects } from "../objects"
 import { cards } from "./cards"
 import { deck } from "./deck"
+import { cardSets } from "./cardSets"
 
 export type GraphqlObjects = ReturnType<typeof getObjects>
 
@@ -11,4 +12,5 @@ export type GraphqlResolverExport = (objects: GraphqlObjects, dependencies: Depe
 export const GraphqlResolvers = {
   cards,
   deck,
+  cardSets,
 }
