@@ -4,6 +4,7 @@ import { api } from "./util"
 
 export const onCards = async (message: Message, cards: string[]) => {
   // TODO make multiple card query endpoint
+  const embeds = []
 
   for (const card of cards) {
     // TODO regex match filter/search params
@@ -39,7 +40,9 @@ export const onCards = async (message: Message, cards: string[]) => {
     if (json?.data?.cards?.length) {
       const cardObject = json.data.cards[0]
       const embed = createCardEmbed(cardObject)
-      message.reply({embeds: [embed]})
+      embeds.push(embed)
     }
   }
+
+  message.reply({embeds: embeds})
 }
