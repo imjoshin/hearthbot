@@ -57,6 +57,10 @@ export const onCards = async (message: Message, cards: string[]) => {
           style: 5,
           "label": `Buy me a coffee!`,
           "url": constants.DONATE_LINK,
+          "emoji": {
+            "id": null,
+            "name": `☕`
+          },
         }
       ]
     })
