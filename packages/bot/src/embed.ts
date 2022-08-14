@@ -1,4 +1,5 @@
 import * as constants from "./constants"
+import TurndownService from "turndown"
 
 const toTitleCase = (str: string) => {
   return str.replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
@@ -39,10 +40,28 @@ export const createCardEmbed = (card: Card) => {
     }
   }
 
-  // TODO text and set formatting
   const stats = (attack != `` || health != ``) ? (attack + health + `\n\n`) : ``
-  const text = card.strings.enUS.text != `` ? (`\n\n*` + card.strings.enUS.text + `*`) : ``
-  const set = `Set: ` + card.setId
+
+  let text = ``
+  if (card.strings.enUS.text !== ``) {
+    const turndownService = new TurndownService()
+
+    // convert to markdown but preserve newlines
+    let markdownText = card.strings.enUS.text
+      .split(`\n`)
+      .map((line: string) => turndownService.turndown(line))
+      .join(`\n`)
+
+    // some oddities in raw text, filter it out
+    markdownText = markdownText
+      .replace(/\\\[x\\\]/g, ``)
+      .replace(/\*\*\*\*([^*]+)\*\*([^*]*)\*\*/g, `**$1$2**`)
+
+    text = `\n*${markdownText}*`
+  }
+
+  // TODO use set longname if available
+  const set = `Set: ` + toTitleCase(card.setId.replace(/_+/g, ` `))
 
   return {
     "author": {
