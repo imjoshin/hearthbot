@@ -49,3 +49,6 @@ export const EMBED = {
     }
   }
 }
+
+export const DONATE_LINK = `https://www.buymeacoffee.com/hydroto`
+export const DONATE_CHANCE = 50

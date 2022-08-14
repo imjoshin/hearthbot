@@ -55,6 +55,6 @@ export const createCardEmbed = (card: {[key: string]: any}) => {
     },
     "thumbnail": {
       "url": card.image
-    }
+    },
   }
 }
