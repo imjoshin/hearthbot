@@ -3,10 +3,34 @@ import { Message, ButtonComponent, ButtonStyle } from "discord.js"
 import { createCardEmbed, createDeckEmbed } from "./embed"
 import { api } from "./util"
 
+const getDefaultComponents = () => {
+  const components = []
+
+  if (Math.floor(Math.random() * constants.DONATE_CHANCE) === 0) {
+    components.push({
+      "type": 1,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      components: [
+        {
+          type: 2,
+          style: 5,
+          "label": `Buy me a coffee!`,
+          "url": constants.DONATE_LINK,
+          "emoji": {
+            "name": `☕`
+          },
+        }
+      ]
+    })
+  }
+  
+  return components
+}
+
 export const onCards = async (message: Message, cards: string[]) => {
   // TODO make multiple card query endpoint
   const embeds = []
-  const components = []
 
   for (const card of cards) {
     // TODO regex match filter/search params
@@ -45,31 +69,11 @@ export const onCards = async (message: Message, cards: string[]) => {
       embeds.push(embed)
     }
   }
-
-  if (embeds.length && Math.floor(Math.random() * constants.DONATE_CHANCE) === 0) {
-    components.push({
-      "type": 1,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      components: [
-        {
-          type: 2,
-          style: 5,
-          "label": `Buy me a coffee!`,
-          "url": constants.DONATE_LINK,
-          "emoji": {
-            "id": null,
-            "name": `☕`
-          },
-        }
-      ]
-    })
-  }
   
   if (embeds.length) {
     message.reply({
       embeds: embeds, 
-      components,
+      components: getDefaultComponents(),
     })
   }
 }
@@ -106,6 +110,7 @@ export const onDeck = async (message: Message, deckCode: string) => {
   if (embeds.length) {
     message.reply({
       embeds: embeds, 
+      components: getDefaultComponents(),
     })
   }
 }
