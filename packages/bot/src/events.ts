@@ -1,6 +1,6 @@
 import * as constants from "./constants"
 import { Message, ButtonComponent, ButtonStyle } from "discord.js"
-import { createCardEmbed } from "./embed"
+import { createCardEmbed, createDeckEmbed } from "./embed"
 import { api } from "./util"
 
 export const onCards = async (message: Message, cards: string[]) => {
@@ -66,9 +66,46 @@ export const onCards = async (message: Message, cards: string[]) => {
     })
   }
   
-  message.reply({
-    embeds: embeds, 
-    components,
-  })
+  if (embeds.length) {
+    message.reply({
+      embeds: embeds, 
+      components,
+    })
+  }
 }
 
+export const onDeck = async (message: Message, deckCode: string) => {
+  const embeds = []
+
+  const response = await api(`
+    query {
+      deck(code:"${deckCode}") {
+        cards {
+          classes,
+          count,
+          rarity,
+          strings {
+            enUS{
+              name,
+              text,
+            }
+          }
+        }
+      }
+    }
+  `)
+
+
+  const json = await response.json()
+  if (json?.data?.deck?.cards?.length) {
+    const cardObjects = json.data.deck?.cards
+    const embed = createDeckEmbed(deckCode, cardObjects)
+    embeds.push(embed)
+  }
+  
+  if (embeds.length) {
+    message.reply({
+      embeds: embeds, 
+    })
+  }
+}

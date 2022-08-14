@@ -4,8 +4,11 @@ const toTitleCase = (str: string) => {
   return str.replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
 }
 
+// TODO this is gross
+type Card = {[key: string]: any}
+
 // TODO clean this up, it's nasty
-export const createCardEmbed = (card: {[key: string]: any}) => {
+export const createCardEmbed = (card: Card) => {
   // get details
   const type = `**Type:** ${toTitleCase(card.type)}\n`
   const classt = `**Class:** ${toTitleCase(card.classes.join(`, `))}\n`
@@ -56,5 +59,88 @@ export const createCardEmbed = (card: {[key: string]: any}) => {
     "thumbnail": {
       "url": card.image
     },
+  }
+}
+
+const formatDeckCardRow = (card: Card) => {
+  return card.count + `x ` + card.strings.enUS.name
+}
+
+export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
+  let dust = 0
+  const classes = new Set<string>()
+  const classCards: Card[] = []
+  const neutralCards: Card[] = []
+
+  cards.forEach(card => {
+    if (card.classes.indexOf(`NEUTRAL`) >= 0) {
+      neutralCards.push(card)
+    } else {
+      classCards.push(card)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dust += constants.EMBED.RARITIES[card.rarity].dust * card.count
+    for (const cls of card.classes) {
+      if (cls !== `NEUTRAL`) {
+        classes.add(cls)
+      }
+    }
+  })
+
+  classCards.sort(function(a, b) {
+    return a.cost - b.cost
+  })
+  neutralCards.sort(function(a, b) {
+    return a.cost - b.cost
+  })
+
+  const classCardsText: string[] = []
+  const neutralCardsText: string[] = []
+
+  classCards.forEach(card => {
+    classCardsText.push(formatDeckCardRow(card))
+  })
+  neutralCards.forEach(card => {
+    neutralCardsText.push(formatDeckCardRow(card))
+  })
+
+  const fields = [
+    {
+      name: `Class Cards`,
+      value: classCards.length ? classCardsText.join(`\n`) : `:no_entry:`,
+      inline: true
+    },
+    {
+      name: `Neutral Cards`,
+      value: neutralCards.length ? neutralCardsText.join(`\n`) : `:no_entry:`,
+      inline: true
+    },
+  ]
+
+  const deckClass = Array.from(classes).join(`, `)
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const authorIcon = (classes.size == 1 ? constants.EMBED.CLASSES[deckClass].icon : ``)
+  
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const color = (classes.size == 1 ? constants.EMBED.CLASSES[deckClass].color : constants.EMBED.CLASSES.NEUTRAL.color)
+
+  return {
+    "author": {
+      "name": toTitleCase(deckClass),
+      "icon_url": authorIcon,
+    },
+    "title": `View Deckbuilder`,
+    "url": `https://playhearthstone.com/en-us/deckbuilder?deckcode=` + deckCode,
+    "color": color,
+    "fields": fields,
+    "footer": {
+      "icon_url": `https://cdn.discordapp.com/emojis/230175397243781121.png`,
+      "text": `` + dust
+    }
   }
 }

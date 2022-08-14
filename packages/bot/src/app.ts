@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import Discord from "discord.js"
-import { onCards } from "./events"
+import { onCards, onDeck } from "./events"
 
 dotenv.config()
 
@@ -28,6 +28,11 @@ client.on(`messageCreate`, message => {
   const cards = message.content.match(/\[\[(.*?)\]\]/g)
   if (cards) {
     onCards(message, cards)
+  }
+
+  const decks = message.content.match(/AAE((.*?)(=|$|\s))+/g)
+  if (decks) {
+    onDeck(message, decks[0])
   }
 })
 
