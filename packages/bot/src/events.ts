@@ -108,7 +108,10 @@ export const onDeck = async (message: Message, deckCode: string) => {
   }
   
   if (embeds.length) {
+    const deckName = /### ((.*?)+)/.exec(message.content)
+    const content = `<@${message.author.id}>'s ${deckName ? `**${deckName[1]}** ` : ``}deck:`
     message.reply({
+      content: content,
       embeds: embeds, 
       components: getDefaultComponents(),
     })

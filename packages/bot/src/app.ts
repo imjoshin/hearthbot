@@ -25,12 +25,12 @@ client.on(`disconnect`, async (erMsg, code) => {
 })
 
 client.on(`messageCreate`, message => {
-  const cards = message.content.match(/\[\[(.*?)\]\]/g)
+  const cards = message.content.match(/\[\[(.*?)\]\]/gm)
   if (cards) {
     onCards(message, cards)
   }
 
-  const decks = message.content.match(/AAE((.*?)(=|$|\s))+/g)
+  const decks = message.content.match(/AAE((.*?)(=|$| ))+/gm)
   if (decks) {
     onDeck(message, decks[0])
   }
