@@ -24,6 +24,11 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
     const cardTranslations: string[] = []
 
     const cardRows = root.querySelectorAll(`tr`)
+
+    if (cardRows.length === 0) {
+      break
+    }
+
     for (const row of cardRows) {
       const nameLink = row.querySelector(`a`)
       const cardName = nameLink?.text?.trim()
@@ -43,7 +48,7 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
         durabilityCol,
       ] = Array.from(row.querySelectorAll(`td`))
 
-      const text = cleanText(nameCol.querySelector(`small`)?.textContent)
+      const text = cleanText(nameCol.querySelector(`small`)?.innerHTML)      
       const rarity = cleanText(rarityCol?.textContent, {enumize: true})
       const type = cleanText(typeCol?.textContent, {enumize: true})
       const cost = cleanText(costCol?.textContent, {number: true})
