@@ -23,6 +23,10 @@ export class UserRepository {
     return dbResult.map(row => new User(row))
   }
 
+  public updateUserLogin = async (username: string): Promise<void> => {
+    await this.db.run<UserConstructor>(`UPDATE user SET lastLogin=NOW() WHERE username = ?`, [username])
+  } 
+
   public upsertUser = async (user: User) => {
     const params = [
       user.username, 

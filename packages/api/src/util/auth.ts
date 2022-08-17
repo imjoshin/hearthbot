@@ -15,10 +15,14 @@ export type PermissionsType = {
 }
 
 export const validateAuthorization = (res: Response, required: PermissionsType) => {
+  if (!required || !Object.keys(required).length) {
+    return
+  }
+  
   if (
-    required.canRead && !res.locals.canRead ||
-    required.canWrite && !res.locals.canWrite ||
-    required.admin && !res.locals.admin
+    required.canRead && !res.locals?.canRead ||
+    required.canWrite && !res.locals?.canWrite ||
+    required.admin && !res.locals?.admin
   ) {
     throw new Error(`Invalid permissions`)
   }
