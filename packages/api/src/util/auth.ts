@@ -8,7 +8,13 @@ dotenv.config()
 export const PRIVATE_KEY = process.env.PRIVATE_KEY
 export const PUBLIC_KEY = process.env.PUBLIC_KEY
 
-export const validateAuthorization = (res: Response, required: {canRead?: boolean, canWrite?: boolean, admin?: boolean}) => {
+export type PermissionsType = {
+  canRead?: boolean, 
+  canWrite?: boolean, 
+  admin?: boolean,
+}
+
+export const validateAuthorization = (res: Response, required: PermissionsType) => {
   if (
     required.canRead && !res.locals.canRead ||
     required.canWrite && !res.locals.canWrite ||
