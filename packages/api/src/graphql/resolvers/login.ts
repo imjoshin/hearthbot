@@ -27,7 +27,8 @@ export const login: GraphqlResolverExport = (objects: GraphqlObjects, dependenci
     }
 
     const token = jwt.sign({ username: user.username }, PRIVATE_KEY, {
-      algorithm: `RS256`
+      algorithm: `RS256`,
+      expiresIn: `1h`,
     })
 
     await dependencies.get(UserRepository).updateUserLogin(args.username)
