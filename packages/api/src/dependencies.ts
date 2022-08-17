@@ -3,6 +3,7 @@ import { CardRepository } from "./repository/CardRepository"
 import { CardTranslationRepository } from "./repository/CardTranslationRepository"
 import { CardSetRepository } from "./repository/CardSetRepository"
 import { DependencyTree } from "./util/DependencyTree"
+import { UserRepository } from "./repository/UserRepository"
 
 export const getDependencies = () => {
   const dependencies = new DependencyTree()
@@ -25,6 +26,10 @@ export const getDependencies = () => {
   ))
 
   dependencies.register(CardSetRepository, new CardSetRepository(
+    dependencies.get(Database)
+  ))
+
+  dependencies.register(UserRepository, new UserRepository(
     dependencies.get(Database)
   ))
 

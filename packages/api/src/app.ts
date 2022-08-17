@@ -6,6 +6,7 @@ import { runUpdates } from "./db/schema/util"
 import { createSchema } from "./graphql"
 import { getDependencies } from "./dependencies"
 import { Database } from "./db/Database"
+import { authorization } from "./util/auth"
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ const app = async () => {
   await runUpdates(database)
 
   const app = express()
+  app.use(authorization(dependencies))
   app.use(cors({origin: `*`}))
   app.use(express.json())
 

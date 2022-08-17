@@ -174,6 +174,28 @@ export const getObjects = (dependencies: DependencyTree) => {
     })
   })
 
+  const GraphQLUser = new GraphQLObjectType({
+    name: `User`,
+    fields: () => ({
+      username: { type: GraphQLString },
+      admin: { type: GraphQLBoolean },
+      canRead: { type: GraphQLBoolean },
+      canWrite: { type: GraphQLBoolean },
+      lastLogin: { type: GraphQLString },
+    })
+  })
+
+  const GraphQLUserInput = new GraphQLInputObjectType({
+    name: `UserInput`,
+    fields: () => ({
+      username: { type: new GraphQLNonNull(GraphQLString) },
+      password: { type: new GraphQLNonNull(GraphQLString) },
+      admin: { type: GraphQLBoolean },
+      canRead: { type: GraphQLBoolean },
+      canWrite: { type: GraphQLBoolean },
+    })
+  })
+
   return {
     GraphQLSet,
     GraphQLSetInput,
@@ -183,6 +205,8 @@ export const getObjects = (dependencies: DependencyTree) => {
     GraphQLCardTranslationInput,
     GraphQLRangeInput,
     GraphQLDeck,
+    GraphQLUser,
+    GraphQLUserInput,
   }
 }
 
