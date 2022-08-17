@@ -15,7 +15,7 @@ export type PermissionsType = {
 }
 
 export const validateAuthorization = (res: Response, required: PermissionsType) => {
-  if (!required || !Object.keys(required).length) {
+  if (!required || !Object.keys(required).length || res.locals?.admin) {
     return
   }
   
