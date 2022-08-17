@@ -32,6 +32,15 @@ export const createSchema = (dependencies: DependencyTree) => {
   const mutations: {[key: string]: GraphQLFieldConfig<any, any>} = {}
   for (const [name, mutation] of Object.entries(GraphqlMutations)) {
     mutations[name] = mutation(objects, dependencies)
+    const m = mutation(objects, dependencies)
+    mutations[name] = {
+      ...m,
+      resolve: (...args) => {
+        const context = args[2]
+        validateAuthorization(context.res, m.permissions)
+        return m.resolve(...args)
+      }
+    }
   }
 
   const MutationRoot = new graphql.GraphQLObjectType({

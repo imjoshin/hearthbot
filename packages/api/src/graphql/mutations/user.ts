@@ -6,6 +6,7 @@ import { User } from "../../model/User"
 import bcrypt from 'bcrypt'
 
 export const user: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {admin: true},
   type: objects.GraphQLUser,
   args: {
     user: { type: objects.GraphQLUserInput }, 

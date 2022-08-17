@@ -8,8 +8,11 @@ import { cardTranslations } from "./cardTranslations"
 import { cardSet } from "./cardSet"
 import { cardSets } from "./cardSets"
 import { user } from "./user"
+import { PermissionsType } from "../../util/auth"
 
-export type GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => GraphQLFieldConfig<any, any>
+export type GraphqlMutationExport = 
+(objects: GraphqlObjects, dependencies: DependencyTree) => 
+  GraphQLFieldConfig<any, any> & { permissions?: PermissionsType}
 
 export const GraphqlMutations = {
   card,
