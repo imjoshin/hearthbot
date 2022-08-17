@@ -4,6 +4,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLString } from "graphql"
 
 export const cards: GraphqlResolverExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canRead: true},
   type: new GraphQLList(objects.GraphQLCard),
   args: {
     name: { type: GraphQLString }, 

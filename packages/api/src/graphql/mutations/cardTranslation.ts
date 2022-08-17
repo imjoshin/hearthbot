@@ -6,6 +6,7 @@ import { CardTranslationRepository } from "../../repository/CardTranslationRepos
 
 
 export const cardTranslation: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canWrite: true},
   type: objects.GraphQLCardTranslation,
   args: {
     translation: { type: objects.GraphQLCardTranslationInput }, 

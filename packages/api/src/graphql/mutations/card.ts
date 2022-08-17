@@ -6,6 +6,7 @@ import { Card } from "../../model/Card"
 
 
 export const card: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canWrite: true},
   type: objects.GraphQLCard,
   args: {
     card: { type: objects.GraphQLCardInput }, 

@@ -4,6 +4,7 @@ import { GraphQLBoolean, GraphQLList } from "graphql"
 import { CardSetRepository } from "../../repository/CardSetRepository"
 
 export const cardSets: GraphqlResolverExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canRead: true},
   type: new GraphQLList(objects.GraphQLSet),
   args: {
     released: { type: GraphQLBoolean }, 

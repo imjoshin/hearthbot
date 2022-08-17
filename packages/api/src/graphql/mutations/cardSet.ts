@@ -5,6 +5,7 @@ import { CardSet } from "../../model/CardSet"
 import { CardSetRepository } from "../../repository/CardSetRepository"
 
 export const cardSet: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canWrite: true},
   type: objects.GraphQLSet,
   args: {
     set: { type: objects.GraphQLSetInput }, 

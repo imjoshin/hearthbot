@@ -3,6 +3,7 @@ import { GraphQLNonNull, GraphQLString } from "graphql"
 import { decode } from "deckstrings"
 
 export const deck: GraphqlResolverExport = (objects: GraphqlObjects) => ({
+  permissions: {canRead: true},
   type: objects.GraphQLDeck,
   args: {
     code: { type: new GraphQLNonNull(GraphQLString) }, 

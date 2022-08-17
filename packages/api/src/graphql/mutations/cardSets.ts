@@ -7,6 +7,7 @@ import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from "graph
 
 
 export const cardSets: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
+  permissions: {canWrite: true},
   type: new GraphQLObjectType({
     name: `CardSetBulkResults`,
     fields: () => ({
