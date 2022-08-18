@@ -1,12 +1,15 @@
 import dotenv from "dotenv"
 import { HearthbotClient } from "./api"
 import * as constants from "./constants"
+import { createLogger } from "./logger"
 import { scrape } from "./scrape"
 
 dotenv.config()
 
 const run = async() => {
   const hearthbotClient = new HearthbotClient()
+  const logger = createLogger(`scrape`)
+
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const response = await hearthbotClient.call(`

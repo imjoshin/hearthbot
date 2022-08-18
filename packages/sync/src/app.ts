@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 import { HearthbotClient } from "./api"
 import * as constants from "./constants"
+import { createLogger } from "./logger"
 import { sync } from "./sync"
 
 dotenv.config()
@@ -9,6 +10,7 @@ const run = async() => {
   // keep this in memory - if we restart might as well run a sync
   const lastVersionSynced: {[K in typeof constants.LOCALES[number]]?: string} = {}
   const hearthbotClient = new HearthbotClient()
+  const logger = createLogger(`sync`)
 
   // eslint-disable-next-line no-constant-condition
   while (true) {

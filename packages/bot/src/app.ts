@@ -2,10 +2,13 @@ import dotenv from "dotenv"
 import Discord from "discord.js"
 import { onCards, onDeck } from "./events"
 import { HearthbotClient } from "./api"
+import { createLogger } from "./logger"
 
 dotenv.config()
 
 const hearthbotClient = new HearthbotClient()
+
+const logger = createLogger(`bot`)
 
 const client = new Discord.Client({
   partials: [Discord.Partials.Message, Discord.Partials.Channel, Discord.Partials.Reaction],
