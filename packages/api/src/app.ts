@@ -7,10 +7,15 @@ import { createSchema } from "./graphql"
 import { getDependencies } from "./dependencies"
 import { Database } from "./db/Database"
 import { authorization } from "./util/auth"
+import { createLogger } from "./logger"
 
 dotenv.config()
 
 const app = async () => {
+  const logger = createLogger(`api`)
+
+  logger.info(`test`)
+
   const port = process.env.PORT || 8080
 
   const dependencies = getDependencies()
