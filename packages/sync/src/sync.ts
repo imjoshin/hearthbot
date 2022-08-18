@@ -4,7 +4,7 @@ import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import { Logger } from "winston"
 
 export const sync = async (version: string, locale: typeof constants.LOCALES[number], hearthbotClient: HearthbotClient, logger: Logger) => {
-  console.log(`${locale}: ${version} - Fetch`)
+  logger.info(`${locale}: ${version} - Fetch`)
   const cacheKey = `cards-${version}-${locale}`
   let cardsJson = getCache(cacheKey)
 
@@ -24,7 +24,7 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
   // chunk cards for batch updating
   let remainingCards = cardsJson
   while (remainingCards.length) {
-    console.log(`${locale}: ${version} - ${cardsJson.length - remainingCards.length}/${cardsJson.length}`)
+    logger.info(`${locale}: ${version} - ${cardsJson.length - remainingCards.length}/${cardsJson.length}`)
     const chunk = remainingCards.slice(0, 100)
     await syncCards(locale, chunk, hearthbotClient)
     remainingCards = remainingCards.slice(100)
