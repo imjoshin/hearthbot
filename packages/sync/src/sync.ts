@@ -2,7 +2,7 @@ import * as constants from "./constants"
 import { getCache, setCache } from "./util"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
 
-export const sync = async (version: string, locale: typeof constants.LOCALES[number], client: HearthbotClient) => {
+export const sync = async (version: string, locale: typeof constants.LOCALES[number], hearthbotClient: HearthbotClient) => {
   console.log(`${locale}: ${version} - Fetch`)
   const cacheKey = `cards-${version}-${locale}`
   let cardsJson = getCache(cacheKey)
@@ -25,12 +25,12 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
   while (remainingCards.length) {
     console.log(`${locale}: ${version} - ${cardsJson.length - remainingCards.length}/${cardsJson.length}`)
     const chunk = remainingCards.slice(0, 100)
-    await syncCards(locale, chunk, client)
+    await syncCards(locale, chunk, hearthbotClient)
     remainingCards = remainingCards.slice(100)
   }
 }
 
-const syncCards = async (locale: string, cards: {[key: string]: any}[], client: HearthbotClient) => {
+const syncCards = async (locale: string, cards: {[key: string]: any}[], hearthbotClient: HearthbotClient) => {
   const shouldCreateCards = locale === `enUS`
   const seenSets = []
   const cardAttributes = []
@@ -114,7 +114,7 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[], client: 
       ) { errors }
     `
 
-    const response = await client.call(`
+    const response = await hearthbotClient.call(`
       mutation {
         ${shouldCreateCards ? createSets : ``}
         ${shouldCreateCards ? createCards : ``}

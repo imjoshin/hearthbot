@@ -1,8 +1,10 @@
 import { JSDOM } from "jsdom"
+import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import * as constants from "./constants"
-import { api, cleanText, generateCardIds, objectToGraphqlArgs } from "./util"
+import { cleanText, generateCardIds } from "./util"
 
-export const scrape = async (setId: string, scrapeUrl: string) => {
+
+export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: HearthbotClient) => {
   console.log(`scraping ${setId} from ${scrapeUrl}`)
 
   let page = 1
@@ -110,7 +112,7 @@ export const scrape = async (setId: string, scrapeUrl: string) => {
       ) { errors }
     `
 
-    await api(`
+    await hearthbotClient.call(`
       mutation {
         ${createCards}
         ${createCardTranslations}

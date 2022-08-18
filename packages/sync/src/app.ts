@@ -8,7 +8,7 @@ dotenv.config()
 const run = async() => {
   // keep this in memory - if we restart might as well run a sync
   const lastVersionSynced: {[K in typeof constants.LOCALES[number]]?: string} = {}
-  const client = new HearthbotClient()
+  const hearthbotClient = new HearthbotClient()
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -28,7 +28,7 @@ const run = async() => {
       // if we don't see a new version, no need to sync again
       const version = versionMatch[1]
       if (version !== lastVersionSynced[language]) {
-        await sync(version, language, client)
+        await sync(version, language, hearthbotClient)
         lastVersionSynced[language] = version
       }
     }

@@ -1,8 +1,11 @@
 import dotenv from "dotenv"
 import Discord from "discord.js"
 import { onCards, onDeck } from "./events"
+import { HearthbotClient } from "./api"
 
 dotenv.config()
+
+const hearthbotClient = new HearthbotClient()
 
 const client = new Discord.Client({
   partials: [Discord.Partials.Message, Discord.Partials.Channel, Discord.Partials.Reaction],
@@ -27,12 +30,12 @@ client.on(`disconnect`, async (erMsg, code) => {
 client.on(`messageCreate`, message => {
   const cards = message.content.match(/\[\[(.*?)\]\]/gm)
   if (cards) {
-    onCards(message, cards)
+    onCards(message, cards, hearthbotClient)
   }
 
   const decks = message.content.match(/AAE((.*?)(=|$| ))+/gm)
   if (decks) {
-    onDeck(message, decks[0])
+    onDeck(message, decks[0], hearthbotClient)
   }
 })
 

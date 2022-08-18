@@ -1,7 +1,7 @@
 import * as constants from "./constants"
 import { Message, ButtonComponent, ButtonStyle } from "discord.js"
 import { createCardEmbed, createDeckEmbed } from "./embed"
-import { api } from "./util"
+import { HearthbotClient } from "./api"
 
 const getDefaultComponents = () => {
   const components = []
@@ -28,14 +28,14 @@ const getDefaultComponents = () => {
   return components
 }
 
-export const onCards = async (message: Message, cards: string[]) => {
+export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient) => {
   // TODO make multiple card query endpoint
   const embeds = []
 
   for (const card of cards) {
     // TODO regex match filter/search params
     const name = card.slice(2, -2)
-    const response = await api(`
+    const response = await hearthbotClient.call(`
       query {
         cards(
           name:"${name}",
@@ -78,10 +78,10 @@ export const onCards = async (message: Message, cards: string[]) => {
   }
 }
 
-export const onDeck = async (message: Message, deckCode: string) => {
+export const onDeck = async (message: Message, deckCode: string, hearthbotClient: HearthbotClient) => {
   const embeds = []
 
-  const response = await api(`
+  const response = await hearthbotClient.call(`
     query {
       deck(code:"${deckCode}") {
         cards {
@@ -98,7 +98,6 @@ export const onDeck = async (message: Message, deckCode: string) => {
       }
     }
   `)
-
 
   const json = await response.json()
   if (json?.data?.deck?.cards?.length) {
