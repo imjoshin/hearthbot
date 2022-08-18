@@ -21,11 +21,11 @@ const client = new Discord.Client({
 )
 
 client.on(`ready`, () => {
-  console.log(`Logged in as ${client.user.tag}!`)
+  logger.info(`Logged in as ${client.user.tag}!`)
 })
 
 client.on(`disconnect`, async (erMsg, code) => {
-  console.log(`----- Bot disconnected from Discord with code ` + code + `for reason: ` + erMsg + ` -----`)
+  logger.warn(`----- Bot disconnected from Discord with code ` + code + `for reason: ` + erMsg + ` -----`)
   await new Promise(res => setTimeout(res, 10000))
   client.login(process.env.DISCORD_CLIENT_TOKEN)
 })

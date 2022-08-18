@@ -23,14 +23,14 @@ const run = async() => {
       const versionMatch = redirectedUrl.match(versionRe)
   
       if (!versionMatch) {
-        console.error(`No version redirect found for url ${directory}`)
+        logger.error(`No version redirect found for url ${directory}`)
         continue
       }
   
       // if we don't see a new version, no need to sync again
       const version = versionMatch[1]
       if (version !== lastVersionSynced[language]) {
-        await sync(version, language, hearthbotClient)
+        await sync(version, language, hearthbotClient, logger)
         lastVersionSynced[language] = version
       }
     }

@@ -2,10 +2,11 @@ import { JSDOM } from "jsdom"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import * as constants from "./constants"
 import { cleanText, generateCardIds } from "./util"
+import { Logger } from "winston"
 
 
-export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: HearthbotClient) => {
-  console.log(`scraping ${setId} from ${scrapeUrl}`)
+export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: HearthbotClient, logger: Logger) => {
+  logger.info(`scraping ${setId} from ${scrapeUrl}`)
 
   let page = 1
 

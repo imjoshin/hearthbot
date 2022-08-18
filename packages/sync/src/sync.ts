@@ -1,8 +1,9 @@
 import * as constants from "./constants"
 import { getCache, setCache } from "./util"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
+import { Logger } from "winston"
 
-export const sync = async (version: string, locale: typeof constants.LOCALES[number], hearthbotClient: HearthbotClient) => {
+export const sync = async (version: string, locale: typeof constants.LOCALES[number], hearthbotClient: HearthbotClient, logger: Logger) => {
   console.log(`${locale}: ${version} - Fetch`)
   const cacheKey = `cards-${version}-${locale}`
   let cardsJson = getCache(cacheKey)
@@ -15,7 +16,7 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
       cardsJson = await req.json()
       setCache(cacheKey, cardsJson)
     } catch (e) {
-      console.log(`Encountered error fetching ${cardsJsonUrl}:\n${e}`)
+      logger.warn(`Encountered error fetching ${cardsJsonUrl}:\n${e}`)
       return
     }
   }
