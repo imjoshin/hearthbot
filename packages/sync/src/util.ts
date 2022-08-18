@@ -19,15 +19,54 @@ export const getCache = (key: string) => {
   return JSON.parse(fs.readFileSync(filePath).toString())
 }
 
-export const api = (query: string, variables?: {[key: string]: any}) => {
+let authorizationToken = ``
+
+export const api = async (query: string, variables?: {[key: string]: any}) => {
   const url: string = process.env.API_HOST
-  return fetch(url, {
-    method: `POST`, 
-    headers: {
-      'Content-Type': `application/json`
-    },
-    body: JSON.stringify({query, variables})
-  })
+
+  const request = () => {
+    return fetch(url, {
+      method: `POST`, 
+      headers: {
+        'Content-Type': `application/json`,
+        Authorization: `Bearer ${authorizationToken}`,
+      },
+      body: JSON.stringify({query, variables})
+    })
+  }
+
+  let returnRes = await request()
+
+  const jsonRes = returnRes.clone()
+  const json = await jsonRes.json()
+
+  if (JSON.stringify(json).indexOf(`Invalid permissions`) >= 0) {
+    const authQuery = `
+      query {
+        login (
+          username: "${process.env.API_USER}",
+          password: "${process.env.API_PASS}",
+        ) { jwt }
+      }
+    `
+    const authReq = await fetch(url, {
+      method: `POST`, 
+      headers: {
+        'Content-Type': `application/json`,
+        authorizationToken,
+      },
+      body: JSON.stringify({query: authQuery})
+    })
+
+    const authJson = await authReq.json()
+    
+    if (authJson.data.login.jwt) {
+      authorizationToken = authJson.data.login.jwt
+      returnRes = await request()
+    }
+  }
+
+  return returnRes
 }
 
 export const objectToGraphqlArgs = (object: {[key: string]: any}): string => {
