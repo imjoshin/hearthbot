@@ -1,9 +1,7 @@
 import * as constants from "./constants"
 import TurndownService from "turndown"
+import { toTitleCase } from "./util"
 
-const toTitleCase = (str: string) => {
-  return str.replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
-}
 
 // TODO this is gross
 type Card = {[key: string]: any}

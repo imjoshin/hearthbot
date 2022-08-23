@@ -1,57 +1,8 @@
-import * as constants from "./constants"
-import { Message, ButtonComponent, ButtonStyle } from "discord.js"
+import { Message } from "discord.js"
 import { createCardEmbed, createDeckEmbed } from "./embed"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import yargs from "yargs"
-
-const getDefaultComponents = () => {
-  const components = []
-
-  if (Math.floor(Math.random() * constants.DONATE_CHANCE) === 0) {
-    components.push({
-      "type": 1,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      components: [
-        {
-          type: 2,
-          style: 5,
-          "label": `Buy me a coffee!`,
-          "url": constants.DONATE_LINK,
-          "emoji": {
-            "name": `☕`
-          },
-        }
-      ]
-    })
-  }
-  
-  return components
-}
-
-const parseRangeArg = (range: string) => {
-  const rangeRe = /(\d+)?(([-\+])(\d+)?)?/
-  const matches = rangeRe.exec(range)
-  const [_0, lowerBound, _2, divider, upperBound] = matches
-
-  if (lowerBound !== undefined && divider === undefined && upperBound === undefined) {
-    return {eq: parseInt(lowerBound)}
-  }
-
-  if (lowerBound !== undefined && divider !== undefined && upperBound === undefined) {
-    return {gte: parseInt(lowerBound)}
-  }
-
-  if (lowerBound === undefined && divider !== undefined && upperBound !== undefined) {
-    return {lte: parseInt(upperBound)}
-  }
-
-  if (lowerBound === undefined && divider === undefined && upperBound === undefined) {
-    return {gte: parseInt(lowerBound), lte: parseInt(upperBound)}
-  }
-
-  return null
-}
+import { parseRangeArg, getDefaultComponents } from "./util"
 
 const parseQuery = async (card: string) => {
   // remove [[...]]
