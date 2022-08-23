@@ -31,7 +31,7 @@ const getDefaultComponents = () => {
 
 const parseQuery = async (card: string) => {
   // remove [[...]]
-  const search = card.slice(2, -2).trim()
+  const search = card.slice(2, -2).trim().replace(/\+/g, `-`)
 
   const args = await yargs(search)
     .option(`token`, {
