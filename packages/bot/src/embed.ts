@@ -43,22 +43,28 @@ export const createCardEmbed = (card: Card) => {
   const stats = (attack != `` || health != ``) ? (attack + health + `\n\n`) : ``
 
   let text = ``
-  if (card.strings.enUS.text && card.strings.enUS.text !== ``) {
-    const turndownService = new TurndownService()
+  let locale = `enUS`
+  if (card.strings && Object.keys(card.strings).length) {
+    locale = Object.keys(card.strings)[0]
 
-    // convert to markdown but preserve newlines
-    let markdownText = card.strings.enUS.text
-      .split(`\n`)
-      .map((line: string) => turndownService.turndown(line))
-      .join(`\n`)
-
-    // some oddities in raw text, filter it out
-    markdownText = markdownText
-      .replace(/\\\[x\\\]/g, ``)
-      .replace(/\*\*\*\*([^*]+)\*\*([^*]*)\*\*/g, `**$1$2**`)
-
-    text = `\n*${markdownText}*`
+    if (card.strings[locale].text && card.strings[locale].text !== ``) {
+      const turndownService = new TurndownService()
+  
+      // convert to markdown but preserve newlines
+      let markdownText = card.strings[locale].text
+        .split(`\n`)
+        .map((line: string) => turndownService.turndown(line))
+        .join(`\n`)
+  
+      // some oddities in raw text, filter it out
+      markdownText = markdownText
+        .replace(/\\\[x\\\]/g, ``)
+        .replace(/\*\*\*\*([^*]+)\*\*([^*]*)\*\*/g, `**$1$2**`)
+  
+      text = `\n*${markdownText}*`
+    }
   }
+
 
   // TODO use set longname if available
   const set = `Set: ` + toTitleCase(card.setId.replace(/_+/g, ` `))
@@ -72,7 +78,7 @@ export const createCardEmbed = (card: Card) => {
 
   return {
     "author": {
-      "name": card.strings.enUS.name,
+      "name": card.strings[locale].name,
       "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
     "color": rarityObject.color,

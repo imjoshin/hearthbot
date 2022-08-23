@@ -29,7 +29,7 @@ const getDefaultComponents = () => {
   return components
 }
 
-const parseFilters = async (card: string) => {
+const parseQuery = async (card: string) => {
   // remove [[...]]
   const search = card.slice(2, -2).trim()
 
@@ -38,6 +38,11 @@ const parseFilters = async (card: string) => {
       alias: `k`,
       type: `boolean`,
       default: false,
+    })
+    .option(`locale`, {
+      alias: `l`,
+      type: `string`,
+      default: `enUS`,
     })
     .parse()
 
@@ -51,7 +56,11 @@ const parseFilters = async (card: string) => {
     collectible: !args.token,
   }
 
-  return objectToGraphqlArgs(filters)
+  const fields = {
+    locale: args.locale,
+  }
+
+  return {filters, fields}
 }
 
 export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient) => {
@@ -60,11 +69,11 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
 
   for (const card of cards) {
     // TODO regex match filter/search params
-    const cardFilters = await parseFilters(card)
+    const query = await parseQuery(card)
     const response = await hearthbotClient.call(`
       query {
         cards(
-          ${cardFilters}
+          ${objectToGraphqlArgs(query.filters)}
         ) {
           attack,
           classes,
@@ -78,7 +87,7 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
           type,
           tribe, 
           strings {
-            enUS{
+            ${query.fields.locale} {
               name,
               text,
             }
