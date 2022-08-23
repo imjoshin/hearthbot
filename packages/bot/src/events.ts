@@ -102,21 +102,25 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
         cards(
           ${objectToGraphqlArgs(query.filters)}
         ) {
-          attack,
-          classes,
-          cost,
-          durability,
-          image,
+          attack
+          classes
+          cost
+          durability
+          image
           health,
-          mechanics,
-          rarity,
-          setId,
-          type,
-          tribe, 
+          mechanics
+          rarity
+          set {
+            id
+            fullName
+            shortName
+          }
+          type
+          tribe
           strings {
             ${query.fields.locale} {
-              name,
-              text,
+              name
+              text
             }
           }
         }
@@ -146,13 +150,13 @@ export const onDeck = async (message: Message, deckCode: string, hearthbotClient
     query {
       deck(code:"${deckCode}") {
         cards {
-          classes,
-          count,
-          rarity,
+          classes
+          count
+          rarity
           strings {
             enUS{
-              name,
-              text,
+              name
+              text
             }
           }
         }
