@@ -69,5 +69,5 @@ export const objectToGraphqlArgs = (object: {[key: string]: any}): string => {
     }
   }
 
-  return `{ ${graphqlFields.join(`, `)} }`
+  return graphqlFields.join(`, `)
 }

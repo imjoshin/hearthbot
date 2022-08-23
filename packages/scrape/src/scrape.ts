@@ -85,7 +85,7 @@ export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: 
         image,
       }
       
-      cardAttributes.push(objectToGraphqlArgs(attributes))
+      cardAttributes.push(`{ ${objectToGraphqlArgs(attributes)} }`)
 
       const translations = {
         cardId: id,
@@ -94,7 +94,7 @@ export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: 
         locale: `enUS`,
       }
 
-      cardTranslations.push(objectToGraphqlArgs(translations))
+      cardTranslations.push(`{ ${objectToGraphqlArgs(translations) }`)
     }
 
     const createCards = `

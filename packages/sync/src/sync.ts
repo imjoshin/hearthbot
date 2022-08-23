@@ -47,7 +47,7 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[], hearthbo
       locale: locale,
     }
 
-    cardTranslations.push(objectToGraphqlArgs(translations))
+    cardTranslations.push(`{ ${objectToGraphqlArgs(translations)} }`)
 
     let classes: string[] | null = null
     if (card.classes) {
@@ -81,10 +81,10 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[], hearthbo
         id: card.set,
       }
 
-      cardAttributes.push(objectToGraphqlArgs(attributes))
+      cardAttributes.push(`{ ${objectToGraphqlArgs(attributes)} }`)
 
       if (seenSets.indexOf(set.id) < 0) {
-        setAttributes.push(objectToGraphqlArgs(set))
+        setAttributes.push(`{ ${objectToGraphqlArgs(set)} }`)
         seenSets.push(set.id)
       }
     }

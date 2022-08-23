@@ -1,7 +1,7 @@
 import * as constants from "./constants"
 import { Message, ButtonComponent, ButtonStyle } from "discord.js"
 import { createCardEmbed, createDeckEmbed } from "./embed"
-import { HearthbotClient } from "./api"
+import { HearthbotClient, objectToGraphqlArgs } from "./api"
 
 const getDefaultComponents = () => {
   const components = []
@@ -28,18 +28,26 @@ const getDefaultComponents = () => {
   return components
 }
 
+const parseFilters = (card: string) => {
+  const filters = {
+    name: card.slice(2, -2),
+    collectible: true,
+  }
+
+  return objectToGraphqlArgs(filters)
+}
+
 export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient) => {
   // TODO make multiple card query endpoint
   const embeds = []
 
   for (const card of cards) {
     // TODO regex match filter/search params
-    const name = card.slice(2, -2)
+    const cardFilters = parseFilters(card)
     const response = await hearthbotClient.call(`
       query {
         cards(
-          name:"${name}",
-          collectible: true,
+          ${cardFilters}
         ) {
           attack,
           classes,
