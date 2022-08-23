@@ -56,7 +56,8 @@ export class HearthbotClient {
   }
 }
 
-export const objectToGraphqlArgs = (object: {[key: string]: any}): string => {
+// Note: this is very fragile, handle with care
+export const objectToGraphqlArgs = (object: {[key: string]: any}, nested = false): string => {
   const graphqlFields: string[] = []
     
   for (const key of Object.keys(object)) {
@@ -65,9 +66,18 @@ export const objectToGraphqlArgs = (object: {[key: string]: any}): string => {
     const value = object[key]
 
     if (value !== undefined && value !== null) {
-      graphqlFields.push(`${key}: ${JSON.stringify(value)}`)
+      if (typeof value === `object` && !Array.isArray(value)) {
+        graphqlFields.push(`${key}: ${objectToGraphqlArgs(value, true)}`)
+      } else {
+        graphqlFields.push(`${key}: ${JSON.stringify(value)}`)
+      }
     }
   }
 
-  return graphqlFields.join(`, `)
+  let string = graphqlFields.join(`, `)
+  if (nested) {
+    string = `{ ${string} }`
+  }
+  
+  return string
 }
