@@ -11,9 +11,9 @@ type Card = {[key: string]: any}
 // TODO clean this up, it's nasty
 export const createCardEmbed = (card: Card) => {
   // get details
-  const type = `**Type:** ${toTitleCase(card.type)}\n`
-  const classt = `**Class:** ${toTitleCase(card.classes.join(`, `))}\n`
-  const rarity = `**Rarity:** ${toTitleCase(card.rarity)}\n`
+  const type = card.type ? `**Type:** ${toTitleCase(card.type)}\n` : ``
+  const classt = card.classes ? `**Class:** ${toTitleCase(card.classes.join(`, `))}\n` : ``
+  const rarity = card.rarity ? `**Rarity:** ${toTitleCase(card.rarity)}\n` : ``
 
   let attack = ``
   let health = ``
@@ -43,7 +43,7 @@ export const createCardEmbed = (card: Card) => {
   const stats = (attack != `` || health != ``) ? (attack + health + `\n\n`) : ``
 
   let text = ``
-  if (card.strings.enUS.text !== ``) {
+  if (card.strings.enUS.text && card.strings.enUS.text !== ``) {
     const turndownService = new TurndownService()
 
     // convert to markdown but preserve newlines
@@ -63,14 +63,19 @@ export const createCardEmbed = (card: Card) => {
   // TODO use set longname if available
   const set = `Set: ` + toTitleCase(card.setId.replace(/_+/g, ` `))
 
+
+  const rarityObject = card.rarity in constants.EMBED.RARITIES 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ? constants.EMBED.RARITIES[card.rarity || ``] 
+    : constants.EMBED.RARITIES.FREE
+
   return {
     "author": {
       "name": card.strings.enUS.name,
       "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    "color": constants.EMBED.RARITIES[card.rarity].color,
+    "color": rarityObject.color,
     "description": stats + type + classt + rarity + text,
     "footer": {
       "text": set

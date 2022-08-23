@@ -2,6 +2,7 @@ import * as constants from "./constants"
 import { Message, ButtonComponent, ButtonStyle } from "discord.js"
 import { createCardEmbed, createDeckEmbed } from "./embed"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
+import yargs from "yargs"
 
 const getDefaultComponents = () => {
   const components = []
@@ -28,10 +29,26 @@ const getDefaultComponents = () => {
   return components
 }
 
-const parseFilters = (card: string) => {
+const parseFilters = async (card: string) => {
+  // remove [[...]]
+  const search = card.slice(2, -2).trim()
+
+  const args = await yargs(search)
+    .option(`token`, {
+      alias: `k`,
+      type: `boolean`,
+      default: false,
+    })
+    .parse()
+
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const name = args[`_`].join(` `)
+
   const filters = {
-    name: card.slice(2, -2),
-    collectible: true,
+    name,
+    collectible: !args.token,
   }
 
   return objectToGraphqlArgs(filters)
@@ -43,7 +60,7 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
 
   for (const card of cards) {
     // TODO regex match filter/search params
-    const cardFilters = parseFilters(card)
+    const cardFilters = await parseFilters(card)
     const response = await hearthbotClient.call(`
       query {
         cards(
