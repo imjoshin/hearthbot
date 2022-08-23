@@ -67,8 +67,8 @@ export const createCardEmbed = (card: Card) => {
 
 
   // TODO use set longname if available
-  const setText = card.set.fullName || card.set.shortName || card.set.id
-  const set = `Set: ` + toTitleCase(setText.replace(/_+/g, ` `))
+  const setText = card.set.fullName || card.set.shortName || toTitleCase(card.set.id.replace(/_+/g, ` `)) 
+  const set = `Set: ` + setText
 
 
   const rarityObject = card.rarity in constants.EMBED.RARITIES 
