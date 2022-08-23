@@ -44,6 +44,18 @@ const parseQuery = async (card: string) => {
       type: `string`,
       default: `enUS`,
     })
+    .option(`rarity`, {
+      alias: `r`,
+      type: `string`,
+    })
+    .option(`tribe`, {
+      alias: `t`,
+      type: `string`,
+    })
+    .option(`class`, {
+      alias: `c`,
+      type: `string`,
+    })
     .parse()
 
 
@@ -51,9 +63,24 @@ const parseQuery = async (card: string) => {
   // @ts-ignore
   const name = args[`_`].join(` `)
 
-  const filters = {
-    name,
+  const filters: {[key: string]: any} = {
     collectible: !args.token,
+  }
+
+  if (name) {
+    filters.name = name
+  }
+
+  if (args.rarity) {
+    filters.rarity = args.rarity
+  }
+
+  if (args.tribe) {
+    filters.tribe = args.tribe
+  }
+
+  if (args.class) {
+    filters.class = args.class
   }
 
   const fields = {
@@ -68,8 +95,8 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
   const embeds = []
 
   for (const card of cards) {
-    // TODO regex match filter/search params
     const query = await parseQuery(card)
+    // console.log({query})
     const response = await hearthbotClient.call(`
       query {
         cards(
