@@ -83,6 +83,8 @@ const parseQuery = async (card: string) => {
     filters.class = args.class
   }
 
+  filters.cost = {lte: 3, gte: 1}
+
   const fields = {
     locale: args.locale,
   }
@@ -96,7 +98,8 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
 
   for (const card of cards) {
     const query = await parseQuery(card)
-    // console.log({query})
+    console.log({query})
+    console.log({filters: objectToGraphqlArgs(query.filters)})
     const response = await hearthbotClient.call(`
       query {
         cards(
