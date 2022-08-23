@@ -29,6 +29,30 @@ const getDefaultComponents = () => {
   return components
 }
 
+const parseRangeArg = (range: string) => {
+  const rangeRe = /(\d+)?(([-\+])(\d+)?)?/
+  const matches = rangeRe.exec(range)
+  const [_0, lowerBound, _2, divider, upperBound] = matches
+
+  if (lowerBound !== undefined && divider === undefined && upperBound === undefined) {
+    return {eq: parseInt(lowerBound)}
+  }
+
+  if (lowerBound !== undefined && divider !== undefined && upperBound === undefined) {
+    return {gte: parseInt(lowerBound)}
+  }
+
+  if (lowerBound === undefined && divider !== undefined && upperBound !== undefined) {
+    return {lte: parseInt(upperBound)}
+  }
+
+  if (lowerBound === undefined && divider === undefined && upperBound === undefined) {
+    return {gte: parseInt(lowerBound), lte: parseInt(upperBound)}
+  }
+
+  return null
+}
+
 const parseQuery = async (card: string) => {
   // remove [[...]]
   const search = card.slice(2, -2).trim().replace(/\+/g, `-`)
@@ -54,6 +78,10 @@ const parseQuery = async (card: string) => {
     })
     .option(`class`, {
       alias: `c`,
+      type: `string`,
+    })
+    .option(`cost`, {
+      alias: `o`,
       type: `string`,
     })
     .parse()
@@ -83,7 +111,12 @@ const parseQuery = async (card: string) => {
     filters.class = args.class
   }
 
-  filters.cost = {lte: 3, gte: 1}
+  if (args.cost) {
+    const cost = parseRangeArg(args.cost)
+    if (cost) {
+      filters.cost = cost
+    }
+  }
 
   const fields = {
     locale: args.locale,
@@ -98,8 +131,6 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
 
   for (const card of cards) {
     const query = await parseQuery(card)
-    console.log({query})
-    console.log({filters: objectToGraphqlArgs(query.filters)})
     const response = await hearthbotClient.call(`
       query {
         cards(
