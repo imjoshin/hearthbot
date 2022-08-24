@@ -9,9 +9,19 @@ type Card = {[key: string]: any}
 // TODO clean this up, it's nasty
 export const createCardEmbed = (card: Card) => {
   // get details
-  const type = card.type ? `**Type:** ${toTitleCase(card.type)}\n` : ``
-  const classt = card.classes ? `**Class:** ${toTitleCase(card.classes.join(`, `))}\n` : ``
-  const rarity = card.rarity ? `**Rarity:** ${toTitleCase(card.rarity)}\n` : ``
+  const metadataAttributes = {
+    type: card.type,
+    class: card.classes && card.classes.join(`, `),
+    rarity: card.rarity,
+    tribe: card.tribe,
+  }
+
+  const metadata = []
+  for (const [name, value] of Object.entries(metadataAttributes)) {
+    if (value) {
+      metadata.push(`**${toTitleCase(name)}** ${toTitleCase(value)}`)
+    }
+  }
 
   let attack = ``
   let health = ``
@@ -83,7 +93,7 @@ export const createCardEmbed = (card: Card) => {
       "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
     "color": rarityObject.color,
-    "description": stats + type + classt + rarity + text,
+    "description": stats + metadata.join(`\n`) + `\n` + text,
     "footer": {
       "text": set
     },
