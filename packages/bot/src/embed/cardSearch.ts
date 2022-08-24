@@ -1,4 +1,5 @@
 import * as constants from "../constants"
+import { Database } from "sqlite3"
 
 // TODO this is gross
 type Card = {[key: string]: any}
@@ -24,11 +25,18 @@ const findDuplicates = (arr: string[]) => {
   return results
 }
 
-export const createCardSearchEmbed = (cards: Card[]) => {
+export const createCardSearchEmbed = (cards: Card[], db: Database) => {
   const cardsToShow = cards.slice(0, 9)
   const duplicateNames = findDuplicates(cardsToShow.map(c => c.strings.enUS.name))
-  const rows = cardsToShow.map(
-    (card, i) => formatCardRow(i, card, duplicateNames.indexOf(card.strings.enUS.name) >= 0)
+  const rows: string[] = []
+  
+  cardsToShow.forEach(
+    (card, i) => {
+      const isDuplicate = duplicateNames.indexOf(card.strings.enUS.name) >= 0
+      rows.push(formatCardRow(i, card, isDuplicate))
+  
+      // TODO insert into db
+    } 
   )
 
   let footer = null

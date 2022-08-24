@@ -2,6 +2,7 @@ import { Message } from "discord.js"
 import { createCardEmbed, createCardSearchEmbed, createDeckEmbed } from "./embed"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import yargs from "yargs"
+import { Database } from "sqlite3"
 import { parseRangeArg, getDefaultComponents } from "./util"
 
 const parseQuery = async (card: string) => {
@@ -133,7 +134,7 @@ const parseQuery = async (card: string) => {
   return {filters, fields}
 }
 
-export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, search = false) => {
+export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, search: boolean, db: Database) => {
   // TODO make multiple card query endpoint
   const embeds = []
   let replyReactions: string[] = []
@@ -178,7 +179,7 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
         const embed = createCardEmbed(cardObject)
         embeds.push(embed)
       } else {
-        const {embed, reactions} = createCardSearchEmbed(json.data.cards)
+        const {embed, reactions} = createCardSearchEmbed(json.data.cards, db)
         embeds.push(embed)
         replyReactions = reactions.concat(reactions)
       }
