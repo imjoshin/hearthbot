@@ -55,6 +55,10 @@ const parseQuery = async (card: string) => {
       alias: `y`,
       type: `string`,
     })
+    .option(`mechanics`, {
+      alias: `m`,
+      type: `array`,
+    })
     .parse()
 
 
@@ -88,6 +92,10 @@ const parseQuery = async (card: string) => {
 
   if (args.type) {
     filters.type = args.type
+  }
+
+  if (args.mechanics) {
+    filters.mechanics = args.mechanics
   }
 
   if (args.cost) {
