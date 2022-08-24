@@ -54,6 +54,10 @@ client.on(`messageCreate`, message => {
 })
 
 client.on(`messageReactionAdd`, (reaction, user) => {
+  if (user.bot) {
+    return
+  }
+  
   const emojiRe = /(\d+)/
   const numberEmojiMatch = emojiRe.exec(reaction.emoji.name)
   if (numberEmojiMatch) {
