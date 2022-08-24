@@ -47,4 +47,15 @@ client.on(`messageCreate`, message => {
   }
 })
 
+client.on(`messageReactionAdd`, (reaction, user) => {
+  const emojiRe = /(\d+)/
+  const numberEmojiMatch = emojiRe.exec(reaction.emoji.name)
+  if (numberEmojiMatch) {
+    const selection = parseInt(numberEmojiMatch[1])
+    const messageId = reaction.message.id
+    const userId = user.id
+    console.log({selection, messageId, userId})
+  }
+})
+
 client.login(process.env.DISCORD_CLIENT_TOKEN)
