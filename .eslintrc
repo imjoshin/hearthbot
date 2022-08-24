@@ -9,7 +9,8 @@
     "quotes": ["error", "backtick"],
     "@typescript-eslint/no-explicit-any": "off",
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
