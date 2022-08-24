@@ -62,9 +62,8 @@ client.on(`messageReactionAdd`, (reaction, user) => {
   const numberEmojiMatch = emojiRe.exec(reaction.emoji.name)
   if (numberEmojiMatch) {
     const number = parseInt(numberEmojiMatch[1])
-    const messageId = reaction.message.id
     const authorId = user.id
-    onCardSearchReaction(authorId, messageId, number, db)
+    onCardSearchReaction(client, reaction.message, authorId, number, hearthbotClient, db)
   }
 })
 
