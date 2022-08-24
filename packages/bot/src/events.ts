@@ -35,6 +35,18 @@ const parseQuery = async (card: string) => {
       alias: `o`,
       type: `string`,
     })
+    .option(`health`, {
+      alias: `h`,
+      type: `string`,
+    })
+    .option(`durability`, {
+      alias: `d`,
+      type: `string`,
+    })
+    .option(`attack`, {
+      alias: `a`,
+      type: `string`,
+    })
     .parse()
 
 
@@ -66,6 +78,27 @@ const parseQuery = async (card: string) => {
     const cost = parseRangeArg(args.cost)
     if (cost) {
       filters.cost = cost
+    }
+  }
+
+  if (args.health) {
+    const health = parseRangeArg(args.health)
+    if (health) {
+      filters.health = health
+    }
+  }
+
+  if (args.durability) {
+    const durability = parseRangeArg(args.durability)
+    if (durability) {
+      filters.durability = durability
+    }
+  }
+
+  if (args.attack) {
+    const attack = parseRangeArg(args.attack)
+    if (attack) {
+      filters.attack = attack
     }
   }
 

@@ -28,6 +28,12 @@ export const getDefaultComponents = () => {
 export const parseRangeArg = (range: string) => {
   const rangeRe = /(\d+)?(([-\+])(\d+)?)?/
   const matches = rangeRe.exec(range)
+
+  if (!matches) {
+    return null
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_0, lowerBound, _2, divider, upperBound] = matches
 
   if (lowerBound !== undefined && divider === undefined && upperBound === undefined) {
@@ -42,7 +48,7 @@ export const parseRangeArg = (range: string) => {
     return {lte: parseInt(upperBound)}
   }
 
-  if (lowerBound === undefined && divider === undefined && upperBound === undefined) {
+  if (lowerBound !== undefined && divider !== undefined && upperBound !== undefined) {
     return {gte: parseInt(lowerBound), lte: parseInt(upperBound)}
   }
 
