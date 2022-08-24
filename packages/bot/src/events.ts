@@ -47,6 +47,14 @@ const parseQuery = async (card: string) => {
       alias: `a`,
       type: `string`,
     })
+    .option(`set`, {
+      alias: `s`,
+      type: `string`,
+    })
+    .option(`type`, {
+      alias: `y`,
+      type: `string`,
+    })
     .parse()
 
 
@@ -72,6 +80,14 @@ const parseQuery = async (card: string) => {
 
   if (args.class) {
     filters.class = args.class
+  }
+
+  if (args.set) {
+    filters.set = args.set
+  }
+
+  if (args.type) {
+    filters.type = args.type
   }
 
   if (args.cost) {
