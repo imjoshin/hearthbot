@@ -11,7 +11,7 @@ const hearthbotClient = new HearthbotClient()
 const db = new Database(`bot.db`)
 
 db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS searchResults (authorId TEXT, messageId TEXT, number INT, dbfId INT)`)
+  db.run(`CREATE TABLE IF NOT EXISTS searchResults (authorId TEXT, messageId TEXT, number INT, dbfId INT, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP)`)
 })
 
 const logger = createLogger(`bot`)

@@ -18,6 +18,7 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
           ${objectToGraphqlArgs(query.filters)}
         ) {
           id
+          dbfId
           attack
           classes
           cost
@@ -51,6 +52,13 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
         embeds.push(embed)
       } else {
         const cardsToDisplay = json.data.cards.slice(0, 9)
+
+        const stmt = db.prepare(`INSERT INTO searchResults (authorId, messageId, number, dbfId) VALUES (?, ?, ?, ?)`)
+        cardsToDisplay.forEach((card: any, i: number) => {
+          stmt.run(message.author.id, message.id, i + 1, card.dbfId)
+        })
+        stmt.finalize()
+
         const {embed, reactions} = createCardSearchEmbed(cardsToDisplay, json.data.cards.length)
         embeds.push(embed)
         replyReactions = reactions.concat(reactions)
