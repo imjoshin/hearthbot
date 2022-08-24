@@ -58,6 +58,8 @@ export const createCardEmbed = (card: Card) => {
       markdownText = markdownText
         .replace(/\\\[x\\\]/g, ``)
         .replace(/\*\*\*\*([^*]+)\*\*([^*]*)\*\*/g, `**$1$2**`)
+        .replace(/\$(\d+)/g, `$1`)
+        .replace(/\((\d+)\)/g, `$1`)
   
       text = `\n*${markdownText}*`
     }
