@@ -61,8 +61,10 @@ export const toTitleCase = (str: string) => {
 }
 
 export const parseQuery = async (card: string) => {
-  // remove [[...]]
-  const search = card.slice(2, -2).trim().replace(/\+/g, `-`)
+  // remove [[...]], then replace + with --
+  const search = card.slice(2, -2).trim()
+    .replace(/^\+\+?/g, `--`)
+    .replace(/(\s+)\+\+?/g, `$1--`)
 
   const args = await yargs(search)
     .option(`token`, {
@@ -116,7 +118,6 @@ export const parseQuery = async (card: string) => {
       type: `array`,
     })
     .parse()
-
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
