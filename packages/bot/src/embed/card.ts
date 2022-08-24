@@ -39,7 +39,7 @@ export const createCardEmbed = (card: Card) => {
   const metadata = []
   for (const [name, value] of Object.entries(metadataAttributes)) {
     if (value) {
-      metadata.push(`**${toTitleCase(name)}** ${toTitleCase(value)}`)
+      metadata.push(`**${toTitleCase(name)}:** ${toTitleCase(value)}`)
     }
   }
 
