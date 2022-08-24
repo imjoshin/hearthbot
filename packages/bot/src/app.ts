@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 import Discord from "discord.js"
 import {Database} from "sqlite3"
-import { onCards, onDeck } from "./events"
+import { onCard, onCardSearch, onDeck } from "./events"
 import { HearthbotClient } from "./api"
 import { createLogger } from "./logger"
 
@@ -39,12 +39,12 @@ client.on(`disconnect`, async (erMsg, code) => {
 client.on(`messageCreate`, message => {
   const cards = message.content.match(/\[\[(.*?)\]\]/gm)
   if (cards) {
-    onCards(message, cards, hearthbotClient, false, db)
+    onCard(message, cards, hearthbotClient)
   }
 
   const cardSearch = message.content.match(/\{\{(.*?)\}\}/gm)
   if (cardSearch) {
-    onCards(message, cardSearch, hearthbotClient, true, db)
+    onCardSearch(message, cardSearch, hearthbotClient, db)
   }
 
   const decks = message.content.match(/AAE((.*?)(=|$| ))+/gm)
