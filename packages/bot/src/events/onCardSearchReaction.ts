@@ -9,8 +9,8 @@ type dbfIdQueryResult = {dbfId: number}
 export const onCardSearchReaction = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, db: Database) => {
   const query = `SELECT dbfId FROM searchResults WHERE authorId = ? AND messageId = ? AND number = ?`
   const params = [authorId, message.id, number]
-  console.log({query, params})
 
+  // grab the dbfId from the db
   const queryResult: dbfIdQueryResult[] = await new Promise((res, rej) => {
     db.all(
       query, 
@@ -25,8 +25,9 @@ export const onCardSearchReaction = async (client: Client, message: Message | Pa
     const { dbfId } = queryResult[0]
 
     // delete to not trigger twice
-    // db.run(`DELETE FROM searchResults WHERE authorId = ? AND messageId = ? AND number = ?`, [authorId, message.id, number])
+    db.run(`DELETE FROM searchResults WHERE authorId = ? AND messageId = ? AND number = ?`, [authorId, message.id, number])
   
+    // grab card data from API
     const response = await hearthbotClient.call(`
       query {
         cards(
@@ -59,12 +60,14 @@ export const onCardSearchReaction = async (client: Client, message: Message | Pa
       }
     `)
 
+    // send embed if we have the card
     const json = await response.json()
     if (json?.data?.cards?.length) {
       const cardObject = json.data.cards[0]
       const embed = createCardEmbed(cardObject)
 
       await message.reply({
+        content: `<@${authorId}>`,
         embeds: [embed], 
         components: getDefaultComponents(),
       })
