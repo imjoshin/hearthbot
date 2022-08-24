@@ -4,20 +4,11 @@ import * as constants from "../constants"
 type Card = {[key: string]: any}
 
 const indexToEmoji = [
-  `one`,
-  `two`,
-  `three`,
-  `four`,
-  `five`,
-  `six`,
-  `seven`,
-  `eight`,
-  `nine`,
-  `zero`,
+  `1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`,`6️⃣`,`7️⃣`,`8️⃣`,`9️⃣`
 ]
 
 const formatCardRow = (index: number, card: Card, isDuplicate: boolean) => {
-  return `:${indexToEmoji[index]}: ${card.strings.enUS.name} ${isDuplicate ? `*(${card.id})*` : ``}`
+  return `${indexToEmoji[index]} ${card.strings.enUS.name} ${isDuplicate ? `*(${card.id})*` : ``}`
 }
 
 const findDuplicates = (arr: string[]) => {
@@ -49,10 +40,15 @@ export const createCardSearchEmbed = (cards: Card[]) => {
   }
   
   // construct embed
-  return {
+  const embed = {
     color: constants.EMBED.RARITIES.FREE.color,
     description: rows.join(`\n`),
     footer,
+  }
+
+  return {
+    embed,
+    reactions: indexToEmoji.slice(0, cardsToShow.length),
   }
 
 }

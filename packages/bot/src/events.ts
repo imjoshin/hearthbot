@@ -136,6 +136,7 @@ const parseQuery = async (card: string) => {
 export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, search = false) => {
   // TODO make multiple card query endpoint
   const embeds = []
+  let replyReactions: string[] = []
 
   for (const card of cards) {
     const query = await parseQuery(card)
@@ -177,17 +178,22 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
         const embed = createCardEmbed(cardObject)
         embeds.push(embed)
       } else {
-        const embed = createCardSearchEmbed(json.data.cards)
+        const {embed, reactions} = createCardSearchEmbed(json.data.cards)
         embeds.push(embed)
+        replyReactions = reactions.concat(reactions)
       }
     }
   }
   
   if (embeds.length) {
-    message.reply({
+    const reply = await message.reply({
       embeds: embeds, 
       components: getDefaultComponents(),
     })
+
+    for (const reaction of replyReactions) {
+      await reply.react(reaction)
+    }
   }
 }
 
