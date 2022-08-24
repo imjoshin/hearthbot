@@ -23,32 +23,25 @@ export const createCardEmbed = (card: Card) => {
     }
   }
 
-  let attack = ``
-  let health = ``
+  const stats = []
 
   if (card.type === `WEAPON`) {
-    const attackEmoji = constants.EMBED.EMOJI.WEAPON_ATTACK
-    const healthEmoji = constants.EMBED.EMOJI.WEAPON_HEALTH
-
     if (card.attack !== null) {
-      attack = `${attackEmoji} **${card.attack}**  `
+      stats.push(`${constants.EMBED.EMOJI.WEAPON_ATTACK} **${card.attack}**`)
     }
     if (card.durability !== null) {
-      health = `${healthEmoji} **${card.durability}**  `
+      stats.push(`${constants.EMBED.EMOJI.WEAPON_HEALTH} **${card.durability}**`)
     }
   } else {
-    const attackEmoji = constants.EMBED.EMOJI.ATTACK
-    const healthEmoji = constants.EMBED.EMOJI.HEALTH
-
     if (card.attack !== null) {
-      attack = `${attackEmoji} **${card.attack}**  `
+      stats.push(`${constants.EMBED.EMOJI.ATTACK} **${card.attack}**`)
     }
     if (card.health !== null) {
-      health = `${healthEmoji} **${card.health}**  `
+      stats.push(`${constants.EMBED.EMOJI.HEALTH} **${card.health}**`)
     }
   }
 
-  const stats = (attack != `` || health != ``) ? (attack + health + `\n\n`) : ``
+  const statsDisplay = stats.length ? stats.join(`  `) + `\n\n` : ``
 
   let text = ``
   let locale = `enUS`
@@ -93,7 +86,7 @@ export const createCardEmbed = (card: Card) => {
       "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
     "color": rarityObject.color,
-    "description": stats + metadata.join(`\n`) + `\n` + text,
+    "description": statsDisplay + metadata.join(`\n`) + `\n` + text,
     "footer": {
       "text": set
     },
