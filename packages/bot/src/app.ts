@@ -36,24 +36,36 @@ client.on(`disconnect`, async (erMsg, code) => {
   client.login(process.env.DISCORD_CLIENT_TOKEN)
 })
 
-client.on(`messageCreate`, message => {
+client.on(`messageCreate`, async message => {
   const cards = message.content.match(/\[\[(.*?)\]\]/gm)
   if (cards) {
-    onCard(message, cards, hearthbotClient)
+    try {
+      await onCard(message, cards, hearthbotClient)
+    } catch (e) {
+      logger.error(`Errored during onCard: ${e.stack}`)
+    }
   }
 
   const cardSearch = message.content.match(/\{\{(.*?)\}\}/gm)
   if (cardSearch) {
-    onCardSearch(message, cardSearch, hearthbotClient, db)
+    try {
+      await onCardSearch(message, cardSearch, hearthbotClient, db)
+    } catch (e) {
+      logger.error(`Errored during onCardSearch: ${e.stack}`)
+    }
   }
 
   const decks = message.content.match(/AAE((.*?)(=|$| ))+/gm)
   if (decks) {
-    onDeck(message, decks[0], hearthbotClient)
+    try {
+      await onDeck(message, decks[0], hearthbotClient)
+    } catch (e) {
+      logger.error(`Errored during onDeck: ${e.stack}`)
+    }
   }
 })
 
-client.on(`messageReactionAdd`, (reaction, user) => {
+client.on(`messageReactionAdd`, async (reaction, user) => {
   if (user.bot) {
     return
   }
@@ -63,7 +75,11 @@ client.on(`messageReactionAdd`, (reaction, user) => {
   if (numberEmojiMatch) {
     const number = parseInt(numberEmojiMatch[1])
     const authorId = user.id
-    onCardSearchReaction(client, reaction.message, authorId, number, hearthbotClient, db)
+    try {
+      await onCardSearchReaction(client, reaction.message, authorId, number, hearthbotClient, db)
+    } catch (e) {
+      logger.error(`Errored during onCardSearchReaction: ${e.stack}`)
+    }
   }
 })
 
