@@ -46,6 +46,7 @@ export const createCardEmbed = (card: Card) => {
 
   const metadataDisplay = metadata.length ? metadata.join(`\n`) + `\n` : ``
 
+  // get text
   let text = ``
   let locale = `enUS`
   if (card.strings && Object.keys(card.strings).length) {
@@ -71,30 +72,31 @@ export const createCardEmbed = (card: Card) => {
     }
   }
 
-
-  // TODO use set longname if available
+  // get set
   const setText = card.set.fullName || card.set.shortName || toTitleCase(card.set.id.replace(/_+/g, ` `)) 
   const set = `Set: ` + setText
 
-
+  // get rarity
   const rarityObject = card.rarity in constants.EMBED.RARITIES 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     ? constants.EMBED.RARITIES[card.rarity || ``] 
     : constants.EMBED.RARITIES.FREE
 
+  // construct embed
   return {
-    "author": {
-      "name": card.strings[locale].name,
-      "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
+    author: {
+      name: card.strings[locale].name,
+      // TODO move these to hearthbot.app
+      icon_url: `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
-    "color": rarityObject.color,
-    "description": statsDisplay + metadataDisplay + text,
-    "footer": {
-      "text": set
+    color: rarityObject.color,
+    description: statsDisplay + metadataDisplay + text,
+    footer: {
+      text: set
     },
-    "thumbnail": {
-      "url": card.image
+    thumbnail: {
+      url: card.image
     },
   }
 }
@@ -109,6 +111,7 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
   const classCards: Card[] = []
   const neutralCards: Card[] = []
 
+  // sort cards into class/neutral
   cards.forEach(card => {
     if (card.classes.indexOf(`NEUTRAL`) >= 0) {
       neutralCards.push(card)
@@ -116,9 +119,11 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
       classCards.push(card)
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // count dust cost
     // @ts-ignore
     dust += constants.EMBED.RARITIES[card.rarity].dust * card.count
+
+    // aggregate all classes seen
     for (const cls of card.classes) {
       if (cls !== `NEUTRAL`) {
         classes.add(cls)
@@ -126,6 +131,7 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
     }
   })
 
+  // sort cards by cost
   classCards.sort(function(a, b) {
     return a.cost - b.cost
   })
@@ -136,6 +142,7 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
   const classCardsText: string[] = []
   const neutralCardsText: string[] = []
 
+  // get display for each card
   classCards.forEach(card => {
     classCardsText.push(formatDeckCardRow(card))
   })
@@ -143,6 +150,7 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
     neutralCardsText.push(formatDeckCardRow(card))
   })
 
+  // get entire embed display
   const fields = [
     {
       name: `Class Cards`,
@@ -156,28 +164,23 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
     },
   ]
 
-  const deckClass = Array.from(classes).join(`, `)
+  const deckClass = Array.from(classes).join(`, `).replace(/DEMONHUNTER/g, `DEMON_HUNTER`)
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const authorIcon = (classes.size == 1 ? constants.EMBED.CLASSES[deckClass].icon : ``)
-  
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const color = (classes.size == 1 ? constants.EMBED.CLASSES[deckClass].color : constants.EMBED.CLASSES.NEUTRAL.color)
+  const deckClassObject = classes.size == 1 ? constants.EMBED.CLASSES[deckClass] : constants.EMBED.CLASSES.NEUTRAL
 
   return {
-    "author": {
-      "name": toTitleCase(deckClass),
-      "icon_url": authorIcon,
+    author: {
+      name: toTitleCase(deckClass.replace(/_/g, ` `)),
+      icon_url: deckClassObject.icon,
     },
-    "title": `View Deckbuilder`,
-    "url": `https://playhearthstone.com/en-us/deckbuilder?deckcode=` + deckCode,
-    "color": color,
-    "fields": fields,
-    "footer": {
-      "icon_url": `https://cdn.discordapp.com/emojis/230175397243781121.png`,
-      "text": `` + dust
+    title: `View Deckbuilder`,
+    url: `https://playhearthstone.com/en-us/deckbuilder?deckcode=` + deckCode,
+    color: deckClassObject.color,
+    fields: fields,
+    footer: {
+      icon_url: `https://cdn.discordapp.com/emojis/230175397243781121.png`,
+      text: `` + dust
     }
   }
 }
