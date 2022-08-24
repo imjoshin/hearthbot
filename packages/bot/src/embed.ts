@@ -8,21 +8,7 @@ type Card = {[key: string]: any}
 
 // TODO clean this up, it's nasty
 export const createCardEmbed = (card: Card) => {
-  // get details
-  const metadataAttributes = {
-    type: card.type,
-    class: card.classes && card.classes.join(`, `),
-    rarity: card.rarity,
-    tribe: card.tribe,
-  }
-
-  const metadata = []
-  for (const [name, value] of Object.entries(metadataAttributes)) {
-    if (value) {
-      metadata.push(`**${toTitleCase(name)}** ${toTitleCase(value)}`)
-    }
-  }
-
+  // get stats
   const stats = []
 
   if (card.type === `WEAPON`) {
@@ -42,6 +28,23 @@ export const createCardEmbed = (card: Card) => {
   }
 
   const statsDisplay = stats.length ? stats.join(`  `) + `\n\n` : ``
+
+  // get metadata
+  const metadataAttributes = {
+    type: card.type,
+    class: card.classes && card.classes.join(`, `),
+    rarity: card.rarity,
+    tribe: card.tribe,
+  }
+
+  const metadata = []
+  for (const [name, value] of Object.entries(metadataAttributes)) {
+    if (value) {
+      metadata.push(`**${toTitleCase(name)}** ${toTitleCase(value)}`)
+    }
+  }
+
+  const metadataDisplay = metadata.length ? metadata.join(`\n`) + `\n` : ``
 
   let text = ``
   let locale = `enUS`
@@ -86,7 +89,7 @@ export const createCardEmbed = (card: Card) => {
       "icon_url": `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
     },
     "color": rarityObject.color,
-    "description": statsDisplay + metadata.join(`\n`) + `\n` + text,
+    "description": statsDisplay + metadataDisplay + text,
     "footer": {
       "text": set
     },
