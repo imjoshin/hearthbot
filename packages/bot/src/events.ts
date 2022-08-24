@@ -144,6 +144,7 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
         cards(
           ${objectToGraphqlArgs(query.filters)}
         ) {
+          id
           attack
           classes
           cost
