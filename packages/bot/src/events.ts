@@ -1,5 +1,5 @@
 import { Message } from "discord.js"
-import { createCardEmbed, createDeckEmbed } from "./embed"
+import { createCardEmbed, createCardSearchEmbed, createDeckEmbed } from "./embed"
 import { HearthbotClient, objectToGraphqlArgs } from "./api"
 import yargs from "yargs"
 import { parseRangeArg, getDefaultComponents } from "./util"
@@ -133,7 +133,7 @@ const parseQuery = async (card: string) => {
   return {filters, fields}
 }
 
-export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient) => {
+export const onCards = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, search = false) => {
   // TODO make multiple card query endpoint
   const embeds = []
 
@@ -171,9 +171,14 @@ export const onCards = async (message: Message, cards: string[], hearthbotClient
 
     const json = await response.json()
     if (json?.data?.cards?.length) {
-      const cardObject = json.data.cards[0]
-      const embed = createCardEmbed(cardObject)
-      embeds.push(embed)
+      if (!search || json.data.cards.length === 1) {
+        const cardObject = json.data.cards[0]
+        const embed = createCardEmbed(cardObject)
+        embeds.push(embed)
+      } else {
+        const embed = createCardSearchEmbed(json.data.cards)
+        embeds.push(embed)
+      }
     }
   }
   

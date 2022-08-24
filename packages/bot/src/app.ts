@@ -36,6 +36,11 @@ client.on(`messageCreate`, message => {
     onCards(message, cards, hearthbotClient)
   }
 
+  const cardSearch = message.content.match(/\{\{(.*?)\}\}/gm)
+  if (cardSearch) {
+    onCards(message, cardSearch, hearthbotClient, true)
+  }
+
   const decks = message.content.match(/AAE((.*?)(=|$| ))+/gm)
   if (decks) {
     onDeck(message, decks[0], hearthbotClient)
