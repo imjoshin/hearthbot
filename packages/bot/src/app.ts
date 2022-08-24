@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 import Discord from "discord.js"
 import {Database} from "sqlite3"
-import { onCard, onCardSearch, onDeck } from "./events"
+import { onCard, onCardSearch, onDeck, onCardSearchReaction } from "./events"
 import { HearthbotClient } from "./api"
 import { createLogger } from "./logger"
 
@@ -61,10 +61,10 @@ client.on(`messageReactionAdd`, (reaction, user) => {
   const emojiRe = /(\d+)/
   const numberEmojiMatch = emojiRe.exec(reaction.emoji.name)
   if (numberEmojiMatch) {
-    const selection = parseInt(numberEmojiMatch[1])
+    const number = parseInt(numberEmojiMatch[1])
     const messageId = reaction.message.id
-    const userId = user.id
-    console.log({selection, messageId, userId})
+    const authorId = user.id
+    onCardSearchReaction(authorId, messageId, number, db)
   }
 })
 

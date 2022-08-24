@@ -8,7 +8,6 @@ import { getDefaultComponents, parseQuery } from "../util"
 export const onCardSearch = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, db: Database) => {
   // TODO make multiple card query endpoint
   const embeds = []
-  let replyReactions: string[] = []
 
   for (const card of cards) {
     const query = await parseQuery(card)
@@ -52,28 +51,33 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
         embeds.push(embed)
       } else {
         const cardsToDisplay = json.data.cards.slice(0, 9)
+        const {embed, reactions} = createCardSearchEmbed(cardsToDisplay, json.data.cards.length)
 
+        // just send reply right away since multiple searches need separate messages
+        const reply = await message.reply({
+          embeds: [embed],
+          components: getDefaultComponents(),
+        })
+        
+        // add search results to db tied to the reply
         const stmt = db.prepare(`INSERT INTO searchResults (authorId, messageId, number, dbfId) VALUES (?, ?, ?, ?)`)
         cardsToDisplay.forEach((card: any, i: number) => {
-          stmt.run(message.author.id, message.id, i + 1, card.dbfId)
+          stmt.run(message.author.id, reply.id, i + 1, card.dbfId)
         })
         stmt.finalize()
 
-        const {embed, reactions} = createCardSearchEmbed(cardsToDisplay, json.data.cards.length)
-        embeds.push(embed)
-        replyReactions = reactions.concat(reactions)
+        // add default reactions to the reply
+        for (const reaction of reactions) {
+          await reply.react(reaction)
+        }
       }
     }
   }
   
   if (embeds.length) {
-    const reply = await message.reply({
+    await message.reply({
       embeds: embeds, 
       components: getDefaultComponents(),
     })
-
-    for (const reaction of replyReactions) {
-      await reply.react(reaction)
-    }
   }
 }

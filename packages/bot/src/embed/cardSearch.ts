@@ -1,5 +1,4 @@
 import * as constants from "../constants"
-import { Database } from "sqlite3"
 
 // TODO this is gross
 type Card = {[key: string]: any}
