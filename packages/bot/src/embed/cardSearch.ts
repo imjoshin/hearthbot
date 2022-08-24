@@ -25,23 +25,15 @@ const findDuplicates = (arr: string[]) => {
   return results
 }
 
-export const createCardSearchEmbed = (cards: Card[], db: Database) => {
-  const cardsToShow = cards.slice(0, 9)
-  const duplicateNames = findDuplicates(cardsToShow.map(c => c.strings.enUS.name))
-  const rows: string[] = []
-  
-  cardsToShow.forEach(
-    (card, i) => {
-      const isDuplicate = duplicateNames.indexOf(card.strings.enUS.name) >= 0
-      rows.push(formatCardRow(i, card, isDuplicate))
-  
-      // TODO insert into db
-    } 
+export const createCardSearchEmbed = (cards: Card[], totalCards: number) => {
+  const duplicateNames = findDuplicates(cards.map(c => c.strings.enUS.name))
+  const rows = cards.map(
+    (card, i) => formatCardRow(i, card, duplicateNames.indexOf(card.strings.enUS.name) >= 0)
   )
 
   let footer = null
-  if (cardsToShow.length < cards.length) {
-    const difference = cards.length - cardsToShow.length
+  if (cards.length < totalCards) {
+    const difference = totalCards - cards.length
     footer = {
       text: `${difference > 10 ? `A lot` : difference} more cards were found...`
     }
@@ -56,7 +48,7 @@ export const createCardSearchEmbed = (cards: Card[], db: Database) => {
 
   return {
     embed,
-    reactions: indexToEmoji.slice(0, cardsToShow.length),
+    reactions: indexToEmoji.slice(0, cards.length),
   }
 
 }

@@ -50,7 +50,8 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
         const embed = createCardEmbed(cardObject)
         embeds.push(embed)
       } else {
-        const {embed, reactions} = createCardSearchEmbed(json.data.cards, db)
+        const cardsToDisplay = json.data.cards.slice(0, 9)
+        const {embed, reactions} = createCardSearchEmbed(cardsToDisplay, json.data.cards.length)
         embeds.push(embed)
         replyReactions = reactions.concat(reactions)
       }
