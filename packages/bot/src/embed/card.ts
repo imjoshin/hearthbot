@@ -62,13 +62,20 @@ export const createCardEmbed = (card: Card) => {
   
       // some oddities in raw text, filter it out
       markdownText = markdownText
+        // newlines
         .replace(/(\.?)\s*\n+\s*/g, `$1 `)
+        // [x]
         .replace(/\\\[x\\\]/g, ``)
+        // double bolds
         .replace(/\*\*\*\*([^*]+)\*\*([^*]*)\*\*/g, `**$1$2**`)
+        // $5 costs
         .replace(/\$(\d+)/g, `$1`)
+        // (5) costs
         .replace(/\((\d+)\)/g, `$1`)
-  
-      text = `\n*${markdownText}*`
+        // @ _(sometext)_ metadata
+        .replace(/@\s*_?\([^)]*\)_?/g, ``)
+        
+      text = `\n*${markdownText.trim()}*`
     }
   }
 
