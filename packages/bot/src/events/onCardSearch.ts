@@ -58,6 +58,11 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
           embeds: [embed],
           components: getDefaultComponents(),
         })
+
+        // this isn't great, but delete old entries about one in 5 times we trigger this
+        if (Math.floor(Math.random() * 5) === 0) {
+          db.run(`DELETE FROM searchResults WHERE createdAt <= DATE('now','-7 day')`)
+        }
         
         // add search results to db tied to the reply
         const stmt = db.prepare(`INSERT INTO searchResults (authorId, messageId, number, dbfId) VALUES (?, ?, ?, ?)`)
