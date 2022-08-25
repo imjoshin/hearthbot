@@ -2,6 +2,7 @@
   "name": "sync",
   "version": "0.0.1",
   "description": "Service to sync cards to db",
+  "source": "src/app.ts",
   "main": "dist/app.js",
   "repository": "git@github.com:j0sh77/hearthbot-api.git",
   "author": "Josh <jcjohnson77@gmail.com>",
@@ -16,11 +17,12 @@
   "devDependencies": {
     "@types/winston": "^2.4.4",
     "nodemon": "^2.0.19",
+    "parcel": "^2.7.0",
     "ts-node": "^10.9.1"
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc",
+    "build": "parcel build",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts"
   }
