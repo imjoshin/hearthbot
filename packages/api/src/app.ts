@@ -35,7 +35,7 @@ const app = async () => {
   }))
   
   app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
+    logger.info(`Started on port ${port}`)
   })
 }
 

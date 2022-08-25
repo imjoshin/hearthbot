@@ -1,6 +1,7 @@
 {
   "name": "hearthbot-api",
   "version": "0.0.1",
+  "source": "src/app.ts",
   "main": "dist/app.js",
   "repository": "git@github.com:j0sh77/hearthbot-api.git",
   "author": "Josh <jcjohnson77@gmail.com>",
@@ -32,11 +33,12 @@
     "@types/mysql": "^2.15.21",
     "@types/winston": "^2.4.4",
     "nodemon": "^2.0.19",
+    "parcel": "^2.7.0",
     "ts-node": "^10.9.1"
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc; cp src/db/schema/*.js dist/db/schema/",
+    "build": "parcel build; mkdir -p dist/db/schema; cp src/db/schema/*.js dist/db/schema/",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "db:connect": "gcloud sql connect hearthbot -u root",

@@ -20,10 +20,17 @@ export const createLogger = (service: string) => {
   })
 
   if (process.env.NODE_ENV === `production`) {
+    // TODO fix the prod logger
     logger.configure({
-      level: `verbose`,
+      level: `info`,
       transports: [
-        new DailyRotateFile()
+        new DailyRotateFile({
+          filename: path.join(logDir, `${service}-%DATE%.log`),
+          datePattern: `YYYY-MM-DD-HH`,
+          zippedArchive: false,
+          maxSize: `2m`,
+          maxFiles: 5,
+        })
       ]
     })
   } else {

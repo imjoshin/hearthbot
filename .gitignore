@@ -1,8 +1,10 @@
 .env
 node_modules
 dist
+logs
 *.log
 *.lock
 *.db
 ignored
 .cache
+.parcel-cache

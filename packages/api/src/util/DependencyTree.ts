@@ -5,7 +5,7 @@ export class DependencyTree {
   }
 
   private getClassName<T extends new(...args: any) => InstanceType<T>>(classType: T): string {
-    const match = classType.toString().match(/class ([a-zA-Z]+)/)
+    const match = classType.toString().match(/class ([$a-zA-Z0-9]+)/)
 
     if (!match) {
       throw new Error(`We couldn't find the name of ${classType.toString()}`)
