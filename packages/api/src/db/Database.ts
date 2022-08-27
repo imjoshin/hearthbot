@@ -1,6 +1,8 @@
 import mysql from "mysql2"
 
 export class Database {
+  public static Name = `Database`
+
   private db
 
   constructor(

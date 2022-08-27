@@ -2,6 +2,8 @@ import { Database } from "../db/Database"
 import { CardTranslation, CardTranslationConstructor } from "../model/CardTranslation"
 
 export class CardTranslationRepository {
+  public static Name = `CardTranslationRepository`
+
   constructor(private db: Database) {}
 
   public getCardTranslations = async (cardId: string): Promise<CardTranslation[]> => {

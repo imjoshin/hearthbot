@@ -9,6 +9,8 @@ type CardSetFilter = {
 }
 
 export class CardSetRepository {
+  public static Name = `CardSetRepository`
+
   constructor(private db: Database) {}
 
   public upsertCardSet = async (set: CardSet) => {

@@ -27,6 +27,8 @@ const cardFilterDefault: CardFilter = {
 }
 
 export class CardRepository {
+  public static Name = `CardRepository`
+  
   constructor(private db: Database) {}
 
   public getCards = async (cardFilter?: CardFilter): Promise<Card[]> => {

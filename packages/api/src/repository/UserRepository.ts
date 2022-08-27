@@ -2,6 +2,8 @@ import { Database } from "../db/Database"
 import { User, UserConstructor } from "../model/User"
 
 export class UserRepository {
+  public static Name = `UserRepository`
+
   constructor(private db: Database) {}
 
   public getUser = async (username: string): Promise<User> => {

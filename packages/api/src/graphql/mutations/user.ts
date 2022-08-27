@@ -3,7 +3,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphqlObjects } from "../resolvers"
 import { UserRepository } from "../../repository/UserRepository"
 import { User } from "../../model/User"
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 export const user: GraphqlMutationExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
   permissions: {admin: true},

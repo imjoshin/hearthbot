@@ -3,7 +3,7 @@ import { DependencyTree } from "../../util/DependencyTree"
 import { GraphQLObjectType, GraphQLString } from "graphql"
 import { UserRepository } from "../../repository/UserRepository"
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { PRIVATE_KEY } from "../../util/auth"
 
 export const login: GraphqlResolverExport = (objects: GraphqlObjects, dependencies: DependencyTree) => ({
