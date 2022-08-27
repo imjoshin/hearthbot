@@ -36,6 +36,6 @@ jobs:
         REMOTE_API_KEY: ${{ secrets.REMOTE_API_KEY }}
         REMOTE_API_HOST: ${{ secrets.REMOTE_API_HOST }}
     - name: rsync build
-      run:  rsync -aP api/dist/* api:${{ secrets.REMOTE_API_PATH }}
+      run:  rsync -aP dist/* api:${{ secrets.REMOTE_API_PATH }}
     - name: Restart service
       run: ssh api 'ls'
