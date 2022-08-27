@@ -5,7 +5,7 @@ import winston from "winston"
 import DailyRotateFile from "winston-daily-rotate-file"
 
 export const createLogger = (service: string) => {
-  const logDir = process.env.HEARTHBOT_LOG_DIR || path.join(__dirname, `..`, `..`, `logs`)
+  const logDir = process.env.LOG_DIR || path.join(__dirname, `..`, `..`, `logs`)
   const logger = winston.createLogger({
     level: `info`,
     format: winston.format.combine(

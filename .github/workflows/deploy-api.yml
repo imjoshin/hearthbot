@@ -45,6 +45,7 @@ jobs:
         DB_HOST="$DB_HOST"
         PUBLIC_KEY="$PUBLIC_KEY"
         PRIVATE_KEY="$PRIVATE_KEY"
+        LOG_DIR="/var/log/hearthbot"
       env:
         PORT: ${{ secrets.ENV_API_PORT }}
         DB_USER: ${{ secrets.ENV_API_DB_USER }}
