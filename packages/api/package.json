@@ -38,7 +38,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "parcel build; mkdir -p dist/db/schema; cp src/db/schema/*.js dist/db/schema/",
+    "build": "parcel build; mkdir -p dist/src/db/schema; cp src/db/schema/*.js dist/src/db/schema/",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "test": "echo 'test'"
