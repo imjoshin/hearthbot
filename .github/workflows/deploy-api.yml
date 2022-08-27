@@ -54,6 +54,6 @@ jobs:
         PUBLIC_KEY: ${{ secrets.ENV_API_PUBLIC_KEY }}
         PRIVATE_KEY: ${{ secrets.ENV_API_PRIVATE_KEY }}
     - name: rsync build
-      run:  rsync -aP dist/* api:${{ secrets.REMOTE_API_PATH }}
+      run:  rsync -aP dist/ api:${{ secrets.REMOTE_API_PATH }}
     - name: Restart service
       run: ssh api 'ls ${{ secrets.REMOTE_API_PATH }}'
