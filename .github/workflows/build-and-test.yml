@@ -30,37 +30,21 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Get root changed files
+    - name: Get changed files
       id: changed-files-root
       uses: tj-actions/changed-files@v29.0.1
       with:
         since_last_remote_commit: "true"
-        # path: ./.github
-
-    - name: List all root files
-      run: |
-        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
-          echo "$file was modified"
-        done
-
-    - name: Get package changed files
-      id: changed-files-package
-      uses: tj-actions/changed-files@v29.0.1
-      with:
-        since_last_remote_commit: "true"
-        path: ./packages/api
 
     - name: Validate changed files
       id: validate-files
       run: |
         for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
-          echo ::set-output name=has_files_changed::1
-          return 
-        done
-
-        for file in ${{ steps.changed-files-package.outputs.all_changed_and_modified_files }}; do
-          echo ::set-output name=has_files_changed::1
-          return
+          if [[ $file == packages/api/* ]] || [[ $file == .github/* ]]; then
+            echo "Detected change in $file"
+            echo ::set-output name=has_files_changed::1
+            break
+          fi
         done
 
   api-build:
