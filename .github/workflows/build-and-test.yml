@@ -26,11 +26,35 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Get changed files
+    - name: Get root changed filed
+      id: changed-files-root
       uses: tj-actions/changed-files@v29.0.1
+      with:
+        since_last_remote_commit: "true"
+        path: ".github"
+
+    - name: Get package changed filed
+      id: changed-files-package
+      uses: tj-actions/changed-files@v29.0.1
+      with:
+        since_last_remote_commit: "true"
+        path: "packages/api"
+
+    - name: Validate changed files
+      run: |
+        for file in ${{ steps.changed-files-root.outputs.all_changed_files }}; do
+          echo ::set-output name=has_files_changed::1
+          return 
+        done
+
+        for file in ${{ steps.changed-files-package.outputs.all_changed_files }}; do
+          echo ::set-output name=has_files_changed::1
+          return
+        done
 
   api-build:
     needs: api-setup
+    if: steps.api-setup.outputs.has_files_changed == 1
     runs-on: ubuntu-latest
     defaults:
        run:
@@ -48,7 +72,7 @@ jobs:
 
     - run: yarn install
     - run: yarn build
-    
+
   # bot-build:
   #   runs-on: ubuntu-latest
   #   defaults:
