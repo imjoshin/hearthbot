@@ -35,7 +35,7 @@ jobs:
       uses: tj-actions/changed-files@v29.0.1
       with:
         since_last_remote_commit: "true"
-        path: ./.github
+        # path: ./.github
 
     - name: List all root files
       run: |
