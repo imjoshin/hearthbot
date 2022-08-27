@@ -11,18 +11,18 @@ on:
 
 jobs:
   api:
-    uses: './.github/workflows/templates/build-and-test'
+    uses: './.github/templates/build-and-test'
     with:
       package: 'api'
   bot:
-    uses: './.github/workflows/templates/build-and-test'
+    uses: './.github/templates/build-and-test'
     with:
       package: 'bot'
   scrape:
-    uses: './.github/workflows/templates/build-and-test'
+    uses: './.github/templates/build-and-test'
     with:
       package: 'scrape'
   sync:
-    uses: './.github/workflows/templates/build-and-test'
+    uses: './.github/templates/build-and-test'
     with:
       package: 'sync'
