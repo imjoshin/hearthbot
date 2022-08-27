@@ -35,24 +35,24 @@ jobs:
       uses: tj-actions/changed-files@v29.0.1
       with:
         since_last_remote_commit: "true"
-        path: ".github"
+        path: ./.github
 
     - name: Get package changed files
       id: changed-files-package
       uses: tj-actions/changed-files@v29.0.1
       with:
         since_last_remote_commit: "true"
-        path: "packages/api"
+        path: ./packages/api"
 
     - name: Validate changed files
       id: validate-files
       run: |
-        for file in ${{ steps.changed-files-root.outputs.all_changed_files }}; do
+        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
           echo ::set-output name=has_files_changed::1
           return 
         done
 
-        for file in ${{ steps.changed-files-package.outputs.all_changed_files }}; do
+        for file in ${{ steps.changed-files-package.outputs.all_changed_and_modified_files }}; do
           echo ::set-output name=has_files_changed::1
           return
         done
