@@ -42,7 +42,7 @@ jobs:
       uses: tj-actions/changed-files@v29.0.1
       with:
         since_last_remote_commit: "true"
-        path: ./packages/api"
+        path: ./packages/api
 
     - name: Validate changed files
       id: validate-files
