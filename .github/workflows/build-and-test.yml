@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+name: Hearthbot CI
 
 on:
   push:
@@ -62,58 +59,166 @@ jobs:
         cache-dependency-path: ./packages/api/yarn.lock
     - run: yarn install
     - run: yarn build
+    - run: yarn test
 
-  # bot-build:
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #      run:
-  #        working-directory: ./packages/bot/
-  #   strategy:
-  #     matrix:
-  #       node-version: [18.x]
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #       cache: 'yarn'
-  #       cache-dependency-path: ./packages/bot/yarn.lock
-  #   - run: yarn install
-  #   - run: yarn build
-  # scrape-build:
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #      run:
-  #        working-directory: ./packages/scrape/
-  #   strategy:
-  #     matrix:
-  #       node-version: [18.x]
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #       cache: 'yarn'
-  #       cache-dependency-path: ./packages/scrape/yarn.lock
-  #   - run: yarn install
-  #   - run: yarn build
-  # sync-build:
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #      run:
-  #        working-directory: ./packages/sync/
-  #   strategy:
-  #     matrix:
-  #       node-version: [18.x]
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #       cache: 'yarn'
-  #       cache-dependency-path: ./packages/sync/yarn.lock
-  #   - run: yarn install
-  #   - run: yarn build
+  #######
+  # Bot #
+  #######
+
+  bot-setup:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/bot/
+    outputs:
+      has_files_changed: ${{ steps.validate-files.outputs.has_files_changed }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files-root
+      uses: tj-actions/changed-files@v29.0.1
+      with:
+        since_last_remote_commit: "true"
+
+    - name: Validate changed files
+      id: validate-files
+      run: |
+        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
+          if [[ $file == packages/bot/* ]] || [[ $file == .github/* ]]; then
+            echo "Detected change in $file"
+            echo ::set-output name=has_files_changed::1
+            break
+          fi
+        done
+
+  bot-build:
+    needs: bot-setup
+    if: needs.bot-setup.outputs.has_files_changed == 1
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/bot/
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        cache-dependency-path: ./packages/bot/yarn.lock
+    - run: yarn install
+    - run: yarn build
+    - run: yarn test
+
+  ##########
+  # Scrape #
+  ##########
+
+  scrape-setup:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/scrape/
+    outputs:
+      has_files_changed: ${{ steps.validate-files.outputs.has_files_changed }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files-root
+      uses: tj-actions/changed-files@v29.0.1
+      with:
+        since_last_remote_commit: "true"
+
+    - name: Validate changed files
+      id: validate-files
+      run: |
+        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
+          if [[ $file == packages/scrape/* ]] || [[ $file == .github/* ]]; then
+            echo "Detected change in $file"
+            echo ::set-output name=has_files_changed::1
+            break
+          fi
+        done
+
+  scrape-build:
+    needs: scrape-setup
+    if: needs.scrape-setup.outputs.has_files_changed == 1
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/scrape/
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        cache-dependency-path: ./packages/scrape/yarn.lock
+    - run: yarn install
+    - run: yarn build
+    - run: yarn test
+
+  ########
+  # Sync #
+  ########
+
+  sync-setup:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/sync/
+    outputs:
+      has_files_changed: ${{ steps.validate-files.outputs.has_files_changed }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files-root
+      uses: tj-actions/changed-files@v29.0.1
+      with:
+        since_last_remote_commit: "true"
+
+    - name: Validate changed files
+      id: validate-files
+      run: |
+        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
+          if [[ $file == packages/sync/* ]] || [[ $file == .github/* ]]; then
+            echo "Detected change in $file"
+            echo ::set-output name=has_files_changed::1
+            break
+          fi
+        done
+
+  sync-build:
+    needs: sync-setup
+    if: needs.sync-setup.outputs.has_files_changed == 1
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/sync/
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        cache-dependency-path: ./packages/sync/yarn.lock
+    - run: yarn install
+    - run: yarn build
+    - run: yarn test
