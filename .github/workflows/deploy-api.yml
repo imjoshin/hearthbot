@@ -19,4 +19,23 @@ jobs:
         cache-dependency-path: ./packages/api/yarn.lock
     - run: yarn install
     - run: yarn build
-    - run: echo "TODO - actually deploy"
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$REMOTE_API_KEY" > ~/.ssh/api.key
+        chmod 600 ~/.ssh/api.key
+        cat >>~/.ssh/config <<END
+        Host api
+          HostName $REMOTE_API_HOST
+          User $REMOTE_API_USER
+          IdentityFile ~/.ssh/api.key
+          StrictHostKeyChecking no
+        END
+      env:
+        REMOTE_API_USER: ${{ secrets.REMOTE_API_USER }}
+        REMOTE_API_KEY: ${{ secrets.REMOTE_API_KEY }}
+        REMOTE_API_HOST: ${{ secrets.REMOTE_API_HOST }}
+    - name: rsync build
+      run:  rsync -aP api/dist/* api:${{ secrets.REMOTE_API_PATH }}
+    - name: Restart service
+      run: ssh api 'ls'
