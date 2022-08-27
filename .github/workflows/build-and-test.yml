@@ -10,75 +10,19 @@ on:
     branches: [ "master" ]
 
 jobs:
-  api-build:
-    runs-on: ubuntu-latest
-    defaults:
-       run:
-         working-directory: ./packages/api/
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        cache-dependency-path: ./packages/api/yarn.lock
-    - run: yarn install
-    - run: yarn build
-  bot-build:
-    runs-on: ubuntu-latest
-    defaults:
-       run:
-         working-directory: ./packages/bot/
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        cache-dependency-path: ./packages/bot/yarn.lock
-    - run: yarn install
-    - run: yarn build
-  scrape-build:
-    runs-on: ubuntu-latest
-    defaults:
-       run:
-         working-directory: ./packages/scrape/
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        cache-dependency-path: ./packages/scrape/yarn.lock
-    - run: yarn install
-    - run: yarn build
-  sync-build:
-    runs-on: ubuntu-latest
-    defaults:
-       run:
-         working-directory: ./packages/sync/
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        cache-dependency-path: ./packages/sync/yarn.lock
-    - run: yarn install
-    - run: yarn build
+  api:
+    uses: './.github/workflows/templates/build-and-test'
+    with:
+      package: 'api'
+  bot:
+    uses: './.github/workflows/templates/build-and-test'
+    with:
+      package: 'bot'
+  scrape:
+    uses: './.github/workflows/templates/build-and-test'
+    with:
+      package: 'scrape'
+  sync:
+    uses: './.github/workflows/templates/build-and-test'
+    with:
+      package: 'sync'

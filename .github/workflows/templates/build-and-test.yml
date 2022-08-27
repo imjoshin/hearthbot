@@ -1,0 +1,24 @@
+name: build-and-test
+
+inputs:
+  package: 
+    required: true
+
+runs:
+  runs-on: ubuntu-latest
+  defaults:
+      run:
+        working-directory: ./packages/${{ inputs.package }}/
+  strategy:
+    matrix:
+      node-version: [18.x]
+  steps:
+  - uses: actions/checkout@v3
+  - name: Use Node.js ${{ matrix.node-version }}
+    uses: actions/setup-node@v3
+    with:
+      node-version: ${{ matrix.node-version }}
+      cache: 'yarn'
+      cache-dependency-path: ./packages/${{ inputs.package }}/yarn.lock
+  - run: yarn install
+  - run: yarn build
