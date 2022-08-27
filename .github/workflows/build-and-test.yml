@@ -37,6 +37,12 @@ jobs:
         since_last_remote_commit: "true"
         path: ./.github
 
+    - name: List all root files
+      run: |
+        for file in ${{ steps.changed-files-root.outputs.all_changed_and_modified_files }}; do
+          echo "$file was modified"
+        done
+
     - name: Get package changed files
       id: changed-files-package
       uses: tj-actions/changed-files@v29.0.1
