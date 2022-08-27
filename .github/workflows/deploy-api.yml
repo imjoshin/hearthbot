@@ -18,24 +18,6 @@ jobs:
         cache: 'yarn'
         cache-dependency-path: ./packages/api/yarn.lock
     - run: yarn install
-    - name: Write Environment Variables
-      run: |
-        cat >>./.env <<END
-        PORT=$PORT
-        DB_USER="$DB_USER"
-        DB_PASS="$DB_PASS"
-        DB_NAME="$DB_NAME"
-        DB_HOST="$DB_HOST"
-        PUBLIC_KEY="$PUBLIC_KEY"
-        PRIVATE_KEY="$PRIVATE_KEY"
-      env:
-        PORT: ${{ secrets.ENV_API_PORT }}
-        DB_USER: ${{ secrets.ENV_API_DB_USER }}
-        DB_PASS: ${{ secrets.ENV_API_DB_PASS }}
-        DB_NAME: ${{ secrets.ENV_API_DB_NAME }}
-        DB_HOST: ${{ secrets.ENV_API_DB_HOST }}
-        PUBLIC_KEY: ${{ secrets.ENV_API_PUBLIC_KEY }}
-        PRIVATE_KEY: ${{ secrets.ENV_API_PRIVATE_KEY }}
     - run: yarn build
     - name: Configure SSH
       run: |
