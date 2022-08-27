@@ -19,9 +19,6 @@ jobs:
     defaults:
        run:
          working-directory: ./packages/api/
-    strategy:
-      matrix:
-        node-version: [18.x]
     outputs:
       has_files_changed: ${{ steps.validate-files.outputs.has_files_changed }}
     steps:
