@@ -22,6 +22,8 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+    outputs:
+      has_files_changed: ${{ steps.validate-files.outputs.has_files_changed }}
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
@@ -41,6 +43,7 @@ jobs:
         path: "packages/api"
 
     - name: Validate changed files
+      id: validate-files
       run: |
         for file in ${{ steps.changed-files-root.outputs.all_changed_files }}; do
           echo ::set-output name=has_files_changed::1
@@ -54,7 +57,7 @@ jobs:
 
   api-build:
     needs: api-setup
-    if: jobs.api-setup.steps.api-setup.outputs.has_files_changed == 1
+    if: needs.api-setup.outputs.has_files_changed == 1
     runs-on: ubuntu-latest
     defaults:
        run:
