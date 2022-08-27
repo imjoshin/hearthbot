@@ -38,7 +38,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "esbuild src/app.ts --bundle --platform=node --target=node18.5 --outdir=dist && mkdir -p dist/src/db/schema && cp src/db/schema/*.js dist/src/db/schema/",
+    "build": "esbuild src/app.ts --bundle --platform=node --target=node18.5 --outdir=dist && cp src/db/schema/*.js dist/",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "test": "echo 'test'"
