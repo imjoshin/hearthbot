@@ -1,0 +1,10 @@
+name: Deploy API
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/api/
+    steps:
+      run: echo "deploy"
