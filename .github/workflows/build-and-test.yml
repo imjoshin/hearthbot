@@ -12,6 +12,9 @@ on:
 jobs:
   api-build:
     runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/api/
     strategy:
       matrix:
         node-version: [18.x]
@@ -22,12 +25,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: 'packages/api/yarn-lock.json'
-    - run: cd packages/api
     - run: yarn install
     - run: yarn build
   bot-build:
     runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/bot/
     strategy:
       matrix:
         node-version: [18.x]
@@ -38,12 +42,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: 'packages/bot/yarn-lock.json'
-    - run: cd packages/bot
     - run: yarn install
     - run: yarn build
   scrape-build:
     runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/scrape/
     strategy:
       matrix:
         node-version: [18.x]
@@ -54,12 +59,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: 'packages/scrape/yarn-lock.json'
-    - run: cd packages/scrape
     - run: yarn install
     - run: yarn build
   sync-build:
     runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/sync/
     strategy:
       matrix:
         node-version: [18.x]
@@ -70,7 +76,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: 'packages/sync/yarn-lock.json'
-    - run: cd packages/sync
     - run: yarn install
     - run: yarn build
