@@ -14,35 +14,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      name: Checkout
-    - uses: './.github/templates/build-and-test'
-      name: Build and Test API
-      with:
-        package: 'api'
+    - name: Checkout
+    uses: './.github/templates/build-and-test'
+    with:
+      package: 'api'
   bot:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      name: Checkout
-    - uses: './.github/templates/build-and-test'
-      name: Build and Test Bot
-      with:
-        package: 'bot'
+    - name: Checkout
+    uses: './.github/templates/build-and-test'
+    with:
+      package: 'bot'
   scrape:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      name: Checkout
-    - uses: './.github/templates/build-and-test'
-      name: Build and Test Scrape
-      with:
-        package: 'scrape'
+    - name: Checkout
+    uses: './.github/templates/build-and-test'
+    with:
+      package: 'scrape'
   sync:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      name: Checkout
-    - uses: './.github/templates/build-and-test'
-      name: Build and Test Sync
-      with:
-        package: 'sync'
+    - name: Checkout
+    uses: './.github/templates/build-and-test'
+    with:
+      package: 'sync'
