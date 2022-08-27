@@ -22,6 +22,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'packages/api/yarn-lock.json'
     - run: cd packages/api
     - run: yarn install
     - run: yarn build
@@ -37,6 +38,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'packages/bot/yarn-lock.json'
     - run: cd packages/bot
     - run: yarn install
     - run: yarn build
@@ -52,6 +54,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'packages/scrape/yarn-lock.json'
     - run: cd packages/scrape
     - run: yarn install
     - run: yarn build
@@ -67,6 +70,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'packages/sync/yarn-lock.json'
     - run: cd packages/sync
     - run: yarn install
     - run: yarn build
