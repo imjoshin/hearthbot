@@ -1,0 +1,41 @@
+name: Deploy Bot
+
+on: [workflow_dispatch]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/bot/
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        cache-dependency-path: ./packages/bot/yarn.lock
+    - run: yarn install
+    - run: yarn build
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$REMOTE_BOT_KEY" > ~/.ssh/bot.key
+        chmod 600 ~/.ssh/bot.key
+        cat >>~/.ssh/config <<END
+        Host bot
+          HostName $REMOTE_BOT_HOST
+          User $REMOTE_BOT_USER
+          IdentityFile ~/.ssh/bot.key
+          StrictHostKeyChecking no
+        END
+      env:
+        REMOTE_BOT_USER: ${{ secrets.REMOTE_BOT_USER }}
+        REMOTE_BOT_KEY: ${{ secrets.REMOTE_BOT_KEY }}
+        REMOTE_BOT_HOST: ${{ secrets.REMOTE_BOT_HOST }}
+    - name: rsync build
+      run:  rsync -aP dist/* bot:${{ secrets.REMOTE_BOT_PATH }}
+    - name: Restart service
+      run: ssh bot 'ls'

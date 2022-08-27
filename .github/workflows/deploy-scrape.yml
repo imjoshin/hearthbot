@@ -1,0 +1,41 @@
+name: Deploy Scrape
+
+on: [workflow_dispatch]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ./packages/scrape/
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        cache-dependency-path: ./packages/scrape/yarn.lock
+    - run: yarn install
+    - run: yarn build
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$REMOTE_SCRAPE_KEY" > ~/.ssh/scrape.key
+        chmod 600 ~/.ssh/scrape.key
+        cat >>~/.ssh/config <<END
+        Host scrape
+          HostName $REMOTE_SCRAPE_HOST
+          User $REMOTE_SCRAPE_USER
+          IdentityFile ~/.ssh/scrape.key
+          StrictHostKeyChecking no
+        END
+      env:
+        REMOTE_SCRAPE_USER: ${{ secrets.REMOTE_SCRAPE_USER }}
+        REMOTE_SCRAPE_KEY: ${{ secrets.REMOTE_SCRAPE_KEY }}
+        REMOTE_SCRAPE_HOST: ${{ secrets.REMOTE_SCRAPE_HOST }}
+    - name: rsync build
+      run:  rsync -aP dist/* scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
+    - name: Restart service
+      run: ssh scrape 'ls'
