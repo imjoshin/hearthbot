@@ -38,4 +38,4 @@ jobs:
     - name: rsync build
       run:  rsync -aP dist/* sync:${{ secrets.REMOTE_SYNC_PATH }}
     - name: Restart service
-      run: ssh sync 'ls'
+      run: ssh sync 'ls ${{ secrets.REMOTE_SYNC_PATH }}'

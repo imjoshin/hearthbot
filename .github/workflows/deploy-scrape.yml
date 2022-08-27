@@ -38,4 +38,4 @@ jobs:
     - name: rsync build
       run:  rsync -aP dist/* scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
     - name: Restart service
-      run: ssh scrape 'ls'
+      run: ssh scrape 'ls ${{ secrets.REMOTE_SCRAPE_PATH }}'

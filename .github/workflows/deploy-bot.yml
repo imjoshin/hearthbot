@@ -38,4 +38,4 @@ jobs:
     - name: rsync build
       run:  rsync -aP dist/* bot:${{ secrets.REMOTE_BOT_PATH }}
     - name: Restart service
-      run: ssh bot 'ls'
+      run: ssh bot 'ls ${{ secrets.REMOTE_BOT_PATH }}'
