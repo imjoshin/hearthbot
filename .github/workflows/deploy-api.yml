@@ -1,5 +1,7 @@
 name: Deploy API
 
+on: [workflow_dispatch]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
