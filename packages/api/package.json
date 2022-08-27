@@ -41,8 +41,6 @@
     "build": "parcel build; mkdir -p dist/db/schema; cp src/db/schema/*.js dist/db/schema/",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
-    "db:connect": "gcloud sql connect hearthbot -u root",
-    "gcloud:revs": "gcloud run revisions list --region us-central1",
-    "gcloud:revs:delete": "gcloud run revisions delete --region us-central1"
+    "test": "echo 'test'"
   }
 }

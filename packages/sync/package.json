@@ -24,6 +24,7 @@
     "clean": "rm -rf dist",
     "build": "parcel build",
     "start": "node dist/app.js",
-    "dev": "NODE_ENV='development' nodemon src/app.ts"
+    "dev": "NODE_ENV='development' nodemon src/app.ts",
+    "test": "echo 'test'"
   }
 }
