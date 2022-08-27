@@ -54,7 +54,7 @@ jobs:
 
   api-build:
     needs: api-setup
-    if: steps.api-setup.outputs.has_files_changed == 1
+    if: jobs.api-setup.steps.api-setup.outputs.has_files_changed == 1
     runs-on: ubuntu-latest
     defaults:
        run:
