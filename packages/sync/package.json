@@ -16,13 +16,13 @@
   },
   "devDependencies": {
     "@types/winston": "^2.4.4",
+    "esbuild": "^0.15.5",
     "nodemon": "^2.0.19",
-    "parcel": "^2.7.0",
     "ts-node": "^10.9.1"
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "parcel build",
+    "build": "esbuild src/app.ts --bundle --platform=node --target=node18.5 --outdir=dist",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "test": "echo 'test'"
