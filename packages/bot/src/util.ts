@@ -170,7 +170,7 @@ export const parseQuery = async (card: string) => {
       alias: `y`,
       type: `string`,
     })
-    .option(`mechanics`, {
+    .option(`mechanic`, {
       alias: `m`,
       type: `array`,
     })
@@ -216,8 +216,8 @@ export const parseQuery = async (card: string) => {
     filters.type = args.type
   }
 
-  if (args.mechanics) {
-    filters.mechanics = args.mechanics
+  if (args.mechanic) {
+    filters.mechanics = args.mechanic
   }
 
   if (args.cost) {
