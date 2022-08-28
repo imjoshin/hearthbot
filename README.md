@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Hearthbot Logo" src="./git-logo.png" width="500" />
+  <img alt="Hearthbot Logo" src="./images/git-logo.png" width="500" />
 </p>
 
 <p align="center">
@@ -12,6 +12,69 @@
     This project is not affiliated with Blizzard Entertainment.
   </sub>
 </p>
+
+## Usage
+
+| Full          | Short | Description |
+|----------------|-------|
+| `+attack`     | `+a` | The attack of a card |
+| `+class`      | `+c` | The class of a card |
+| `+cost`       | `+o` | The cost of a card |
+| `+durability` | `+d` | The durability of a *weapon* |
+| `+health`     | `+h` | The health of a *minion* |
+| `+locale`     | `+g` | Display *named* card information in a given locale (see available [here](packages/sync/src/constants.ts#L4)) |
+| `+mechanic`   | `+m` | The mechanic of a *minion*, can specify multiple items |
+| `+rarity`     | `+r` | The rarity of a card |
+| `+set`        | `+s` | The set of a card, using shortnames (like TGT) or partial (Ungoro) |
+| `+school`     | `+l` | The school of a *spell* |
+| `+token`      | `+k` | Search token cards |
+| `+tribe`      | `+t` | The tribe of a *minion* |
+| `+type`       | `+y` | The type of a card (minion, spell, echantment, etc.) |
+
+* Cards relating to numbers (attack, cost, etc) can use ranges. These are all valid options:
+- `+attack 5-8` - Gets cards with attack that are 5, 6, 7, or 8
+- `+cost 3+` - Gets cards that cost three or more
+- `+heatlh -5` - Gets cards that cost 5 or less
+- `+durability 3` - Gets cards that have exactly 3 durability
+
+### Named
+
+By simply searching for the name of the card, Hearthbot will post the card details following your message.
+
+Using square brackets (`[[ brann ]]`), the first card that matches your criteria will be posted. 
+
+#### Examples
+```
+[[ ysera +s dragons ]] -> Ysera, Unleashed
+[[ghoul +r rare +a 3+ +h 0-3]] -> Happy Ghoul
+```
+
+<img alt="Named Example" src="./images/example-named.png" />
+
+### Search
+
+If you can't remember exactly which card it is, or there's multiple with the same name, you can use the search functionality.
+
+Using curly braces (`{{ brann }}`), the first 9 cards matching yoru criteria will be listed. From here, you can react with the correct emoji to post the card.
+
+#### Examples
+
+```
+{{ ysera }} -> Lists all cards with "Ysera" in the name
+{{ +m battlecry +m poisonous }} -> Lists all cards with both Battlecry AND Poisonous
+{{ +c paladin +m rush +a 7+}} -> Lists all Paladin cards with Rush and 7 or more attack
+```
+
+<img alt="Search Example" src="./images/example-search.png" />
+
+### Decks
+
+Deck codes are often shared, and Hearthbot supports displaying deck contents within Discord. 
+Just post your deck code and Hearthbot will do the rest.
+
+#### Examples
+
+<img alt="Deck Example" src="./images/example-deck.png" />
 
 ## Packages
 
