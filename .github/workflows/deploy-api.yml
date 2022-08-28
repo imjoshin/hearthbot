@@ -57,4 +57,4 @@ jobs:
     - name: rsync build
       run:  rsync -aP dist/ api:${{ secrets.REMOTE_API_PATH }}
     - name: Restart service
-      run: ssh api 'ls ${{ secrets.REMOTE_API_PATH }}'
+      run: ssh api 'pm2 restart api'
