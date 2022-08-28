@@ -19,6 +19,7 @@ jobs:
         cache-dependency-path: ./packages/bot/yarn.lock
     - run: yarn install
     - run: yarn build
+    - run: yarn test
     - name: Configure SSH
       run: |
         mkdir -p ~/.ssh/
