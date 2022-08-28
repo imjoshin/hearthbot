@@ -3,7 +3,7 @@ import { HearthbotClient } from "../api"
 import { createCardEmbed } from "../embed"
 import { Client, Message, PartialMessage } from "discord.js"
 
-export const onCardSearchReaction = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
+export const FAIL = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
   const reactionGroup = reactionService.get(message.id)
   if (
     !reactionGroup ||
