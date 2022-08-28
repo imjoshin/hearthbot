@@ -29,7 +29,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "esbuild src/app.ts --bundle --platform=node --target=node18.5 --outdir=dist",
+    "build": "esbuild src/app.ts --bundle --platform=node --target=node18.5 --outdir=dist --external:@mapbox",
     "start": "node dist/app.js",
     "dev": "NODE_ENV='development' nodemon src/app.ts",
     "test": "echo 'test'"
