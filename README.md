@@ -46,7 +46,7 @@ Using square brackets (`[[ brann ]]`), the first card that matches your criteria
 #### Examples
 ```
 [[ ysera +s dragons ]] -> Ysera, Unleashed
-[[ghoul +r rare +a 3+ +h 0-3]] -> Happy Ghoul
+[[ ghoul +r rare +a 3+ +h 0-3 ]] -> Happy Ghoul
 ```
 
 <img alt="Named Example" src="./images/example-named.png" />
