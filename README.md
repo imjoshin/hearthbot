@@ -1,19 +1,19 @@
 <p align="center">
   <img alt="Gatsby" src="./git-logo.png" width="500" />
+</p>
+
+<p align="center">
   Hearthbot is a bot for Discord that aids in conversation between Hearthstone players. By combining multiple data sources, the Hearthbot API has the most up-to-date card data, including unreleased cards. 
 </p>
 
-
 ## Packages
 
-<p align="center">
 | Name      | Description |
 |----------------|-------|
 | API     | The GraphQL API that backs the project |
 | Bot     | The Discord.js bot that users interact with |
 | Scrape  | The cron job that scrapes new card sets from hearthstonetopdecks.com |
 | Sync    | The cron job that syncs data from hearthstonejson.com |
-</p>
 
 ```mermaid
 graph LR
