@@ -3,7 +3,7 @@ import mysql from "mysql2"
 export class Database {
   public static Name = `Database`
 
-  private db
+  private pool
 
   constructor(
     user: string,
@@ -11,17 +11,20 @@ export class Database {
     database: string,
     host: string,
   ) {
-    this.db = mysql.createConnection({
+    this.pool = mysql.createPool({
       user,
       password,
       database,
       host,
+      waitForConnections: true,
+      connectionLimit: 5,
+      queueLimit: 0
     })
   }
 
   run<T>(sql: string, params?: (string | number | boolean | null)[]): Promise<T[]> {
     return new Promise((res, rej) => {
-      this.db.query(sql, params, (error, result) => {
+      this.pool.query(sql, params, (error, result) => {
         if (error) {
           rej(error)
         } else {
