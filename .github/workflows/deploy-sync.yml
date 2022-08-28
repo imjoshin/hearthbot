@@ -45,7 +45,7 @@ jobs:
       env:
         API_HOST: ${{ secrets.ENV_SYNC_API_HOST }}
         API_USER: ${{ secrets.ENV_SYNC_API_USER }}
-        API_PASS: ${{ secrets.ENV_API_PASS }}
+        API_PASS: ${{ secrets.ENV_SYNC_API_PASS }}
     - name: rsync build
       run:  rsync -aP dist/ sync:${{ secrets.REMOTE_SYNC_PATH }}
     - name: Restart service
