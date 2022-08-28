@@ -46,7 +46,7 @@ jobs:
         API_HOST: ${{ secrets.ENV_SCRAPE_API_HOST }}
         API_USER: ${{ secrets.ENV_SCRAPE_API_USER }}
         API_PASS: ${{ secrets.ENV_SCRAPE_API_PASS }}
-    - name: rscrape build
-      run:  rscrape -aP dist/ scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
+    - name: rsync build
+      run:  rsync -aP dist/ scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
     - name: Restart service
       run: ssh scrape 'pm2 restart scrape --update-env &> /dev/null'
