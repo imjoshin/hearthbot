@@ -24,9 +24,9 @@ Bot --> API
 ```
 
 ## Setup
-Note: each service (besides the API) requires API credentials. You can read more about the `createUser` mutation in the [API docs](TODO).
+Note: each service (besides the API) requires API credentials. You can read more about the `createUser` mutation in the [API docs](/packages/api/README.md).
 
-### API
+### [API](/packages/api/)
 ```
 $ sudo apt install mysql-server
 $ sudo mysql_secure_installation
@@ -44,7 +44,7 @@ Then run:
 yarn dev
 ```
 
-### Bot
+### [Bot](/packages/bot/)
 
 ```
 $ cd packages/bot
@@ -53,7 +53,7 @@ $ cp .env.example .env # fill in .env before continuing
 $ yarn dev
 ```
 
-### Scrape
+### [Scrape](/packages/scrape/)
 
 ```
 $ cd packages/scrape
@@ -62,7 +62,7 @@ $ cp .env.example .env # fill in .env before continuing
 $ yarn dev
 ```
 
-### Sync
+### [Sync](/packages/sync/)
 
 ```
 $ cd packages/sync
@@ -71,7 +71,14 @@ $ cp .env.example .env # fill in .env before continuing
 $ yarn dev
 ```
 
-## Information
+## Where can I help?
+
+I'm always looking for ideas and contributions! If there's something you believe is worth adding, feel free to open a PR.
+
+Two immediate things that could be taken care of:
+
+1. Testing - jest is all set up, just need to add tests
+2. Common code - `logging.ts` and `api.ts` within each package needs to be pulled out into a common package.
 
 <p align="center">
   <a href="https://www.buymeacoffee.com/hydroto">
