@@ -47,7 +47,7 @@ Using square brackets (`[[ brann ]]`), the first card that matches your criteria
 ```
 [[ ysera +s dragons ]] -> Ysera, Unleashed
 [[ ghoul +r rare +a 3+ +h 0-3 ]] -> Happy Ghoul
-[[flurry rank 2 +k]] -> Show the token card for the second rank of Flurry
+[[ flurry rank 2 +k ]] -> Show the token card for the second rank of Flurry
 ```
 
 <img alt="Named Example" src="./images/example-named.png" />
