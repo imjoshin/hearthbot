@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Gatsby" src="./git-logo.png" width="500" />
+  <img alt="Hearthbot Logo" src="./git-logo.png" width="500" />
 </p>
 
 <p align="center">
@@ -74,5 +74,7 @@ $ yarn dev
 ## Information
 
 <p align="center">
-  <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="hydroto" data-color="#dfc346" data-emoji="☕" data-font="Arial" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#FFDD00" ></script>
+  <a href="https://www.buymeacoffee.com/hydroto">
+    <img alt="Buy me a coffee" src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" width="200">
+  </a>
 </p>
