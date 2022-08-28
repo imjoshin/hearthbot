@@ -35,7 +35,18 @@ jobs:
         REMOTE_SCRAPE_USER: ${{ secrets.REMOTE_SCRAPE_USER }}
         REMOTE_SCRAPE_KEY: ${{ secrets.REMOTE_SCRAPE_KEY }}
         REMOTE_SCRAPE_HOST: ${{ secrets.REMOTE_SCRAPE_HOST }}
-    - name: rsync build
-      run:  rsync -aP dist/* scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
+    - name: Write Environment Variables
+      run: |
+        cat >>./dist/.env <<END
+        API_HOST="$API_HOST"
+        API_USER="$API_USER"
+        API_PASS="$API_PASS"
+        LOG_DIR="/var/log/hearthbot"
+      env:
+        API_HOST: ${{ secrets.ENV_SCRAPE_API_HOST }}
+        API_USER: ${{ secrets.ENV_SCRAPE_API_USER }}
+        API_PASS: ${{ secrets.ENV_SCRAPE_API_PASS }}
+    - name: rscrape build
+      run:  rscrape -aP dist/ scrape:${{ secrets.REMOTE_SCRAPE_PATH }}
     - name: Restart service
-      run: ssh scrape 'ls ${{ secrets.REMOTE_SCRAPE_PATH }}'
+      run: ssh scrape 'pm2 restart scrape --update-env &> /dev/null'
