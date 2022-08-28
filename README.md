@@ -24,7 +24,7 @@ Bot --> API
 ```
 
 ## Setup
-Note: each service (besides the API) requires API credentials. You can read more about the `createUser` mutation in the [API docs](/packages/api/README.md).
+Note: each service (besides the API) requires API credentials. You can read more about the `createUser` mutation in the [API docs](/packages/api#user).
 
 ### [API](/packages/api/)
 ```
