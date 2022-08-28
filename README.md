@@ -145,10 +145,13 @@ $ yarn dev
 
 I'm always looking for ideas and contributions! If there's something you believe is worth adding, feel free to open a PR.
 
-Two immediate things that could be taken care of:
+A few immediate things that could be taken care of:
 
 1. Testing - jest is all set up, just need to add tests
 2. Common code - `logging.ts` and `api.ts` within each package needs to be pulled out into a common package.
+3. Bot README.md
+4. Scrape README.md
+5. Sync README.md
 
 <p align="center">
   <a href="https://www.buymeacoffee.com/hydroto">
