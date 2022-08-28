@@ -33,6 +33,8 @@ const run = async() => {
         await sync(version, language, hearthbotClient, logger)
         lastVersionSynced[language] = version
       }
+      
+      await new Promise(res => setTimeout(res, constants.LOCALE_SLEEP_TIME))
     }
 
     // sleep until we're ready to try again

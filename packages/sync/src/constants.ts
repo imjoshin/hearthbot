@@ -18,4 +18,6 @@ export const LOCALES = [
   `zhTW`,
 ] as const
 export const CACHE_DIR = path.join(__dirname, `..`, `.cache`)
+export const CHUNK_SLEEP_TIME = 1000
+export const LOCALE_SLEEP_TIME = 1000 * 60 * 5
 export const SLEEP_TIME = 1000 * 60 * 60

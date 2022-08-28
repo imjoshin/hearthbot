@@ -28,6 +28,7 @@ export const sync = async (version: string, locale: typeof constants.LOCALES[num
     const chunk = remainingCards.slice(0, 100)
     await syncCards(locale, chunk, hearthbotClient)
     remainingCards = remainingCards.slice(100)
+    await new Promise(res => setTimeout(res, constants.CHUNK_SLEEP_TIME))
   }
 }
 
