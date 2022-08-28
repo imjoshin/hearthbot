@@ -35,7 +35,20 @@ jobs:
         REMOTE_BOT_USER: ${{ secrets.REMOTE_BOT_USER }}
         REMOTE_BOT_KEY: ${{ secrets.REMOTE_BOT_KEY }}
         REMOTE_BOT_HOST: ${{ secrets.REMOTE_BOT_HOST }}
+    - name: Write Environment Variables
+      run: |
+        cat >>./dist/.env <<END
+        API_HOST="$API_HOST"
+        API_USER="$API_USER"
+        API_PASS="$API_PASS"
+        DISCORD_CLIENT_TOKEN="$DISCORD_CLIENT_TOKEN"
+        LOG_DIR="/var/log/hearthbot"
+      env:
+        API_HOST: ${{ secrets.ENV_BOT_API_HOST }}
+        API_USER: ${{ secrets.ENV_BOT_API_USER }}
+        API_PASS: ${{ secrets.ENV_BOT_API_PASS }}
+        DISCORD_CLIENT_TOKEN: ${{ secrets.ENV_BOT_DISCORD_CLIENT_TOKEN }}
     - name: rsync build
-      run:  rsync -aP dist/* bot:${{ secrets.REMOTE_BOT_PATH }}
+      run:  rsync -aP dist/ bot:${{ secrets.REMOTE_BOT_PATH }}
     - name: Restart service
-      run: ssh bot 'ls ${{ secrets.REMOTE_BOT_PATH }}'
+      run: ssh bot 'pm2 restart bot --update-env &> /dev/null'
