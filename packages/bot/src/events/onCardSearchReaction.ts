@@ -42,6 +42,7 @@ export const onCardSearchReaction = async (client: Client, message: Message | Pa
           }
           type
           tribe
+          school
           strings {
             enUS {
               name

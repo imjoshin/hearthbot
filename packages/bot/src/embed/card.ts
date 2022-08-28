@@ -34,6 +34,7 @@ export const createCardEmbed = (card: Card) => {
     class: card.classes && card.classes.join(`, `),
     rarity: card.rarity,
     tribe: card.tribe,
+    school: card.school,
   }
 
   const metadata = []

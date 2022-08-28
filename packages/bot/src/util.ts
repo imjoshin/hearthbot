@@ -130,7 +130,7 @@ export const parseQuery = async (card: string) => {
       default: false,
     })
     .option(`locale`, {
-      alias: `l`,
+      alias: `g`,
       type: `string`,
       default: `enUS`,
     })
@@ -174,6 +174,10 @@ export const parseQuery = async (card: string) => {
       alias: `m`,
       type: `array`,
     })
+    .option(`school`, {
+      alias: `l`,
+      type: `string`,
+    })
     .parse()
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -194,6 +198,10 @@ export const parseQuery = async (card: string) => {
 
   if (args.tribe) {
     filters.tribe = args.tribe
+  }
+
+  if (args.school) {
+    filters.school = args.school
   }
 
   if (args.class) {

@@ -32,6 +32,7 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
           }
           type
           tribe
+          school
           strings {
             ${query.fields.locale} {
               name
