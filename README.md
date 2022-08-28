@@ -6,6 +6,13 @@
   Hearthbot is a bot for Discord that aids in conversation between Hearthstone players. By combining multiple data sources, the Hearthbot API has the most up-to-date card data, including unreleased cards. 
 </p>
 
+<p align="center">
+  <sub>
+    Data within this API is Copyright © Blizzard Entertainment - All Rights Reserved
+    This project is not affiliated with Blizzard Entertainment.
+  </sub>
+</p>
+
 ## Packages
 
 | Name      | Description |
