@@ -1,34 +1,26 @@
-import { Database } from "sqlite3"
-import { getDefaultComponents } from "../util"
+import { getDefaultComponents, ReactionService } from "../util"
 import { HearthbotClient } from "../api"
 import { createCardEmbed } from "../embed"
 import { Client, Message, PartialMessage } from "discord.js"
 
-type dbfIdQueryResult = {dbfId: number}
+export const onCardSearchReaction = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
+  const reactionGroup = reactionService.get(message.id)
+  if (reactionGroup.authorId !== authorId) {
+    // only let the original author trigger this
+    return
+  }
 
-export const onCardSearchReaction = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, db: Database) => {
-  const query = `SELECT dbfId FROM searchResults WHERE authorId = ? AND messageId = ? AND number = ?`
-  const params = [authorId, message.id, number]
+  if (!(number in reactionGroup.reactionMap)) {
+    // can't find it, so just return
+    return
+  }
 
-  // grab the dbfId from the db
-  const queryResult: dbfIdQueryResult[] = await new Promise((res, rej) => {
-    db.all(
-      query, 
-      params, 
-      (err: Error | null, rows: dbfIdQueryResult[]) => {
-        err ? rej(err) : res(rows)
-      }
-    )
-  })
+  const dbfId = reactionGroup.reactionMap[number]
 
-  if (queryResult && queryResult.length) {
-    const { dbfId } = queryResult[0]
+  reactionService.delete(message.id, number)
 
-    // delete to not trigger twice
-    db.run(`DELETE FROM searchResults WHERE authorId = ? AND messageId = ? AND number = ?`, [authorId, message.id, number])
-  
-    // grab card data from API
-    const response = await hearthbotClient.call(`
+  // grab card data from API
+  const response = await hearthbotClient.call(`
       query {
         cards(
           dbfIds: [${dbfId}]
@@ -60,17 +52,16 @@ export const onCardSearchReaction = async (client: Client, message: Message | Pa
       }
     `)
 
-    // send embed if we have the card
-    const json = await response.json()
-    if (json?.data?.cards?.length) {
-      const cardObject = json.data.cards[0]
-      const embed = createCardEmbed(cardObject)
+  // send embed if we have the card
+  const json = await response.json()
+  if (json?.data?.cards?.length) {
+    const cardObject = json.data.cards[0]
+    const embed = createCardEmbed(cardObject)
 
-      await message.reply({
-        content: `<@${authorId}>`,
-        embeds: [embed], 
-        components: getDefaultComponents(),
-      })
-    }
+    await message.reply({
+      content: `<@${authorId}>`,
+      embeds: [embed], 
+      components: getDefaultComponents(),
+    })
   }
 }

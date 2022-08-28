@@ -1,11 +1,10 @@
 import { Message } from "discord.js"
 import { createCardEmbed, createCardSearchEmbed } from "../embed"
 import { HearthbotClient, objectToGraphqlArgs } from "../api"
-import { Database } from "sqlite3"
-import { getDefaultComponents, parseQuery } from "../util"
+import { getDefaultComponents, parseQuery, ReactionService } from "../util"
 
 
-export const onCardSearch = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, db: Database) => {
+export const onCardSearch = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
   // TODO make multiple card query endpoint
   const embeds = []
 
@@ -61,15 +60,20 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
 
         // this isn't great, but delete old entries about one in 5 times we trigger this
         if (Math.floor(Math.random() * 5) === 0) {
-          db.run(`DELETE FROM searchResults WHERE createdAt <= DATE('now','-7 day')`)
+          reactionService.clearLegacyReactionGroups()
         }
         
-        // add search results to db tied to the reply
-        const stmt = db.prepare(`INSERT INTO searchResults (authorId, messageId, number, dbfId) VALUES (?, ?, ?, ?)`)
+        // add search results to reactions, tied to the reply
+        const reactionMap: {[key: number]: number} = {}
         cardsToDisplay.forEach((card: any, i: number) => {
-          stmt.run(message.author.id, reply.id, i + 1, card.dbfId)
+          reactionMap[i] = card.dbfId
         })
-        stmt.finalize()
+
+        reactionService.set({
+          messageId: reply.id,
+          authorId: message.author.id,
+          reactionMap
+        })
 
         // add default reactions to the reply
         for (const reaction of reactions) {

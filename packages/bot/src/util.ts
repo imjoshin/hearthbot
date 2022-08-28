@@ -1,5 +1,62 @@
 import yargs from "yargs"
 import * as constants from "./constants"
+import fs from "fs"
+import path from "path"
+
+
+type ReactionGroup = {
+  messageId: string,
+  authorId: string,
+  reactionMap: {[key: number]: number}
+  createdAt?: number,
+}
+
+export class ReactionService {
+  private storePath
+
+  constructor(storePath: string) {
+    fs.mkdirSync(storePath, {recursive: true})
+    this.storePath = storePath
+  }
+
+  set = (reactionGroup: ReactionGroup) => {
+    const filepath = path.join(this.storePath, reactionGroup.messageId)
+    fs.writeFileSync(filepath, JSON.stringify({
+      ...reactionGroup,
+      createdAt: Date.now(),
+    }))
+  }
+
+  get = (messageId: string): ReactionGroup | null => {
+    const filepath = path.join(this.storePath, messageId)
+    if (!fs.existsSync(filepath)) {
+      return null
+    }
+
+    const contents = fs.readFileSync(filepath).toString()
+    return JSON.parse(contents) as ReactionGroup
+  }
+
+  delete = (messageId: string, reactionIndex: number) => {
+    const filepath = path.join(this.storePath, messageId)
+    if (!fs.existsSync(filepath)) {
+      return
+    }
+
+    const contents = fs.readFileSync(filepath).toString()
+    const reactionGroup = JSON.parse(contents) as ReactionGroup
+
+    if (reactionIndex in reactionGroup.reactionMap) {
+      delete reactionGroup.reactionMap[reactionIndex]
+    }
+
+    fs.writeFileSync(filepath, JSON.stringify(reactionGroup))
+  }
+
+  clearLegacyReactionGroups = () => {
+    // TODO
+  }
+}
 
 export const getDefaultComponents = () => {
   const components = []
