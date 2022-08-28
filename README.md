@@ -8,7 +8,7 @@
 
 <p align="center">
   <sub>
-    Data within this API is Copyright © Blizzard Entertainment - All Rights Reserved
+    Data within this API is Copyright © Blizzard Entertainment - All Rights Reserved<br/>
     This project is not affiliated with Blizzard Entertainment.
   </sub>
 </p>
