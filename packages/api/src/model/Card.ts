@@ -16,6 +16,7 @@ type CardConstructor = {
   type: number,
   tribe: string,
   image: string,
+  school: string,
 }
 
 export class Card {
@@ -34,6 +35,7 @@ export class Card {
   public tribe: string
   public type: number
   public image: string
+  public school: string
 
   constructor(card: CardConstructor) {
     this.id = card.id
@@ -51,6 +53,7 @@ export class Card {
     this.type = card.type
     this.tribe = card.tribe
     this.image = card.image 
+    this.school = card.school 
 
     if (!card.image && !this.setId.startsWith(PRE_RELEASE_SET_PREFIX)) {
       this.image = `https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`

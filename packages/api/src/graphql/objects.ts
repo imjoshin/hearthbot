@@ -70,6 +70,7 @@ export const getObjects = (dependencies: DependencyTree) => {
     type: { type: GraphQLString },
     tribe: { type: GraphQLString },
     image: { type: GraphQLString },
+    school: { type: GraphQLString },
     set: {
       type: GraphQLSet,
       async resolve(card: Card) {
@@ -124,6 +125,7 @@ export const getObjects = (dependencies: DependencyTree) => {
       type: { type: GraphQLString },
       tribe: { type: GraphQLString },
       image: { type: GraphQLString },
+      school: { type: GraphQLString },
     })
   })
 

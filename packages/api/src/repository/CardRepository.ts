@@ -19,6 +19,7 @@ type CardFilter = {
   tribe?: string,
   type?: string,
   class?: string,
+  school?: string,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -106,6 +107,12 @@ export class CardRepository {
     if (filter.tribe) {
       wheres.push(`tribe = ?`)
       params.push(filter.tribe.toUpperCase())
+    }
+
+    // School filter
+    if (filter.school) {
+      wheres.push(`school = ?`)
+      params.push(filter.school.toUpperCase())
     }
 
     // Type filter
@@ -208,6 +215,7 @@ export class CardRepository {
         durability, 
         mechanics,
         image,
+        school,
       } = row
 
       return new Card({
@@ -226,6 +234,7 @@ export class CardRepository {
         durability, 
         mechanics: mechanics ? mechanics.split(`,`) : null,
         image,
+        school,
       })
     })
   }
@@ -246,6 +255,7 @@ export class CardRepository {
       card.durability, 
       card.mechanics ? card.mechanics.join(`,`) : null, 
       card.image,
+      card.school,
     ]
     const query = `
     INSERT INTO card (
@@ -263,9 +273,10 @@ export class CardRepository {
       tribe,
       durability, 
       mechanics,
-      image
+      image,
+      school
     ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
     artist = ?,
     attack = ?,
@@ -280,7 +291,8 @@ export class CardRepository {
     tribe = ?,
     durability = ?,
     mechanics = ?,
-    image = ?
+    image = ?,
+    school = ?
     `
     await this.db.run(query, [
       card.id, ...params, ...params
