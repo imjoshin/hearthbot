@@ -15,9 +15,9 @@ export const createSchema = (dependencies: DependencyTree) => {
     const r = resolver(objects, dependencies)
     resolvers[name] = {
       ...r,
-      resolve: (...args) => {
+      resolve: async (...args) => {
         const context = args[2]
-        validateAuthorization(context.res, r.permissions)
+        await validateAuthorization(context.res, r.permissions)
         return r.resolve(...args)
       }
     }
@@ -35,9 +35,9 @@ export const createSchema = (dependencies: DependencyTree) => {
     const m = mutation(objects, dependencies)
     mutations[name] = {
       ...m,
-      resolve: (...args) => {
+      resolve: async (...args) => {
         const context = args[2]
-        validateAuthorization(context.res, m.permissions)
+        await validateAuthorization(context.res, m.permissions)
         return m.resolve(...args)
       }
     }

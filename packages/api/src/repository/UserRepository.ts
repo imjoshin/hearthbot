@@ -6,6 +6,11 @@ export class UserRepository {
 
   constructor(private db: Database) {}
 
+  public hasAdmins = async (): Promise<boolean> => {
+    const dbResult = await this.db.run<{count: number}>(`SELECT COUNT(username) as count FROM user WHERE admin = TRUE`)
+    return dbResult && dbResult[0].count > 0
+  }
+
   public getUser = async (username: string): Promise<User> => {
     const dbResult = await this.db.run<UserConstructor>(
       `SELECT * FROM user WHERE username = ?`, 

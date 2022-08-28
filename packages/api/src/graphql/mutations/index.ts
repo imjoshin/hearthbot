@@ -12,7 +12,7 @@ import { PermissionsType } from "../../util/auth"
 
 export type GraphqlMutationExport = 
 (objects: GraphqlObjects, dependencies: DependencyTree) => 
-  GraphQLFieldConfig<any, any> & { permissions?: PermissionsType}
+GraphQLFieldConfig<any, any> & { permissions?: PermissionsType}
 
 export const GraphqlMutations = {
   card,

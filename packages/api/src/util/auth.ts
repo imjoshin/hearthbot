@@ -12,9 +12,17 @@ export type PermissionsType = {
   canRead?: boolean, 
   canWrite?: boolean, 
   admin?: boolean,
-}
+} | (() => Promise<{
+  canRead?: boolean, 
+  canWrite?: boolean, 
+  admin?: boolean,
+}>)
 
-export const validateAuthorization = (res: Response, required: PermissionsType) => {
+export const validateAuthorization = async (res: Response, permissions: PermissionsType) => {
+  const required = typeof permissions === `function`
+    ? await permissions()
+    : permissions
+
   if (!required || !Object.keys(required).length || res.locals?.admin) {
     return
   }
