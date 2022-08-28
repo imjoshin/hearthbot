@@ -2,6 +2,7 @@ import { Message } from "discord.js"
 import { createCardEmbed } from "../embed"
 import { HearthbotClient, objectToGraphqlArgs } from "../api"
 import { getDefaultComponents, parseQuery } from "../util"
+import levenshtein from "js-levenshtein"
 
 
 export const onCard = async (message: Message, cards: string[], hearthbotClient: HearthbotClient) => {
@@ -10,6 +11,23 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
 
   for (const card of cards) {
     const query = await parseQuery(card)
+
+    const strings = [`
+      ${query.fields.locale} {
+        name
+        text
+      }
+    `]
+
+    if (query.fields.locale !== `enUS`) {
+      strings.push(`
+        enUS {
+          name
+          text
+        }
+      `)
+    }
+
     const response = await hearthbotClient.call(`
       query {
         cards(
@@ -33,10 +51,7 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
           tribe
           school
           strings {
-            ${query.fields.locale} {
-              name
-              text
-            }
+            ${strings.join(`\n`)}
           }
         }
       }
@@ -44,7 +59,24 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
 
     const json = await response.json()
     if (json?.data?.cards?.length) {
-      const cardObject = json.data.cards[0]
+      let cardObject = json.data.cards[0]
+      if (query.filters.name) {
+        const searchName = query.filters.name.replace(/[^\w]/g, ``).toLowerCase()
+
+        let lowestDistance = 99999
+        for (const card of json.data.cards) {
+          // grab enUS name and find levenshtein distance
+          const cardName = card.strings.enUS.name.replace(/[^\w]/g, ``).toLowerCase()
+          const distance = levenshtein(searchName, cardName)
+
+          // if it's lower than what we've seen, set this as the active card
+          if (distance < lowestDistance) {
+            lowestDistance = distance
+            cardObject = card
+          }
+        }
+      }
+
       const embed = createCardEmbed(cardObject)
       embeds.push(embed)
     }
