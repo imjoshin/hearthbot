@@ -16,7 +16,7 @@
 ## Usage
 
 | Full          | Short | Description |
-|----------------|-------|
+|---------------|-------|-------------|
 | `+attack`     | `+a` | The attack of a card |
 | `+class`      | `+c` | The class of a card |
 | `+cost`       | `+o` | The cost of a card |
