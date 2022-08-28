@@ -76,6 +76,7 @@ const syncCards = async (locale: string, cards: {[key: string]: any}[], hearthbo
         setId: card.set,
         text: card.text,
         type: card.type,
+        school: card.spellSchool,
       }
 
       const set = {
