@@ -22,7 +22,7 @@ const app = async () => {
 
   const database = dependencies.get(Database)
   // TODO starting up with fresh db errors
-  await runUpdates(database)
+  await runUpdates(database, logger)
 
   const app = express()
   app.use(authorization(dependencies))

@@ -1,8 +1,9 @@
 import path from "path"
 import fs from "fs"
 import { Database } from "../Database"
+import { Logger } from "winston"
 
-export const runUpdates = async (db: Database) => {
+export const runUpdates = async (db: Database, logger: Logger) => {
   let currentSchema = 0
   try {
     // TODO since errors can't be caught from db, this breaks on new dbs
@@ -19,10 +20,10 @@ export const runUpdates = async (db: Database) => {
     .filter(f => f > currentSchema)
     .sort()
 
-  console.log(`Current schema: ${currentSchema}, latest schema: ${updatesToRun.length ? updatesToRun[updatesToRun.length - 1] : currentSchema}`)
+  logger.info(`Current schema: ${currentSchema}, latest schema: ${updatesToRun.length ? updatesToRun[updatesToRun.length - 1] : currentSchema}`)
   
   for (const update of updatesToRun) {
-    console.log(`Running schema update ${update}`)
+    logger.info(`Running schema update ${update}`)
     const sqlFile = path.join(sqlDir, `${update}.js`)
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -35,7 +36,8 @@ export const runUpdates = async (db: Database) => {
       await db.run(`UPDATE config SET value = ? WHERE name = "schema"`, [currentSchema])
       await db.run(`COMMIT`)
     } catch (e) {
-      console.log(`TODO: ERRORED`)
+      logger.error(`TODO: ERRORED`)
+      logger.error(e)
       console.log(e)
       break
     }
