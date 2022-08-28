@@ -35,7 +35,18 @@ jobs:
         REMOTE_SYNC_USER: ${{ secrets.REMOTE_SYNC_USER }}
         REMOTE_SYNC_KEY: ${{ secrets.REMOTE_SYNC_KEY }}
         REMOTE_SYNC_HOST: ${{ secrets.REMOTE_SYNC_HOST }}
+    - name: Write Environment Variables
+      run: |
+        cat >>./dist/.env <<END
+        API_HOST="$API_HOST"
+        API_USER="$API_USER"
+        API_PASS="$API_PASS"
+        LOG_DIR="/var/log/hearthbot"
+      env:
+        API_HOST: ${{ secrets.ENV_SYNC_API_HOST }}
+        API_USER: ${{ secrets.ENV_SYNC_API_USER }}
+        API_PASS: ${{ secrets.ENV_API_PASS }}
     - name: rsync build
-      run:  rsync -aP dist/* sync:${{ secrets.REMOTE_SYNC_PATH }}
+      run:  rsync -aP dist/ sync:${{ secrets.REMOTE_SYNC_PATH }}
     - name: Restart service
-      run: ssh sync 'ls ${{ secrets.REMOTE_SYNC_PATH }}'
+      run: ssh sync 'pm2 restart sync --update-env'
