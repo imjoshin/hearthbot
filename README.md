@@ -31,7 +31,7 @@
 | `+tribe`      | `+t` | The tribe of a *minion* |
 | `+type`       | `+y` | The type of a card (minion, spell, echantment, etc.) |
 
-* Cards relating to numbers (attack, cost, etc) can use ranges. These are all valid options:
+Cards relating to numbers (attack, cost, etc) can use ranges. These are all valid options:
 - `+attack 5-8` - Gets cards with attack that are 5, 6, 7, or 8
 - `+cost 3+` - Gets cards that cost three or more
 - `+heatlh -5` - Gets cards that cost 5 or less
