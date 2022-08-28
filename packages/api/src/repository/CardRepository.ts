@@ -53,16 +53,34 @@ export class CardRepository {
       // Short circuit for name to avoid a join
       const search = filter.name.replace(/[^\w]/g, ``).toLowerCase()
 
-      // TODO use a levenshtein-type search
+      // create one-letter typo attempts to grab more cards
+      const oneLetterTypoAttempts: string[] = []
+      search.split(``).forEach((letter, i) => {
+        if (i === 0) {
+          return
+        }
+
+        const firstPart = search.slice(0, i - 1)
+        const lastPart = search.slice(i + 1)
+        const typo = firstPart + search[i] + search[i - 1] + lastPart
+        oneLetterTypoAttempts.push(typo)
+      })
+
+      const searches = [search, ...oneLetterTypoAttempts]
+      const searchCondition = searches.map(_ => `search LIKE CONCAT('%', ?, '%')`).join(` OR `)
+
+      // issue query
       const nameDbResult = await this.db.run<{[key: string]: any}>(
-        `SELECT * from cardTranslation WHERE locale = ? AND search LIKE CONCAT('%', ?, '%')`,
-        [filter.locale, search]
+        `SELECT * from cardTranslation WHERE locale = ? AND (${searchCondition})`,
+        [filter.locale, ...searches]
       )
 
+      // if we found no cards with this name, short circuit and return nothing
       if (!nameDbResult.length) {
         return []
       }
 
+      // create where clause for each card returned here
       const ids = nameDbResult.map(row => row.cardId)
       wheres.push(`id IN (${ids.map(_ => `?`).join(`, `)})`)
       ids.forEach(id => params.push(id))
