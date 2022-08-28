@@ -10,7 +10,7 @@ dotenv.config()
 
 const run = async () => {
   const hearthbotClient = new HearthbotClient()
-  const reactionService = new ReactionService(path.join(__dirname, `.reactions`))
+  const reactionService = new ReactionService(path.join(__dirname, `.cache`, `reactions`))
   const logger = createLogger(`bot`)
   
   const client = new Discord.Client({
