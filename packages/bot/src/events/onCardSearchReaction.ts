@@ -5,13 +5,11 @@ import { Client, Message, PartialMessage } from "discord.js"
 
 export const onCardSearchReaction = async (client: Client, message: Message | PartialMessage, authorId: string, number: number, hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
   const reactionGroup = reactionService.get(message.id)
-  if (reactionGroup.authorId !== authorId) {
-    // only let the original author trigger this
-    return
-  }
-
-  if (!(number in reactionGroup.reactionMap)) {
-    // can't find it, so just return
+  if (
+    !reactionGroup ||
+    reactionGroup.authorId !== authorId ||
+    !(number in reactionGroup.reactionMap)
+  ) {
     return
   }
 
