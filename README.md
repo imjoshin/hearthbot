@@ -10,10 +10,10 @@
 
 | Name      | Description |
 |----------------|-------|
-| API     | The GraphQL API that backs the project |
-| Bot     | The Discord.js bot that users interact with |
-| Scrape  | The cron job that scrapes new card sets from hearthstonetopdecks.com |
-| Sync    | The cron job that syncs data from hearthstonejson.com |
+| [API](/packages/api/)        | The GraphQL API that backs the project |
+| [Bot](/packages/bot/)        | The Discord.js bot that users interact with |
+| [Scrape](/packages/scrape/)  | The cron job that scrapes new card sets from hearthstonetopdecks.com |
+| [Sync](/packages/sync/)      | The cron job that syncs data from hearthstonejson.com |
 
 ```mermaid
 graph LR
