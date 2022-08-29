@@ -1,3 +1,18 @@
+import { ActivityType } from "discord.js"
+
+export const BOT = {
+  USERNAME: `Harth Stonebrew`,
+  AVATAR: `https://jjdev.io/hearthbot/img/harth.png`,
+  ACTIVITIES: [
+    {weight: 6, type: ActivityType.Playing, name: `Hearthstone`},
+    {weight: 6, type: ActivityType.Watching, name: `over the Inn`},
+    {weight: 2, type: ActivityType.Playing, name: `World of Warcraft`},
+    {weight: 2, type: ActivityType.Playing, name: `Heroes of the Storm`},
+    {weight: 1, type: ActivityType.Watching, name: `Sarge eat a block of cheese`},
+  ],
+  ACTIVITY_ROTATION_TIMEOUT: 1000 * 60 * 10,
+}
+
 export const EMBED = {
   EMOJI: {
     ATTACK: `<:attack:385274433830649869>`,

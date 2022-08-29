@@ -1,10 +1,12 @@
 import dotenv from "dotenv"
-import Discord from "discord.js"
+import Discord, { Client } from "discord.js"
 import { onCard, onCardSearch, onDeck, onCardSearchReaction } from "./events"
 import { HearthbotClient } from "./api"
 import { createLogger } from "./logger"
 import { ReactionService } from "./util"
 import path from "path"
+import * as constants from "./constants"
+import { onAcitivityRotate } from "./events/onActivityRotate"
 
 dotenv.config()
 
@@ -23,11 +25,31 @@ const run = async () => {
     ]}
   )
   
+  let statusRotationTimeout: ReturnType<typeof setTimeout> = null
+  const rotateTimeoutLoop = (client: Client) => {
+    onAcitivityRotate(client)
+    statusRotationTimeout = setTimeout(() => {
+      rotateTimeoutLoop(client)
+    }, constants.BOT.ACTIVITY_ROTATION_TIMEOUT)
+  }
+
   client.on(`ready`, () => {
     logger.info(`Logged in as ${client.user.tag}!`)
+    client.user.setUsername(constants.BOT.USERNAME)
+
+    if (process.env.NODE_ENV !== `development`) {
+      // discord has API limits for this, so don't do it in dev
+      client.user.setAvatar(constants.BOT.AVATAR)
+    }
+
+    rotateTimeoutLoop(client)
   })
   
   client.on(`disconnect`, async (erMsg, code) => {
+    if (statusRotationTimeout) {
+      clearTimeout(statusRotationTimeout)
+    }
+    
     logger.warn(`----- Bot disconnected from Discord with code ` + code + `for reason: ` + erMsg + ` -----`)
     await new Promise(res => setTimeout(res, 10000))
     client.login(process.env.DISCORD_CLIENT_TOKEN)
