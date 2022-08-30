@@ -11,6 +11,7 @@ export const onDeck = async (message: Message, deckCode: string, hearthbotClient
       deck(code:"${deckCode}") {
         cards {
           classes
+          cost
           count
           rarity
           strings {
