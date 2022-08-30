@@ -215,6 +215,10 @@ export const parseQuery = async (card: string) => {
 
   if (args.class) {
     filters.class = args.class
+
+    if ([`dh`, `demonhunter`].indexOf(args.class.toLowerCase()) >= 0) {
+      filters.class = `DEMON_HUNTER`
+    }
   }
 
   if (args.set) {
