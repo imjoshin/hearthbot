@@ -154,8 +154,12 @@ export class CardRepository {
 
     // Class filter
     if (filter.class) {
-      wheres.push(`classes LIKE CONCAT('%', ?, '%')`)
-      params.push(filter.class.toUpperCase())
+      if (filter.class.toUpperCase() === `DEMON_HUNTER` || filter.class.toUpperCase() === `DEMONHUNTER`) {
+        wheres.push(`(classes LIKE CONCAT('%', "DEMON_HUNTER", '%') OR classes LIKE CONCAT('%', "DEMONHUNTER", '%'))`)
+      } else {
+        wheres.push(`classes LIKE CONCAT('%', ?, '%')`)
+        params.push(filter.class.toUpperCase())
+      }
     }
 
     // Mechanics filter
