@@ -40,7 +40,7 @@ export const createCardEmbed = (card: Card) => {
   const metadata = []
   for (const [name, value] of Object.entries(metadataAttributes)) {
     if (value) {
-      metadata.push(`**${toTitleCase(name)}:** ${toTitleCase(value)}`)
+      metadata.push(`**${toTitleCase(name)}:** ${toTitleCase(value.split(`_`).join(` `))}`)
     }
   }
 
@@ -91,12 +91,16 @@ export const createCardEmbed = (card: Card) => {
     ? constants.EMBED.RARITIES[card.rarity || ``] 
     : constants.EMBED.RARITIES.FREE
 
+  const iconName = card.cost === null || card.cost === undefined
+    ? `mana-none`
+    : `mana-${card.cost}`
+
   // construct embed
   return {
     author: {
       name: card.strings[locale].name,
       // TODO move these to hearthbot.app
-      icon_url: `https://jjdev.io/hearthbot/img/mana-${card.cost}.png`
+      icon_url: `https://jjdev.io/hearthbot/img/${iconName}.png`
     },
     color: rarityObject.color,
     description: statsDisplay + metadataDisplay + text,

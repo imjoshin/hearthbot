@@ -182,6 +182,10 @@ export const parseQuery = async (card: string) => {
       alias: `l`,
       type: `string`,
     })
+    .option(`hero`, {
+      alias: `e`,
+      type: `boolean`,
+    })
     .parse()
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -190,6 +194,7 @@ export const parseQuery = async (card: string) => {
 
   const filters: {[key: string]: any} = {
     collectible: !args.token,
+    hero: !!args.hero,
   }
 
   if (name) {
@@ -218,6 +223,10 @@ export const parseQuery = async (card: string) => {
 
   if (args.type) {
     filters.type = args.type
+
+    if (args.type.toLowerCase() === `hp`) {
+      filters.type = `HERO_POWER`
+    }
   }
 
   if (args.mechanic) {
