@@ -29,7 +29,8 @@
 | `+school`     | `+l` | The school of a *spell* |
 | `+token`      | `+k` | Search token cards |
 | `+tribe`      | `+t` | The tribe of a *minion* |
-| `+type`       | `+y` | The type of a card (minion, spell, echantment, etc.) |
+| `+type`       | `+y` | The type of a card - minion, spell, enchantment, hp (hero power) |
+| `+hero`       | `+e` | The "card" is a hero skin, i.e. Garrosh Hellscream |
 
 Cards relating to numbers (attack, cost, etc) can use ranges. These are all valid options:
 - `+attack 5-8` - Gets cards with attack that are 5, 6, 7, or 8
