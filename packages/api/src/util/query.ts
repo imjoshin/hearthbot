@@ -12,27 +12,27 @@ export const rangeQuery = (field: string, range: RangeInput) => {
   const wheres = []
   const params = []
 
-  if (range.eq) {
+  if (Number.isInteger(range.eq)) {
     wheres.push(`${field} = ?`)
     params.push(range.eq)
   }
 
-  if (range.gt) {
+  if (Number.isInteger(range.gt)) {
     wheres.push(`${field} > ?`)
     params.push(range.gt)
   }
 
-  if (range.gte) {
+  if (Number.isInteger(range.gte)) {
     wheres.push(`${field} >= ?`)
     params.push(range.gte)
   }
 
-  if (range.lt) {
+  if (Number.isInteger(range.lt)) {
     wheres.push(`${field} < ?`)
     params.push(range.lt)
   }
 
-  if (range.lte) {
+  if (Number.isInteger(range.lte)) {
     wheres.push(`${field} <= ?`)
     params.push(range.lte)
   }
