@@ -195,9 +195,9 @@ export class CardRepository {
     }
 
     // Hero  filter
-    if (filter.hero) {
+    if (filter.hero === true) {
       wheres.push(`type = "HERO"`)
-    } else {
+    } else if (filter.hero === false) {
       wheres.push(`type != "HERO"`)
     }
 
