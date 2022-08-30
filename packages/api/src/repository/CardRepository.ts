@@ -20,6 +20,7 @@ type CardFilter = {
   type?: string,
   class?: string,
   school?: string,
+  hero?: boolean,
 }
 
 const cardFilterDefault: CardFilter = {
@@ -191,6 +192,13 @@ export class CardRepository {
       const range = rangeQuery(`durability`, filter.durability)
       wheres.push(...range.wheres)
       params.push(...range.params)
+    }
+
+    // Hero  filter
+    if (filter.hero) {
+      wheres.push(`type = "HERO"`)
+    } else {
+      wheres.push(`type != "HERO"`)
     }
 
     // Filter out any pre-release sets that have released
