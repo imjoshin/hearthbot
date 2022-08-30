@@ -10,6 +10,10 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
 
   for (const card of cards) {
     const query = await parseQuery(card)
+    if (!query) {
+      continue
+    }
+    
     const response = await hearthbotClient.call(`
       query {
         cards(

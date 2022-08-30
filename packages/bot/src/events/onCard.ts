@@ -11,6 +11,9 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
 
   for (const card of cards) {
     const query = await parseQuery(card)
+    if (!query) {
+      continue
+    }
 
     const strings = [`
       ${query.fields.locale} {

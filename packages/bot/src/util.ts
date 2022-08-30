@@ -123,6 +123,10 @@ export const parseQuery = async (card: string) => {
     .replace(/^\+\+?/g, `--`)
     .replace(/(\s+)\+\+?/g, `$1--`)
 
+  if (search.length < 3) {
+    return null
+  }
+
   const args = await yargs(search)
     .option(`token`, {
       alias: `k`,
