@@ -19,20 +19,24 @@ export const createCardEmbed = (card: Card, settings?: {[key: string]: any}) => 
   // get stats
   const stats = []
 
-  if (card.type === `WEAPON`) {
-    if (card.attack !== null) {
-      stats.push(`${constants.EMBED.EMOJI.WEAPON_ATTACK} **${card.attack}**`)
-    }
-    if (card.durability !== null) {
-      stats.push(`${constants.EMBED.EMOJI.WEAPON_HEALTH} **${card.durability}**`)
-    }
-  } else {
-    if (card.attack !== null) {
-      stats.push(`${constants.EMBED.EMOJI.ATTACK} **${card.attack}**`)
-    }
-    if (card.health !== null) {
-      stats.push(`${constants.EMBED.EMOJI.HEALTH} **${card.health}**`)
-    }
+  if (card.attack !== null) {
+    const emoji = card.type === `WEAPON`
+      ? constants.EMBED.EMOJI.WEAPON_ATTACK
+      : constants.EMBED.EMOJI.ATTACK
+
+    stats.push(`${emoji} **${card.attack}**`)
+  }
+
+  if (card.durability !== null) {
+    stats.push(`${constants.EMBED.EMOJI.DURABILITY} **${card.durability}**`)
+  }
+
+  if (card.health !== null) {
+    const emoji = card.type === `LOCATION`
+      ? constants.EMBED.EMOJI.DURABILITY
+      : constants.EMBED.EMOJI.ATTACK
+
+    stats.push(`${emoji} **${card.health}**`)
   }
 
   const statsDisplay = stats.length ? stats.join(`  `) + `\n\n` : ``

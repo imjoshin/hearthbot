@@ -20,7 +20,7 @@ export const EMBED = {
     ATTACK: `<:attack:385274433830649869>`,
     HEALTH: `<:health:385274434203680788>`,
     WEAPON_ATTACK: `<:weapon_attack:385567336272363530>`,
-    WEAPON_HEALTH: `<:weapon_dur:385567315330072586>`,
+    DURABILITY: `<:weapon_dur:385567315330072586>`,
     MANA: {
       0: `<:mana0:385574759351451658>`,
       1: `<:mana1:385574809830031370>`,
