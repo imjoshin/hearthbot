@@ -186,6 +186,10 @@ export const parseQuery = async (card: string) => {
       alias: `e`,
       type: `boolean`,
     })
+    .option(`image`, {
+      alias: `i`,
+      type: `boolean`,
+    })
     .parse()
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -195,6 +199,10 @@ export const parseQuery = async (card: string) => {
   const filters: {[key: string]: any} = {
     collectible: !args.token,
     hero: !!args.hero,
+  }
+
+  const settings: {[key: string]: any} = {
+    imageOnly: !!args.image,
   }
 
   if (name) {
@@ -269,5 +277,5 @@ export const parseQuery = async (card: string) => {
     locale: args.locale,
   }
 
-  return {filters, fields}
+  return { filters, fields, settings }
 }

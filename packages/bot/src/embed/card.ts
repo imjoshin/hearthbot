@@ -6,7 +6,16 @@ import { toTitleCase } from "../util"
 type Card = {[key: string]: any}
 
 // TODO clean this up, it's nasty
-export const createCardEmbed = (card: Card) => {
+export const createCardEmbed = (card: Card, settings?: {[key: string]: any}) => {
+  if (settings?.imageOnly) {
+    return {
+      color: constants.EMBED.CLASSES.NEUTRAL.color,
+      image: {
+        "url": card.image
+      }
+    }
+  }
+
   // get stats
   const stats = []
 

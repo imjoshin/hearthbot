@@ -31,6 +31,7 @@
 | `+tribe`      | `+t` | The tribe of a *minion* |
 | `+type`       | `+y` | The type of a card - minion, spell, enchantment, hp (hero power) |
 | `+hero`       | `+e` | The "card" is a hero skin, i.e. Garrosh Hellscream |
+| `+image`      | `+i` | Only show the card image |
 
 Cards relating to numbers (attack, cost, etc) can use ranges. These are all valid options:
 - `+attack 5-8` - Gets cards with attack that are 5, 6, 7, or 8

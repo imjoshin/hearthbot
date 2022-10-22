@@ -80,7 +80,7 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
         }
       }
 
-      const embed = createCardEmbed(cardObject)
+      const embed = createCardEmbed(cardObject, query.settings)
       embeds.push(embed)
     }
   }
