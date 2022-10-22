@@ -2,6 +2,7 @@ import yargs from "yargs"
 import * as constants from "./constants"
 import fs from "fs"
 import path from "path"
+import levenshtein from "js-levenshtein"
 
 
 type ReactionGroup = {
@@ -278,4 +279,38 @@ export const parseQuery = async (card: string) => {
   }
 
   return { filters, fields, settings }
+}
+
+// TODO this is gross
+type Card = { [key: string]: any }
+
+export const sortCardsByTerm = (cards: Card[], search: string) => {
+  const searchTerm = search.toLowerCase()
+  return cards.sort((a, b) => {
+    // this is super inefficient but whatevs
+    const aName = a.strings.enUS.name.toLowerCase()
+    const bName = b.strings.enUS.name.toLowerCase()
+
+    const aContains = aName.split(` `).indexOf(searchTerm) >= 0
+    const bContains = bName.split(` `).indexOf(searchTerm) >= 0
+    // first check if either contain the exact word
+    if (aContains && !bContains) {
+      return 1
+    }
+
+    if (bContains && !aContains) {
+      return -1
+    }
+
+    const searchTermFiltered = searchTerm.replace(/[^\w]/g, ``)
+    const aNameFiltered = aName.replace(/[^\w]/g, ``)
+    const bNameFiltered = bName.replace(/[^\w]/g, ``)
+
+    // TODO some other checks?
+
+    // finally, just check levenshtein distance
+    const aDistance = levenshtein(searchTermFiltered, aNameFiltered)
+    const bDistance = levenshtein(searchTermFiltered, bNameFiltered)
+    return aDistance - bDistance
+  })
 }

@@ -1,7 +1,7 @@
 import { Message } from "discord.js"
 import { createCardEmbed, createCardSearchEmbed } from "../embed"
 import { HearthbotClient, objectToGraphqlArgs } from "../api"
-import { getDefaultComponents, parseQuery, ReactionService } from "../util"
+import { getDefaultComponents, parseQuery, ReactionService, sortCardsByTerm } from "../util"
 
 
 export const onCardSearch = async (message: Message, cards: string[], hearthbotClient: HearthbotClient, reactionService: ReactionService) => {
@@ -54,8 +54,12 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
         const embed = createCardEmbed(cardObject)
         embeds.push(embed)
       } else {
-        const cardsToDisplay = json.data.cards.slice(0, 9)
-        const {embed, reactions} = createCardSearchEmbed(cardsToDisplay, json.data.cards.length)
+        const cards = query.filters.name 
+          ? sortCardsByTerm(json.data.cards, query.filters.name)
+          : json.data.cards
+
+        const cardsToDisplay = cards.slice(0, 9)
+        const { embed, reactions } = createCardSearchEmbed(cardsToDisplay, cards.length)
 
         // just send reply right away since multiple searches need separate messages
         const reply = await message.reply({

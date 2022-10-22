@@ -1,7 +1,7 @@
 import { Message } from "discord.js"
 import { createCardEmbed } from "../embed"
 import { HearthbotClient, objectToGraphqlArgs } from "../api"
-import { getDefaultComponents, parseQuery } from "../util"
+import { getDefaultComponents, parseQuery, sortCardsByTerm } from "../util"
 import levenshtein from "js-levenshtein"
 
 
@@ -64,20 +64,8 @@ export const onCard = async (message: Message, cards: string[], hearthbotClient:
     if (json?.data?.cards?.length) {
       let cardObject = json.data.cards[0]
       if (query.filters.name) {
-        const searchName = query.filters.name.replace(/[^\w]/g, ``).toLowerCase()
-
-        let lowestDistance = 99999
-        for (const card of json.data.cards) {
-          // grab enUS name and find levenshtein distance
-          const cardName = card.strings.enUS.name.replace(/[^\w]/g, ``).toLowerCase()
-          const distance = levenshtein(searchName, cardName)
-
-          // if it's lower than what we've seen, set this as the active card
-          if (distance < lowestDistance) {
-            lowestDistance = distance
-            cardObject = card
-          }
-        }
+        const sortedCards = sortCardsByTerm(json.data.cards, query.filters.name)
+        cardObject = sortedCards[0]
       }
 
       const embed = createCardEmbed(cardObject, query.settings)
