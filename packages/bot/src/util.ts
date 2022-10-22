@@ -295,11 +295,11 @@ export const sortCardsByTerm = (cards: Card[], search: string) => {
     const bContains = bName.split(` `).indexOf(searchTerm) >= 0
     // first check if either contain the exact word
     if (aContains && !bContains) {
-      return 1
+      return -1
     }
 
     if (bContains && !aContains) {
-      return -1
+      return 1
     }
 
     const searchTermFiltered = searchTerm.replace(/[^\w]/g, ``)
