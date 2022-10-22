@@ -27,6 +27,7 @@ export const onCardSearchReaction = async (client: Client, message: Message | Pa
           dbfId
           attack
           classes
+          collectible
           cost
           durability
           image

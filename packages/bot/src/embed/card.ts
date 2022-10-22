@@ -108,6 +108,10 @@ export const createCardEmbed = (card: Card, settings?: {[key: string]: any}) => 
     ? `mana-none`
     : `mana-${card.cost}`
 
+  const setTag = card.collectible
+    ? ``
+    : `(not collectible)`
+
   // construct embed
   return {
     author: {
@@ -118,7 +122,7 @@ export const createCardEmbed = (card: Card, settings?: {[key: string]: any}) => 
     color: rarityObject.color,
     description: statsDisplay + metadataDisplay + text,
     footer: {
-      text: set
+      text: `${set} ${setTag}`
     },
     thumbnail: {
       url: card.image

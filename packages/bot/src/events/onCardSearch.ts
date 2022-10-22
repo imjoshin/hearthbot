@@ -23,6 +23,7 @@ export const onCardSearch = async (message: Message, cards: string[], hearthbotC
           dbfId
           attack
           classes
+          collectible
           cost
           durability
           image
