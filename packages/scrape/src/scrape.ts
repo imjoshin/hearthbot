@@ -17,6 +17,7 @@ export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: 
     const html = await pageRequest.text()
 
     if (html.indexOf(`No cards found`) >= 0) {
+      logger.info(`no cards found on page ${page}`)
       break
     }
 
@@ -94,7 +95,7 @@ export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: 
         locale: `enUS`,
       }
 
-      cardTranslations.push(`{ ${objectToGraphqlArgs(translations) }`)
+      cardTranslations.push(`{ ${objectToGraphqlArgs(translations) } }`)
     }
 
     const createCards = `
@@ -113,7 +114,7 @@ export const scrape = async (setId: string, scrapeUrl: string, hearthbotClient: 
       ) { errors }
     `
 
-    await hearthbotClient.call(`
+    const res = await hearthbotClient.call(`
       mutation {
         ${createCards}
         ${createCardTranslations}
