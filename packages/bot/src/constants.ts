@@ -106,6 +106,10 @@ export const EMBED = {
       color: 0x173836,
       icon: `https://jjdev.io/hearthbot/img/DemonHunter.png`
     },
+    DEATH_KNIGHT: {
+      color: 0x15725d,
+      icon: `https://jjdev.io/hearthbot/img/DeathKnight.png`
+    },
     NEUTRAL: {
       color: 0x34363B,
       icon: ``

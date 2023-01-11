@@ -67,7 +67,9 @@ export const createDeckEmbed = (deckCode: string, cards: Card[]) => {
     },
   ]
 
-  const deckClass = Array.from(classes).join(`, `).replace(/DEMONHUNTER/g, `DEMON_HUNTER`)
+  const deckClass = Array.from(classes).join(`, `)
+    .replace(/DEMONHUNTER/g, `DEMON_HUNTER`)
+    .replace(/DEATHKNIGHT/g, `DEATH_KNIGHT`)
 
   // @ts-ignore
   const deckClassObject = classes.size == 1 ? constants.EMBED.CLASSES[deckClass] : constants.EMBED.CLASSES.NEUTRAL
